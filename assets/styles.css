@@ -8,7 +8,7 @@ display: flex;
 flex-direction: row;
 align-items: center;
 padding: 0px;
-gap: 60px;
+gap: 45px;
 
 position: absolute;
 width: 283px;
@@ -142,7 +142,7 @@ flex-grow: 0;
 
 /* 전시입장 */
 .btn-text{
-width: 73px;
+width: 80px;
 height: 24px;
 
 font-family: 'NanumSquareRound';
