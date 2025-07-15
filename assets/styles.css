@@ -1,4 +1,41 @@
 
+
+/* menus */
+
+/* Auto layout */
+.menu{
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 60px;
+
+position: absolute;
+width: 283px;
+height: 29px;
+left: 50%;                   /* 왼쪽 기준 50% */
+transform: translateX(-50%); /* 본인 너비의 절반만큼 왼쪽으로 이동 → 진짜 가운데 정렬 */
+top: 40px;
+z-index: 1000;
+}
+.menu-item a{
+width: 65px;
+height: 29px;
+
+font-family: 'NanumSquareRound';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 160%;
+/* identical to box height, or 29px */
+text-align: center;
+letter-spacing: -0.01em;
+text-decoration: none; /* 링크 밑줄 제거 */
+
+color: #000000;
+}
+
+
 /* /////////////////////////// */
 /* 랜딩 */
 .landing {
@@ -7,6 +44,9 @@
   height: 1080px;
   background: url('images/landing-bg.svg') #FBE3E5 no-repeat center center;
   background-size: cover;
+  left: 50%;                   /* 왼쪽 기준 50% */
+  transform: translateX(-50%); /* 본인 너비의 절반만큼 왼쪽으로 이동 → 진짜 가운데 정렬 */
+  z-index: 1; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
 }
 
 /* 대회정보 */
@@ -18,7 +58,15 @@ left: 685px;
 top: 267px;
 }
 
-/* 대회정보 */
+/* upper-images */
+.landing-upper-images {
+position: absolute;
+width: 1760.43px;
+height: 948.97px;
+left: 67.28px;
+top: 99px;
+}
+
 
 /* Auto layout */
 .landing-info {
@@ -114,15 +162,219 @@ order: 0;
 flex-grow: 0;
 }
 
+/* ////////////////////////////// */
+/* intro */
+
+.intro {
+position: relative;
+height: 716px;  
+/* sddsds */
+left: 50%;                   /* 왼쪽 기준 50% */
+transform: translateX(-50%); 
+width: 1920px;
+/* background: url('images/intro-bg.svg') */
+}
+/* 전시소개 */
+.intro h2 {
+position: absolute;
+width: 155px;
+height: 52px;
+left: 565px;
+top: 173.45px;
+
+font-family: 'Tmoney RoundWind';
+font-style: normal;
+font-weight: 800;
+font-size: 40px;
+line-height: 52px;
+/* identical to box height */
+
+color: #232E5E;
+}
+
+.intro p {
+position: absolute;
+width: 1193px;
+left: 567px;
+top: 249.45px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 34px;
+line-height: 150%;
+/* or 51px */
+letter-spacing: -0.02em;
+
+color: #000000;
+}
 
 
+.submission-status {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            padding: 0px;
+            gap: 74px;
+            width: 856px;
+            height: 177.45px;
+            margin: 0 auto;
+            padding: 30px;
+        }
 
+        .section {
+            position: relative;
+        }
 
+        .baby-section {
+            width: 374px;
+            height: 177.45px;
+            flex: none;
+            order: 0;
+            flex-grow: 0;
+        }
 
+        .adult-section {
+            width: 334px;
+            height: 177.45px;
+            flex: none;
+            order: 2;
+            flex-grow: 0;
+        }
+
+        .section-title {
+            position: absolute;
+            top: 0px;
+            font-family: 'Tmoney RoundWind', 'Nanum Square Round', sans-serif;
+            font-style: normal;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 150%;
+            text-align: center;
+            color: #232E5E;
+        }
+
+        .baby-section .section-title {
+            width: 123px;
+            left: 124px;
+        }
+
+        .adult-section .section-title {
+            width: 251px;
+            left: 31px;
+        }
+
+        .numbers-container {
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0px;
+            height: 45px;
+            top: 60.45px;
+        }
+
+        .baby-section .numbers-container {
+            gap: 96px;
+            width: 339px;
+            left: 19px;
+        }
+
+        .adult-section .numbers-container {
+            gap: 119px;
+            width: 313px;
+            left: 9px;
+        }
+
+        .number {
+            font-family: 'Nanum Square Round', sans-serif;
+            font-style: normal;
+            font-weight: 800;
+            font-size: 30px;
+            line-height: 150%;
+            text-align: center;
+            letter-spacing: -0.02em;
+            color: #3C3C3C;
+            flex: none;
+            flex-grow: 0;
+        }
+
+        .number-146 { width: 55px; order: 0; }
+        .number-42 { width: 37px; order: 1; }
+        .number-134 { width: 55px; order: 2; }
+        .number-10 { width: 37px; order: 0; }
+        .number-8 { width: 19px; order: 1; }
+        .number-0 { width: 19px; order: 2; }
+
+        .categories-container {
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0px;
+            height: 36px;
+            top: 141.45px;
+        }
+
+        .baby-section .categories-container {
+            gap: 76px;
+            width: 374px;
+            left: 0px;
+        }
+
+        .adult-section .categories-container {
+            gap: 75px;
+            width: 334px;
+            left: 0px;
+        }
+
+        .category {
+            font-family: 'Nanum Square Round', sans-serif;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 150%;
+            text-align: center;
+            letter-spacing: -0.02em;
+            color: #797979;
+            flex: none;
+            flex-grow: 0;
+        }
+
+        .category-diary { width: 92px; order: 0; }
+        .category-poem { width: 44px; order: 1; }
+        .category-comic { width: 92px; order: 2; }
+        .category-writing { width: 58x; order: 0; }
+        .category-photo { width: 92px; order: 1; }
+        .category-case { width: 44px; order: 2; }
+
+.divider {
+    width: 100px;
+    height: 0px;
+    border: 2px solid #E1E1E1;
+    transform: rotate(90deg);
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    align-self: center;
+}
+
+.intro-bg{
+position: absolute;
+width: 2445.28px;
+height: 1855.34px;
+left: -467px;
+top: -262px;
+/* background: url('images/-bg.svg'); */
+z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
+}
 
 
 /*////////////////////////////////////////  */
-
+/*////////////////////////////////////////  */
+/*////////////////////////////////////////  */
+/*////////////////////////////////////////  */
 
 /* Footer */
 footer {
@@ -131,6 +383,8 @@ width: 1920px;
 height: 300px;
 
 background: #FFFFFF;
+left: 50%;                   /* 왼쪽 기준 50% */
+transform: translateX(-50%); /* 본인 너비의 절반만큼 왼쪽으로 이동 → 진짜 가운데 정렬 */
 }
 
 /* lineicons:youtube */
