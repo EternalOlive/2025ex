@@ -1,0 +1,816 @@
+/* 폰트스타일 */
+/* 상이름 폰트 */
+.prize-name-text-style {
+    font-family: 'NanumSquareRound';
+font-style: normal;
+font-weight: 800;
+font-size: 50px;
+line-height: 120%;
+/* identical to box height, or 60px */
+text-align: center;
+
+color: #000000;
+}
+
+.kindergarten-name-text-style {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 120%;
+    /* or 26px */
+    text-align: center;
+    letter-spacing: -0.02em;
+
+    color: #000000;
+}
+
+.kid-name-text-style{
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 150%;
+    /* identical to box height, or 54px */
+    text-align: center;
+    letter-spacing: -0.02em;
+
+    color: #000000;
+}
+
+.sector-text-stlye{
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 120%;
+    /* identical to box height, or 22px */
+    text-align: center;
+    letter-spacing: -0.02em;
+
+    color: #000000;
+}
+
+.work-img{
+position: absolute;
+width: 520px;
+height: 734px;
+
+border-radius: 10px;
+}
+
+
+/* //////////////////////////////////////// */
+.prize1st-wrapper{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 0px;
+    gap: 74px;
+    /* width: 1925px; */
+    justify-content: center; /* 수평 가운데 정렬 */
+    height: 1498px;
+    margin: 300px 0 0 auto;
+    /* gap:20px; */
+    background: url(../images/bg.png) no-repeat center 0;
+    
+}
+
+/* 1stPrize_Sector */
+.prize1st-sector{
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+position: absolute;
+width: 1167px;
+height: 1138px;
+left: calc(50% - 1167px/2);
+top: 105px;
+}
+
+
+/* part */
+.part{
+width: 1167px;
+height: 1138px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+/* Prize_Sector */
+.prize-sector{
+position: absolute;
+width: 1167px;
+height: 806px;
+left: 0px;
+top: 332px;
+}
+
+/* /////////////////////////// */
+/* winner */
+.winner-info{
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 13px;
+
+position: absolute;
+width: 173px;
+height: 132px;
+left: 966px;
+top: 550px;
+}
+
+
+/* Bg */
+.sec-bg{
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 2px 16px;
+gap: 20px;
+
+width: 98px;
+height: 26px;
+
+background: #D2E8FF;
+border-radius: 100px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+/* 네컷 만화 */
+.sec-text{
+width: 66px;
+height: 22px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 120%;
+/* identical to box height, or 22px */
+text-align: center;
+letter-spacing: -0.02em;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+/* 충북 무럭냠냠유치원 */
+.kindergarten-name{
+width: 173px;
+height: 26px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 22px;
+line-height: 120%;
+/* or 26px */
+text-align: center;
+letter-spacing: -0.02em;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+}
+
+/* 김 철 수 */
+.winner-name{
+width: 173px;
+height: 54px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 700;
+font-size: 36px;
+line-height: 150%;
+/* identical to box height, or 54px */
+text-align: center;
+letter-spacing: -0.02em;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+}
+
+
+
+
+/* /////////////////////////// */
+
+
+/* prize_name */
+.prize-name{
+position: absolute;
+width: 227.12px;
+height: 134.66px;
+left: 939.88px;
+top: 94.17px;
+}
+
+
+/* 대상 */
+.prize-name-text{
+position: absolute;
+width: 92px;
+height: 60px;
+left: 68px;
+top: 35px;
+
+font-family: 'NanumSquareRound';
+font-style: normal;
+font-weight: 800;
+font-size: 50px;
+line-height: 120%;
+/* identical to box height, or 60px */
+text-align: center;
+
+color: #000000;
+}
+
+
+
+
+
+
+/* prize_img */
+.prize-img{
+position: absolute;
+width: 227.12px;
+height: 134.66px;
+left: 939.88px;
+top: 426.17px;
+}
+
+
+/* work_sec */
+.work-sec{
+position: absolute;
+width: 709px;
+height: 806px;
+left: 0px;
+/* top: 332px; */
+}
+
+
+/* work_shadow */
+.work-shadow{
+position: absolute;
+width: 709px;
+height: 144px;
+left: 0px;
+top: 662px;
+
+/* background: #FFE580; */
+}
+
+/* work */
+.work{
+position: absolute;
+width: 520px;
+height: 734px;
+left: 95px;
+/* top: 332px; */
+
+/* background: url(image.png); */
+border-radius: 10px;
+}
+
+/* kid_img */
+.kid-img{
+position: absolute;
+width: 178px;
+height: 252px;
+left: 0px;
+top: 495px;
+}
+
+
+/* Cong */
+.cong{
+position: absolute;
+width: 894px;
+height: 133.67px;
+left: 198px;
+top: 0px;
+}
+
+
+/* cong_img */
+.cong-img{
+position: absolute;
+width: 894px;
+height: 133.67px;
+/* left: 198px; */
+top: 0px;
+}
+
+/* 수상을 진심으로 축하드립니다! */
+.cong-text{
+position: absolute;
+width: 527px;
+height: 48px;
+left: 183px;
+top: 35px;
+
+font-family: 'Tmoney RoundWind';
+font-style: normal;
+font-weight: 800;
+font-size: 40px;
+line-height: 120%;
+/* identical to box height, or 48px */
+text-align: center;
+letter-spacing: -0.02em;
+
+color: #232E5E;
+}
+/* -------------------------- */
+
+/* golde_sector */
+.prize_sector{
+position: relative;
+/* width: 1920px; */
+width: 100vw;
+/* height: 2580px; */
+display: flex;
+flex-direction: row;
+justify-content: center; /* 수평 가운데 정렬 */
+}
+
+
+/* gold_sect_container */
+.gold_sec_container{
+/* gold_sect_container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 25px;
+
+position: absolute;
+width: 1061px;
+height: 2011.66px;
+/* left: 430px; */
+/* top: 313px; */
+}
+
+
+
+.bg-url{
+    background-image: url(../images/bg/bg.png) ;
+    background-repeat: no-repeat;
+    background-position: center 0;
+}
+
+.gold-bg{
+    /* background-image: url(../images/bg/gold-bg.png); */
+    background: linear-gradient(to bottom, #FFFDE5, #EFF7FE);
+    height: 2580px;
+}
+
+
+.silver-bg{
+    height: 2200px;
+    background-color: #EFF7FE;
+}
+
+.bronze-bg{
+    height: 1990px;
+}
+
+.silver-container{
+/* gold_sect_container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 25px;
+
+position: absolute;
+width: 1600px;
+height: 2011.66px;
+/* left: 430px; */
+/* top: 313px; */
+}
+
+/* prize_name */
+.prize-name{
+/* prize_name */
+
+width: 227.12px;
+height: 134.66px;
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+/* Frame 79 */
+.gold-4-list{
+width: 1061px;
+height: 1852px;
+
+
+/* Grid 레이아웃 설정 */
+display: grid;
+grid-template-columns: 1fr 1fr; /* 2열 */
+grid-template-rows: 1fr 1fr;    /* 2행 */
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+}
+
+/* Frame 79 */
+.silver-list{
+width: 1600px;
+height: 1852px;
+
+
+/* Grid 레이아웃 설정 */
+display: grid;
+grid-template-columns: 1fr 1fr 1fr; /* 2열 */
+grid-template-rows: 1fr 1fr;    /* 2행 */
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+}
+
+.bronze-list{
+width: 1600px;
+height: 1852px;
+
+
+/* Grid 레이아웃 설정 */
+display: grid;
+grid-template-columns: 1fr 1fr 1fr 1fr; /* 4열 */
+grid-template-rows: 1fr 1fr;    /* 2행 */
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+}
+
+
+/* sec_1 */
+.sec-1{
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 24px;
+
+position: absolute;
+width: 520px;
+height: 872px;
+}
+
+
+/* image */
+.work-img-gold{
+width: 520px;
+height: 734px;
+
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+}
+
+        /* 컨테이너 - 위에서 아래로 배치 */
+        .winner-info-gold {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px; /* 각 요소 사이 간격 */
+            padding: 20px;
+            
+            /* 시각적 확인을 위한 배경 */
+            /* background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: fit-content;
+            margin: 50px auto; */
+        }
+
+        /* 그림 일기 태그 */
+        .bg-sec {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 2px 16px;
+            gap: 10px;
+            
+            background: #E6F8C2;
+            border-radius: 100px;
+            width: fit-content;
+        }
+
+        .sec-text {
+            font-family: 'Pretendard', sans-serif;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 120%;
+            text-align: center;
+            letter-spacing: -0.02em;
+            color: #000000;
+        }
+
+        /* 유치원 정보 */
+        .kindergarten-info {
+            display: flex;
+            justify-content: center;
+        }
+
+        .kindergarten {
+            font-family: 'Pretendard', sans-serif;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 22px;
+            line-height: 120%;
+            text-align: center;
+            letter-spacing: -0.02em;
+            color: #000000;
+        }
+
+        /* 수상자 이름 */
+        .winner-name-gold {
+            font-family: 'Pretendard', sans-serif;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 36px;
+            line-height: 150%;
+            text-align: center;
+            letter-spacing: -0.02em;
+            color: #000000;
+        }
+
+
+.work-img-b{
+width: 385px;
+height: 545px;
+
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+}
+
+/* 그림일기 */
+.sec-font-style{
+width: 62px;
+height: 22px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 120%;
+/* identical to box height, or 22px */
+text-align: center;
+letter-spacing: -0.02em;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+
+.sec{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+
+/* ----------------------------- */
+.sec-bg-style{
+    /* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 2px 16px;
+gap: 10px;
+
+position: absolute;
+width: 94px;
+height: 22.45px;
+background: #E6F8C2;
+border-radius: 100px;
+}
+
+.winner-name-style{
+position: absolute;
+width: 108px;
+height: 46.64px;
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 700;
+font-size: 36px;
+line-height: 150%;
+/* or 54px */
+text-align: center;
+letter-spacing: -0.02em;
+
+color: #000000;
+}
+
+/* 금상 */
+.prize-text-style{
+position: absolute;
+width: 81px;
+height: 53px;
+left: calc(50% - 81px/2 + 0.5px);
+top: 35px;
+
+font-family: 'NanumSquareRound';
+font-style: normal;
+font-weight: 800;
+font-size: 44px;
+line-height: 120%;
+/* identical to box height, or 53px */
+text-align: center;
+
+color: #000000;
+}
+
+.entry{
+    height: 2845px;
+    position: relative; /* 추가 */
+    /* background-image: url(../images/bg/entry-bg.png); */
+}
+
+/* entry_sector */
+.entry-sector{
+/* position: absolute; */
+width: 1600px;
+height: 2063.72px;
+/* left: 160px; */
+top: 265.28px;
+margin: 0 auto; /* 가운데 정렬 */
+/* margin-top: 265.28px; */
+position: relative; /* 내부 요소들의 기준점 */
+}
+
+/* 출품작 */
+.entry-text {
+            position: absolute;
+            width: 110px;
+            height: 47.84px;
+            left: calc(50% - 110px/2 - 2px);
+            top: 0; /* entry-sector 기준으로 맨 위 */
+
+            font-family: 'NanumSquareRound';
+            font-style: normal;
+            font-weight: 800;
+            font-size: 40px;
+            line-height: 120%;
+            text-align: center;
+            color: #000000;
+        }
+
+        /* sector_list - 기존 스타일 유지하되 부모 기준으로 위치 조정 */
+        .sector-list {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0px;
+            gap: 16px;
+
+            position: absolute;
+            width: 847px;
+            height: 49px;
+            left: 0; /* entry-sector 기준 */
+            top: 195.72px; /* 461 - 265.28 = 195.72px */
+        }
+
+        /* 기본 sector-item 스타일 (선택되지 않은 상태) */
+        .sector-item {
+            box-sizing: border-box;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 30px;
+            gap: 10px;
+
+            width: 160px;
+            height: 54px;
+
+            background: transparent; /* 배경 없음 */
+            border: 2px solid #B2C784;
+            border-radius: 100px;
+
+            flex: none;
+            order: 1;
+            flex-grow: 0;
+            
+            /* 버튼 기능을 위한 추가 스타일 */
+            cursor: pointer;
+            font-family: 'NanumSquareRound';
+            font-style: normal;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 120%;
+            color: #B2C784;
+            transition: all 0.2s ease;
+        }
+
+        /* 버튼 상호작용 효과 */
+        .sector-item:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .sector-item:active {
+            transform: translateY(0);
+        }
+
+        /* 선택된 버튼 스타일 */
+        .sector-item.active {
+            width: 160px;
+            background: #647937;
+            border-color: #647937;
+            color: #C9D9A4;;
+            font-weight: 700;
+            font-size: 22px;
+            
+        }
+
+.entry-work-list{
+    /* Grid 레이아웃 설정 */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* 4열 */
+    grid-template-rows: 1fr 1fr 1fr;    /* 3행 */
+    width: 1600px;
+    height: 1780px;
+
+    position: absolute;
+    /* left: 160px; */
+    top: 450px; /* entry 컨테이너 기준 */
+
+}
+
+
