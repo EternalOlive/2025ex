@@ -1,5 +1,3 @@
-
-
 /* menus */
 *{
 margin: 0;
@@ -10,29 +8,27 @@ display: flex;
 flex-direction: row;
 align-items: center;
 padding: 0px;
-gap: 45px;
+gap: min(45px, 2.34vw);
 
 position: absolute;
-width: 283px;
-height: 29px;
-left: 50%;                   /* 왼쪽 기준 50% */
-transform: translateX(-50%); /* 본인 너비의 절반만큼 왼쪽으로 이동 → 진짜 가운데 정렬 */
-top: 40px;
+/* width: min(283px, 14.74vw); */
+height: min(29px, 1.51vw);
+left: 50%;
+transform: translateX(-50%);
+top: min(40px, 2.08vw);
 z-index: 1000;
 }
 .menu-item a{
-width: 65px;
-height: 29px;
+height: min(29px, 1.51vw);
 
 font-family: 'NanumSquareRound';
 font-style: normal;
 font-weight: 700;
-font-size: 18px;
+font-size: clamp(14px, 0.94vw, 18px);
 line-height: 160%;
-/* identical to box height, or 29px */
 text-align: center;
 letter-spacing: -0.01em;
-text-decoration: none; /* 링크 밑줄 제거 */
+text-decoration: none;
 
 color: #000000;
 }
@@ -41,237 +37,181 @@ color: #000000;
 /* /////////////////////////// */
 /* 랜딩 */
 .landing {
-            position: relative;
-            width: 100vw;
-            min-height: 100vh;
-            background: url('../images/landing-bg.png') no-repeat center center;
-            background-color: #FBE3E5;
-            background-size: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-size: 85%; /* ← 이미지 크기를 90%로 축소 */
-        }
+    position: relative;
+    width: 100vw;
+    /* min-height: 100vh; */
+    background: url('../images/landing-bg.png') no-repeat center center;
+    background-color: #FBE3E5;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: 100%;
 
-        .landing-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-            width: min(550px, 90vw);
-            padding: 20px;
-            margin-top: 40px;
-        }
+    /* 이미지 비율에 맞춰 높이 설정 */
+    aspect-ratio: 16/9; /* 예시: 이미지가 16:9 비율인 경우 */
+    
+}
 
-        .title {
-            width: 80%;
-            height: auto;
-            max-width: 550px;
-        }
+.landing-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: min(20px, 2.08vw);
+    width: min(550px, 28.65vw);
+    padding: min(20px, 1.04vw);
+    margin-top: min(40px, 2.08vw);
+}
 
-        .ex-days {
-            font-weight: 700;
-            font-size: clamp(18px, 4vw, 24px);
-            line-height: 1.2;
-            text-align: center;
-            color: #202D5B;
-            white-space: nowrap;
-        }
+.title {
+    width: 22vw;
+    height: auto;
+    /* max-width: 28.65vw; */
+}
 
-        .btn {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            padding: 12px 52px;
-            background: #232E5E;
-            border-radius: 100px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            min-width: 177px;
-            height: 48px;
-        }
+.ex-days {
+    font-weight: 700;
+    font-size: clamp(18px, 1.25vw, 24px);
+    line-height: 1.2;
+    text-align: center;
+    color: #202D5B;
+    white-space: nowrap;
+}
 
-        .btn:hover {
-            background: #1a2347;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(35, 46, 94, 0.3);
-        }
+.btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: min(12px, 0.63vw) min(52px, 2.71vw);
+    background: #232E5E;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    min-width: min(177px, 9.22vw);
+    height: min(48px, 2.5vw);
+}
 
-        .btn-text {
-            font-weight: 800;
-            font-size: 20px;
-            line-height: 120%;
-            text-align: center;
-            color: #FFFFFF;
-        }
+.btn:hover {
+    background: #1a2347;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(35, 46, 94, 0.3);
+}
 
-        /* 모바일 대응 */
-        /* 태블릿 */
-        @media (max-width: 768px) {
-            .landing {
-                background-position: center center;
-            }
-            
-            .landing-info {
-                gap: 40px;
-                width: 80vw;
-            }
-            
-            .ex-days {
-                font-size: 20px;
-            }
-            
-            .btn {
-                height: 44px;
-            }
-            
-            .btn-text {
-                font-size: 18px;
-            }
-        }
+.btn-text {
+    font-weight: 800;
+    font-size: clamp(16px, 1.04vw, 20px);
+    line-height: 120%;
+    text-align: center;
+    color: #FFFFFF;
+}
 
-        /* 모바일 */
-        @media (max-width: 480px) {
-            .landing {
-                background-size: auto 100%;
-                background-position: center center;
-                align-items: flex-start;
-                padding-top: 80px;
-            }
-            
-            .landing-info {
-                gap: 30px;
-                width: 90vw;
-                padding: 30px 20px;
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 16px;
-            }
-            
-            .ex-days {
-                font-size: 16px;
-            }
-            
-            .btn {
-                height: 40px;
-                padding: 8px 32px;
-            }
-            
-            .btn-text {
-                font-size: 16px;
-            }
-        }
+/* 모바일 대응 */
+/* 태블릿 */
+@media (max-width: 768px) {
+    .landing {
+        background-position: center center;
+    }
+    
+    .landing-info {
+        /* gap: 5.21vw; 40px / 768px * 100 */
+        width: 80vw;
+        margin-top: 0;
+        background-size: 75%;
+
+    }
+    
+
+    .ex-days {
+        font-size: 2.6vw; /* 20px / 768px * 100 */
+    }
+    
+    .btn {
+        height: 4vw; /* 44px / 768px * 100 */
+    }
+    
+    .btn-text {
+        font-size: 2.34vw; /* 18px / 768px * 100 */
+    }
+
+}
+
+/* 모바일 */
+@media (max-width: 480px) {
+    .landing {
+        background-size: auto 100%;
+        background-position: center center;
+        align-items: flex-start;
+        padding-top: 10.67vw; /* 80px / 480px * 100 */
+    }
+    
+    .landing-info {
+        gap: 3vw; /* 30px / 480px * 100 */
+        width: 90vw;
+        padding: 6.25vw 4.17vw; /* 30px 20px / 480px * 100 */
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3.33vw; /* 16px / 480px * 100 */
+    }
+    
+    .ex-days {
+        font-size: 3.33vw; /* 16px / 480px * 100 */
+    }
+    
+    .btn {
+        height: 4vw; /* 40px / 480px * 100 */
+        padding: 1.67vw 4.67vw; /* 8px 32px / 480px * 100 */
+    }
+    
+    .btn-text {
+        font-size: 3.33vw; /* 16px / 480px * 100 */
+    }
+}
 
 /* ////////////////////////////// */
 /* intro */
 
 .intro {
-position: relative;
-height: 716px;  
-/* sddsds */
-left: 50%;                   /* 왼쪽 기준 50% */
-transform: translateX(-50%); 
-width: 1920px;
-/* background: url('images/intro-bg.svg') */
+    position: relative;
+    height: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    /* width: 100vw; */
+    max-width: 1920px;
+    flex-direction: column; /* 세로로 정렬 */
+    justify-content: center; /* 세로 중앙 정렬 */
+
+    padding: 50px 0; /* 적당한 패딩 추가 */
+    padding-left: 29.53vw; /* 567px / 1920px * 100 */
+
+    gap: 20px; /* 각 요소 간의 세로 간격 설정 */
+    display: flex; /* 추가 */
 }
+
 /* 전시소개 */
 .intro h2 {
-position: absolute;
-width: 155px;
-height: 52px;
-left: 565px;
-top: 173.45px;
+    font-family: 'Tmoney RoundWind';
+    font-style: normal;
+    font-weight: 800;
+    font-size: clamp(24px, 2.08vw, 40px); /* 40px / 1920px * 100 */
+    line-height: min(52px, 2.71vw);
 
-font-family: 'Tmoney RoundWind';
-font-style: normal;
-font-weight: 800;
-font-size: 40px;
-line-height: 52px;
-/* identical to box height */
-
-color: #232E5E;
+    color: #232E5E;
 }
 
 .intro p {
-position: absolute;
-width: 1193px;
-left: 567px;
-top: 249.45px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: clamp(18px, 1.77vw, 34px); /* 34px / 1920px * 100 */
+    line-height: 150%;
+    letter-spacing: -0.02em;
 
-font-family: 'Pretendard';
-font-style: normal;
-font-weight: 500;
-font-size: 34px;
-line-height: 150%;
-/* or 51px */
-letter-spacing: -0.02em;
+    padding-right:10px;
 
-color: #000000;
+    color: #000000;
 }
 
 /* 태블릿 */
-@media (max-width: 768px) {
-    .intro {
-        width: 100vw;
-        left: 0;
-        transform: none;
-        height: auto;
-        padding: 60px 30px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .intro h2 {
-        position: static;
-        width: auto;
-        height: auto;
-        font-size: 36px;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-    
-    .intro p {
-        position: static;
-        width: 100%;
-        max-width: 700px;
-        font-size: 24px;
-        text-align: center;
-    }
-}
-
-/* 모바일 */
-@media (max-width: 480px) {
-    .intro {
-        width: 100vw;
-        left: 0;
-        transform: none;
-        height: auto;
-        padding: 40px 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .intro h2 {
-        position: static;
-        width: auto;
-        height: auto;
-        font-size: 28px;
-        text-align: center;
-        margin-bottom: 25px;
-    }
-    
-    .intro p {
-        position: static;
-        width: 100%;
-        font-size: 18px;
-        line-height: 160%;
-        text-align: center;
-    }
-}
 
 
 /* ////////////// */
@@ -280,13 +220,17 @@ color: #000000;
             position: relative;
             display: flex;
             flex-direction: row;
-            align-items: flex-end;
+            align-items: center;  /* 세로로 가운데 정렬 */
+            justify-content: center;  /* 가로로 가운데 정렬 */
             padding: 0px;
             gap: 74px;
-            width: 856px;
-            height: 177.45px;
+            width: 100vw;
+            height: auto;
             margin: 0 auto;
-            padding: 30px;
+            padding: 30px 0;
+
+            gap: 10px
+            
         }
 
         .section {
@@ -294,23 +238,18 @@ color: #000000;
         }
 
         .baby-section {
-            width: 374px;
-            height: 177.45px;
             flex: none;
             order: 0;
             flex-grow: 0;
         }
 
         .adult-section {
-            width: 334px;
-            height: 177.45px;
             flex: none;
             order: 2;
             flex-grow: 0;
         }
 
         .section-title {
-            position: absolute;
             top: 0px;
             font-family: 'Tmoney RoundWind', 'Nanum Square Round', sans-serif;
             font-style: normal;
@@ -319,39 +258,21 @@ color: #000000;
             line-height: 150%;
             text-align: center;
             color: #232E5E;
+            padding-bottom: 10px;
         }
 
-        .baby-section .section-title {
-            width: 123px;
-            left: 124px;
-        }
-
-        .adult-section .section-title {
-            width: 251px;
-            left: 31px;
-        }
 
         .numbers-container {
-            position: absolute;
+            /* position: absolute; */
             display: flex;
             flex-direction: row;
             align-items: center;
             padding: 0px;
-            height: 45px;
             top: 60.45px;
+            gap: 76px
         }
 
-        .baby-section .numbers-container {
-            gap: 96px;
-            width: 339px;
-            left: 19px;
-        }
 
-        .adult-section .numbers-container {
-            gap: 119px;
-            width: 313px;
-            left: 9px;
-        }
 
         .number {
             font-family: 'Nanum Square Round', sans-serif;
@@ -363,36 +284,19 @@ color: #000000;
             letter-spacing: -0.02em;
             color: #3C3C3C;
             flex: none;
-            flex-grow: 0;
+            flex-grow: 1; /* 자식 요소가 가로 공간을 채우도록 */
+            text-align: center; /* 가운데 정렬 */
+
+            
         }
 
-        .number-146 { width: 55px; order: 0; }
-        .number-42 { width: 37px; order: 1; }
-        .number-134 { width: 55px; order: 2; }
-        .number-10 { width: 37px; order: 0; }
-        .number-8 { width: 19px; order: 1; }
-        .number-0 { width: 19px; order: 2; }
 
-        .categories-container {
-            position: absolute;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            padding: 0px;
-            height: 36px;
-            top: 141.45px;
-        }
-
-        .baby-section .categories-container {
+        .baby-section {
             gap: 76px;
-            width: 374px;
-            left: 0px;
         }
 
-        .adult-section .categories-container {
+        .adult-section{
             gap: 75px;
-            width: 334px;
-            left: 0px;
         }
 
         .category {
@@ -408,23 +312,7 @@ color: #000000;
             flex-grow: 0;
         }
 
-        .category-diary { width: 92px; order: 0; }
-        .category-poem { width: 44px; order: 1; }
-        .category-comic { width: 92px; order: 2; }
-        .category-writing { width: 58x; order: 0; }
-        .category-photo { width: 92px; order: 1; }
-        .category-case { width: 44px; order: 2; }
 
-.divider {
-    width: 100px;
-    height: 0px;
-    border: 2px solid #E1E1E1;
-    transform: rotate(90deg);
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    align-self: center;
-}
 
 .intro-bg{
 position: absolute;
@@ -437,11 +325,46 @@ z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
 }
 
 
-/*////////////////////////////////////////  */
-/*////////////////////////////////////////  */
-/*////////////////////////////////////////  */
-/*////////////////////////////////////////  */
+.divider {
+    width: 100px;
+    height: 0px;
+    border: 2px solid #E1E1E1;
+    transform: rotate(90deg);
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    align-self: center;
+}
 
+/* 화면 크기가 768px 이하일 때 세로로 쌓이게 설정 */
+@media (max-width: 1024px) {
+    .submission-status {
+        flex-direction: column;  /* 세로로 배치 */
+        gap: 20px;  /* 세로 간격을 더 좁게 설정 */
+        width: 100%;  /* 가로 폭을 100%로 설정 */
+    }
 
+    .divider {
+        transform: rotate(0deg);
+        width: 300px;
+    }
 
+    .section-title {
+        font-size: 3vw;
+    }
+    
+    .number {
+        font-size: 4vw;
+    }
+    
+    .category {
+        font-size: 2.5vw;
+    }
+}
 
+@media (max-width: 480px) {
+    .submission-status {
+        padding: 6vw 4vw;
+    }
+    
+}

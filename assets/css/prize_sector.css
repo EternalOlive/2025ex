@@ -669,7 +669,7 @@
         width: 65.781vw; /* 1167px → 1167/1920*100 */
     }
 
-        .prize-name-text-style {
+    .prize-name-text-style {
         font-size: 6vw;
     }
     
@@ -718,8 +718,8 @@
     }
 
     .silver-bg {
-    height: 180.583vw; /* 2200px → 2200/1920*100 */
-    /* background-color: #EFF7FE; */    
+        height: 180.583vw; /* 2200px → 2200/1920*100 */ 
+        margin: top 5rem;  
     }
 
     .bronze-bg {
