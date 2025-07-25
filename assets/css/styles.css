@@ -2,6 +2,10 @@
 *{
 margin: 0;
 }
+
+body{
+    width: 100%;
+}
 /* Auto layout */
 .menu{
 display: flex;
@@ -38,7 +42,7 @@ color: #000000;
 /* 랜딩 */
 .landing {
     position: relative;
-    width: 100vw;
+    width: 100%;
     /* min-height: 100vh; */
     background: url('../images/landing-bg.png') no-repeat center center;
     background-color: #FBE3E5;
@@ -50,6 +54,7 @@ color: #000000;
 
     /* 이미지 비율에 맞춰 높이 설정 */
     aspect-ratio: 16/9; /* 예시: 이미지가 16:9 비율인 경우 */
+    min-width:100px
     
 }
 
@@ -83,7 +88,7 @@ color: #000000;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: min(12px, 0.63vw) min(52px, 2.71vw);
+    padding: min(12px, 0.63vw) max(1vw, 10px);
     background: #232E5E;
     border-radius: 100px;
     text-decoration: none;
@@ -171,45 +176,39 @@ color: #000000;
 /* intro */
 
 .intro {
-    position: relative;
-    height: auto;
-    left: 50%;
-    transform: translateX(-50%);
-    /* width: 100vw; */
-    max-width: 1920px;
-    flex-direction: column; /* 세로로 정렬 */
-    justify-content: center; /* 세로 중앙 정렬 */
-
-    padding: 50px 0; /* 적당한 패딩 추가 */
-    padding-left: 29.53vw; /* 567px / 1920px * 100 */
-
-    gap: 20px; /* 각 요소 간의 세로 간격 설정 */
-    display: flex; /* 추가 */
+    width: 100%; /* 부모는 화면 전체를 차지하되 */
+    display: flex;
+    justify-content: center; /* 내부를 수평 중앙 정렬 */
+    padding: 50px 0;
 }
 
-/* 전시소개 */
-.intro h2 {
-    font-family: 'Tmoney RoundWind';
-    font-style: normal;
-    font-weight: 800;
-    font-size: clamp(24px, 2.08vw, 40px); /* 40px / 1920px * 100 */
-    line-height: min(52px, 2.71vw);
+.intro-inner {
+    max-width: 1920px;
 
+    padding-left: 29.53vw; /* 원하는 좌측 여백 */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.intro-inner h2 {
+    font-family: 'Tmoney RoundWind';
+    font-weight: 800;
+    font-size: clamp(24px, 2.08vw, 40px);
+    line-height: min(52px, 2.71vw);
     color: #232E5E;
 }
 
-.intro p {
+.intro-inner p {
     font-family: 'Pretendard';
-    font-style: normal;
     font-weight: 500;
-    font-size: clamp(18px, 1.77vw, 34px); /* 34px / 1920px * 100 */
+    font-size: clamp(18px, 1.77vw, 34px);
     line-height: 150%;
     letter-spacing: -0.02em;
-
-    padding-right:10px;
-
+    padding-right: 10px;
     color: #000000;
 }
+
 
 /* 태블릿 */
 

@@ -1,3 +1,17 @@
+/* 전체 페이지 여백 제거 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
 /* 폰트스타일 */
 /* 상이름 폰트 */
 .prize-name-text-style {
@@ -315,7 +329,7 @@
     background-image: url(../images/bg/bg.png);
     background-repeat: no-repeat;
     background-position: center 0;
-    background-size: 100%; /* ← 이미지 크기를 90%로 축소 */
+    background-size: cover; /* ← 이미지 크기를 90%로 축소 */
     background-color: #E0ECC5;
 }
 
@@ -564,26 +578,31 @@
 }
 
 .entry {
-    height: 148.177vw; /* 2845px → 2845/1920*100 */
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    min-height: 100vh;
+    gap: 20px;
+    width: 100%; /* 전체 너비 확보 */
 }
 
 /* entry_sector */
 .entry-sector {
     width: 83.333vw; /* 1600px → 1600/1920*100 */
-    height: 107.485vw; /* 2063.72px → 2063.72/1920*100 */
-    top: 13.819vw; /* 265.28px → 265.28/1920*100 */
+    height: auto; /* height를 auto로 변경하여 내용에 맞게 조절 */
     margin: 0 auto;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* 내부 요소들 간의 간격 */
 }
 
 /* 출품작 */
 .entry-text {
-    position: absolute;
-
-    height: 2.492vw; /* 47.84px → 47.84/1920*100 */
-    left: calc(50% - 5.729vw/2 - 0.104vw); /* 2px → 2/1920*100 */
-    top: 0;
     font-family: 'NanumSquareRound';
     font-style: normal;
     font-weight: 800;
@@ -591,20 +610,19 @@
     line-height: 120%;
     text-align: center;
     color: #000000;
+    margin-bottom: 1vw; /* 텍스트 아래 여백 추가 */
 }
 
 /* sector_list */
 .sector-list {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6개를 가로로 배치 */
+    justify-items: center; /* grid에서는 justify-items 사용 */
     align-items: center;
     padding: 0px;
     gap: 0.833vw; /* 16px → 16/1920*100 */
-    position: absolute;
-    width: 44.115vw; /* 847px → 847/1920*100 */
-    height: 2.552vw; /* 49px → 49/1920*100 */
-    left: 0;
-    top: 10.194vw; /* 195.72px → 195.72/1920*100 */
+    width: 100%; /* 전체 너비 사용 */
+    margin-bottom: 2vw; /* 섹터 리스트 아래 여백 추가 */
 }
 
 /* 기본 sector-item 스타일 (선택되지 않은 상태) */
@@ -614,13 +632,18 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 0.521vw 1.563vw; /* 10px 30px → 10/1920*100, 30/1920*100 */
-    gap: 0.521vw; /* 10px → 10/1920*100 */
-    width: 8.333vw; /* 160px → 160/1920*100 */
-    height: 2.813vw; /* 54px → 54/1920*100 */
+    
+    padding: clamp(6px, 0.5vw, 10px) clamp(12px, 1vw, 20px);
+    gap: clamp(4px, 0.4vw, 10px);
+    
+    width: clamp(100px, 15vw, 160px); /* 6개가 한 줄에 들어가도록 조절 */
+    height: clamp(36px, 2.8vw, 54px);
+    border: clamp(1px, 0.1vw, 2px) solid #B2C784;
+    border-radius: clamp(30px, 5vw, 100px);
+    font-size: clamp(14px, 1.1vw, 20px);
+    
     background: transparent;
-    border: 0.104vw solid #B2C784; /* 2px → 2/1920*100 */
-    border-radius: 5.208vw; /* 100px → 100/1920*100 */
+    
     flex: none;
     order: 1;
     flex-grow: 0;
@@ -628,7 +651,6 @@
     font-family: 'NanumSquareRound';
     font-style: normal;
     font-weight: 800;
-    font-size: 1.250vw; /* 24px → 24/1920*100 */
     line-height: 120%;
     color: #B2C784;
     transition: all 0.2s ease;
@@ -646,12 +668,11 @@
 
 /* 선택된 버튼 스타일 */
 .sector-item.active {
-    width: 8.333vw; /* 160px → 160/1920*100 */
     background: #647937;
     border-color: #647937;
     color: #C9D9A4;
     font-weight: 700;
-    font-size: 1.146vw; /* 22px → 22/1920*100 */
+    font-size: clamp(13px, 1vw, 18px);
 }
 
 .entry-work-list {
@@ -660,11 +681,10 @@
     grid-template-rows: 1fr 1fr 1fr;
     width: 83.333vw; /* 1600px → 1600/1920*100 */
     height: 92.708vw; /* 1780px → 1780/1920*100 */
-    position: absolute;
-    top: 23.438vw; /* 450px → 450/1920*100 */
+    margin-top: 2vw; /* work-list 위쪽 여백 */
 }
 
-@media(max-width: 1023px) {
+@media(max-width: 1025px) {
     .prize-sector{
         width: 65.781vw; /* 1167px → 1167/1920*100 */
     }
@@ -735,6 +755,14 @@
         background-repeat: no-repeat;
         background-position: center 0;
         background-size: cover;
+    }
+    .sector-list {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        /* max-width: 60vw; */
+        gap: 1.2vw;
+        justify-items: center; /* 아이템들을 셀 중앙에 배치 */
+        align-items: center;
     }
 
 }
