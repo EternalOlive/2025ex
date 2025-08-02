@@ -75,7 +75,9 @@ body, html {
     justify-content: center;
     height: 78.021vw; /* 1498px → 1498/1920*100 */
     margin: 15.625vw 0 0 auto; /* 300px → 300/1920*100 */
-    background: url(../images/bg.png) no-repeat center 0;
+    background: url(../images/bg/prize_back.png) no-repeat center 0;
+    width: 100%;
+    background-size: cover; /* 배경 이미지 크기 조정 */
 }
 
 /* 1stPrize_Sector */

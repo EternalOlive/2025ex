@@ -185,7 +185,7 @@ color: #000000;
 .intro-inner {
     max-width: 1920px;
 
-    padding-left: 29.53vw; /* 원하는 좌측 여백 */
+    padding: 0 0 0 29.53vw ; /* 원하는 좌측 여백 */
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -253,7 +253,7 @@ color: #000000;
             font-family: 'Tmoney RoundWind', 'Nanum Square Round', sans-serif;
             font-style: normal;
             font-weight: 800;
-            font-size: 24px;
+            font-size: clamp(16px, 1.8vw, 22px);
             line-height: 150%;
             text-align: center;
             color: #232E5E;
@@ -276,8 +276,8 @@ color: #000000;
         .number {
             font-family: 'Nanum Square Round', sans-serif;
             font-style: normal;
-            font-weight: 800;
-            font-size: 30px;
+            font-weight: 600;
+            font-size: clamp(20px, 2.2vw, 28px);
             line-height: 150%;
             text-align: center;
             letter-spacing: -0.02em;
@@ -301,8 +301,8 @@ color: #000000;
         .category {
             font-family: 'Nanum Square Round', sans-serif;
             font-style: normal;
-            font-weight: 700;
-            font-size: 24px;
+            font-weight: 500;
+            font-size: clamp(14px, 1.6vw, 20px);
             line-height: 150%;
             text-align: center;
             letter-spacing: -0.02em;
@@ -359,11 +359,25 @@ z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
     .category {
         font-size: 2.5vw;
     }
+
+    .intro-bg{
+        padding-left:0 ;
+    }
+
+
+}
+
+@media (max-width: 769px) {
+        .intro-inner{
+        padding: 0vw 10vw;
+        align-items: center !important;
+        /* text-align: center !important; */
+    }
 }
 
 @media (max-width: 480px) {
     .submission-status {
         padding: 6vw 4vw;
     }
-    
+ 
 }
