@@ -1,0 +1,690 @@
+
+
+/* menus */
+
+/* Auto layout */
+.menu{
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 45px;
+
+position: absolute;
+width: 283px;
+height: 29px;
+left: 50%;                   /* 왼쪽 기준 50% */
+transform: translateX(-50%); /* 본인 너비의 절반만큼 왼쪽으로 이동 → 진짜 가운데 정렬 */
+top: 40px;
+z-index: 1000;
+}
+.menu-item a{
+width: 65px;
+height: 29px;
+
+font-family: 'NanumSquareRound';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 160%;
+/* identical to box height, or 29px */
+text-align: center;
+letter-spacing: -0.01em;
+text-decoration: none; /* 링크 밑줄 제거 */
+
+color: #000000;
+}
+
+
+/* /////////////////////////// */
+/* 랜딩 */
+.landing {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  background: url('images/landing-bg.svg') #FBE3E5 no-repeat center center;
+  background-size: cover;
+  left: 50%;                   /* 왼쪽 기준 50% */
+  transform: translateX(-50%); /* 본인 너비의 절반만큼 왼쪽으로 이동 → 진짜 가운데 정렬 */
+  z-index: 1; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
+}
+
+/* 대회정보 */
+.landing-info{
+position: absolute;
+width: 550px;
+height: 570px;
+left: 685px;
+top: 267px;
+}
+
+/* upper-images */
+.landing-upper-images {
+position: absolute;
+width: 1760.43px;
+height: 948.97px;
+left: 67.28px;
+top: 99px;
+}
+
+
+/* Auto layout */
+.landing-info {
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 52px;
+
+position: absolute;
+width: 550px;
+height: 570.33px;
+left: 685px;
+top: 267px;
+}
+
+
+/* title */
+.title{
+width: 550px;
+height: 391.33px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+
+/* 2025.09.10 ~ 202510.10 */
+.ex-days{
+width: 550px;
+height: 27px;
+
+font-family: 'NanumSquareRound';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 27px;
+text-align: center;
+
+color: #202D5B;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+}
+
+/* btn */
+.btn{
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 12px 52px;
+gap: 10px;
+
+width: 177px;
+height: 48px;
+
+background: #232E5E;
+border-radius: 100px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+}
+
+/* 전시입장 */
+.btn-text{
+width: 80px;
+height: 24px;
+
+font-family: 'NanumSquareRound';
+font-style: normal;
+font-weight: 800;
+font-size: 20px;
+line-height: 120%;
+/* identical to box height, or 24px */
+text-align: center;
+
+color: #FFFFFF;
+
+
+/* /* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+/* ////////////////////////////// */
+/* intro */
+
+.intro {
+position: relative;
+height: 716px;  
+/* sddsds */
+left: 50%;                   /* 왼쪽 기준 50% */
+transform: translateX(-50%); 
+width: 1920px;
+/* background: url('images/intro-bg.svg') */
+}
+/* 전시소개 */
+.intro h2 {
+position: absolute;
+width: 155px;
+height: 52px;
+left: 565px;
+top: 173.45px;
+
+font-family: 'Tmoney RoundWind';
+font-style: normal;
+font-weight: 800;
+font-size: 40px;
+line-height: 52px;
+/* identical to box height */
+
+color: #232E5E;
+}
+
+.intro p {
+position: absolute;
+width: 1193px;
+left: 567px;
+top: 249.45px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 34px;
+line-height: 150%;
+/* or 51px */
+letter-spacing: -0.02em;
+
+color: #000000;
+}
+
+
+.submission-status {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            padding: 0px;
+            gap: 74px;
+            width: 856px;
+            height: 177.45px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .section {
+            position: relative;
+        }
+
+        .baby-section {
+            width: 374px;
+            height: 177.45px;
+            flex: none;
+            order: 0;
+            flex-grow: 0;
+        }
+
+        .adult-section {
+            width: 334px;
+            height: 177.45px;
+            flex: none;
+            order: 2;
+            flex-grow: 0;
+        }
+
+        .section-title {
+            position: absolute;
+            top: 0px;
+            font-family: 'Tmoney RoundWind', 'Nanum Square Round', sans-serif;
+            font-style: normal;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 150%;
+            text-align: center;
+            color: #232E5E;
+        }
+
+        .baby-section .section-title {
+            width: 123px;
+            left: 124px;
+        }
+
+        .adult-section .section-title {
+            width: 251px;
+            left: 31px;
+        }
+
+        .numbers-container {
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0px;
+            height: 45px;
+            top: 60.45px;
+        }
+
+        .baby-section .numbers-container {
+            gap: 96px;
+            width: 339px;
+            left: 19px;
+        }
+
+        .adult-section .numbers-container {
+            gap: 119px;
+            width: 313px;
+            left: 9px;
+        }
+
+        .number {
+            font-family: 'Nanum Square Round', sans-serif;
+            font-style: normal;
+            font-weight: 800;
+            font-size: 30px;
+            line-height: 150%;
+            text-align: center;
+            letter-spacing: -0.02em;
+            color: #3C3C3C;
+            flex: none;
+            flex-grow: 0;
+        }
+
+        .number-146 { width: 55px; order: 0; }
+        .number-42 { width: 37px; order: 1; }
+        .number-134 { width: 55px; order: 2; }
+        .number-10 { width: 37px; order: 0; }
+        .number-8 { width: 19px; order: 1; }
+        .number-0 { width: 19px; order: 2; }
+
+        .categories-container {
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0px;
+            height: 36px;
+            top: 141.45px;
+        }
+
+        .baby-section .categories-container {
+            gap: 76px;
+            width: 374px;
+            left: 0px;
+        }
+
+        .adult-section .categories-container {
+            gap: 75px;
+            width: 334px;
+            left: 0px;
+        }
+
+        .category {
+            font-family: 'Nanum Square Round', sans-serif;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 150%;
+            text-align: center;
+            letter-spacing: -0.02em;
+            color: #797979;
+            flex: none;
+            flex-grow: 0;
+        }
+
+        .category-diary { width: 92px; order: 0; }
+        .category-poem { width: 44px; order: 1; }
+        .category-comic { width: 92px; order: 2; }
+        .category-writing { width: 58x; order: 0; }
+        .category-photo { width: 92px; order: 1; }
+        .category-case { width: 44px; order: 2; }
+
+.divider {
+    width: 100px;
+    height: 0px;
+    border: 2px solid #E1E1E1;
+    transform: rotate(90deg);
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    align-self: center;
+}
+
+.intro-bg{
+position: absolute;
+width: 2445.28px;
+height: 1855.34px;
+left: -467px;
+top: -262px;
+/* background: url('images/-bg.svg'); */
+z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
+}
+
+
+/*////////////////////////////////////////  */
+/*////////////////////////////////////////  */
+/*////////////////////////////////////////  */
+/*////////////////////////////////////////  */
+
+/* Footer */
+footer {
+position: relative;
+width: 1920px;
+height: 300px;
+
+background: #FFFFFF;
+left: 50%;                   /* 왼쪽 기준 50% */
+transform: translateX(-50%); /* 본인 너비의 절반만큼 왼쪽으로 이동 → 진짜 가운데 정렬 */
+}
+
+/* lineicons:youtube */
+.lineicons-youtube {
+position: absolute;
+width: 34px;
+height: 34px;
+left: 1676px;
+top: 92px;
+}
+
+
+
+/* mingcute:instagram-line */
+.lineicons-instagram{
+position: absolute;
+width: 34px;
+height: 34px;
+left: 1726px;
+top: 93px;
+}
+
+
+.footer-section-title{
+position: absolute;
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 150%;
+/* identical to box height, or 24px */
+
+color: #000000;
+}
+
+/* footer-line-label */
+.footer-line-label {
+  position: absolute;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 130%;
+  color: #6F6F6F;
+}
+
+.footer-content{
+position: absolute;
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 130%;
+/* or 18px */
+
+color: #6F6F6F;
+}
+
+
+/* 대회로고 */
+.logo{
+position: absolute;
+width: 99.71px;
+height: 110.89px;
+left: 303px;
+top: 50px;
+}
+
+
+
+/* //////////////////////////////////// */
+/* 한국교육환경보호원 */
+.conmpany-name {
+/* position: absolute; */
+width: 125px;
+height: 24px;
+left: 565px;
+top: 50px;
+}
+
+
+/* 주소 */
+.address{
+position: absolute;
+width: 25px;
+height: 18px;
+left: 565px;
+top: 94px;
+}
+
+/* 충청북도 청주시 흥덕구 오송읍 오송생명로 267-4 3층 */
+.address-c {
+width: 299px;
+height: 18px;
+left: 604px;
+top: 94px;
+}
+
+
+/* 전화 */
+.call{
+width: 25px;
+height: 18px;
+left: 565px;
+top: 120px;
+}
+
+/* 043-710-4000 */
+.call-c {
+position: absolute;
+width: 94px;
+height: 18px;
+left: 604px;
+top: 120px;
+}
+
+/* 팩스 */
+.fax{
+position: absolute;
+width: 25px;
+height: 18px;
+left: 565px;
+top: 146px;
+}
+
+/* 043-710-4004 */
+.fax-c {
+position: absolute;
+width: 94px;
+height: 18px;
+left: 604px;
+top: 146px;
+}
+
+/* ////////////////////////////////////////// */
+
+/* 오프라인 전시 */
+.offline-exhibition {
+width: 87px;
+height: 24px;
+left: 970px;
+top: 50px;
+}
+
+/* 장소 */
+.exhibition-address{
+position: absolute;
+width: 25px;
+height: 18px;
+left: 970px;
+top: 94px;
+}
+
+
+
+/* 충청북도 청주시 흥덕구 오송읍 오송생명5로 267-4 3층 한국환경보호원 */
+.exhibition-address-c {
+width: 396px;
+height: 18px;
+left: 1033px;
+top: 94px;
+}
+
+
+/* 운영기간 */
+.prediod{
+position: absolute;
+width: 49px;
+height: 18px;
+left: 970px;
+top: 120px;
+}
+
+/* 25.00.00 ~ 25.00.00 */
+.prediod-c {
+position: absolute;
+width: 128px;
+height: 18px;
+left: 1033px;
+top: 120px;
+}
+
+/* 운영시간 */
+.o-hours{
+position: absolute;
+width: 49px;
+height: 18px;
+left: 970px;
+top: 146px;
+}
+
+/* 10:00 ~ 17:00 */
+.o-hours-c {
+position: absolute;
+width: 85px;
+height: 18px;
+left: 1033px;
+top: 146px;
+}
+
+
+
+
+/* Copyrightⓒ2018 KEEPA. All rights reserved. */
+.copy{
+position: absolute;
+width: 281px;
+height: 18px;
+left: 1482px;
+top: 144px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 130%;
+/* or 18px */
+
+color: #6F6F6F;
+}
+
+/* divide line */
+.line{
+position: absolute;
+width: 1600px;
+height: 0px;
+left: 160px;
+top: 212px;
+
+border: 1px solid #9D9D9D;
+}
+
+/* edu-logos */
+.edu-logos{
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 24px;
+
+position: absolute;
+width: 467.6px;
+height: 15px;
+left: 801px;
+top: 230px;
+}
+
+/* main-logs */
+.main-logos {
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 24px;
+
+position: absolute;
+width: 526.54px;
+height: 43.94px;
+left: 160px;
+top: 228.84px;
+}
+
+
+
+/* _격리_모드 */
+.c-icons{
+position: absolute;
+width: 303.91px;
+height: 23.22px;
+left: 1457px;
+top: 236px;
+}
+
+
+/* gov-logo */
+.gov-logo {
+position: absolute;
+width: 64.32px;
+height: 22.74px;
+left: 0px;
+top: 0.24px;
+}
+
+
+/* 17-edu-logo */
+.edu-logo-17 {
+position: absolute;
+width: 87.24px;
+height: 12.43px;
+left: 84.32px;
+top: 5.4px;
+}
+
+/* c-logo */
+.c-logo {
+position: absolute;
+width: 112.35px;
+height: 23.22px;
+left: 191.56px;
+top: 0px;
+}
