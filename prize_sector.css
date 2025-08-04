@@ -1,0 +1,781 @@
+/* 전체 페이지 여백 제거 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+    background-color: #ffffff;
+}
+
+/* 폰트스타일 */
+/* 상이름 폰트 */
+.prize-name-text-style {
+    font-family: 'NanumSquareRound';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 2.604vw; /* 50px → 50/1920*100 */
+    line-height: 120%;
+    text-align: center;
+    color: #000000;
+}
+
+.kindergarten-name-text-style {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.146vw; /* 22px → 22/1920*100 */
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+}
+
+.kid-name-text-style {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.875vw; /* 36px → 36/1920*100 */
+    line-height: 150%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+}
+
+.sector-text-stlye {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.9375vw; /* 18px → 18/1920*100 */
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+}
+
+.work-img {
+    position: absolute;
+    width: 27.083vw; /* 520px → 520/1920*100 */
+    height: 38.229vw; /* 734px → 734/1920*100 */
+    border-radius: 0.521vw; /* 10px → 10/1920*100 */
+}
+
+/* //////////////////////////////////////// */
+.prize1st-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 0px;
+    gap: 3.854vw; /* 74px → 74/1920*100 */
+    justify-content: center;
+    height: 78.021vw; /* 1498px → 1498/1920*100 */
+    margin: 10.625vw 0 0 auto; /* 300px → 300/1920*100 */
+    background: url(../images/bg/prize_back.png) no-repeat center 0;
+    width: 100%;
+    background-size: cover; /* 배경 이미지 크기 조정 */
+}
+
+/* 1stPrize_Sector */
+.prize1st-sector {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 0.521vw; /* 10px → 10/1920*100 */
+    position: absolute;
+    width: 60.781vw; /* 1167px → 1167/1920*100 */
+    height: 59.271vw; /* 1138px → 1138/1920*100 */
+    left: calc(50% - 60.781vw/2);
+    top: 5.469vw; /* 105px → 105/1920*100 */
+}
+
+/* part */
+.part {
+    width: 60.781vw; /* 1167px → 1167/1920*100 */
+    height: 59.271vw; /* 1138px → 1138/1920*100 */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* Prize_Sector */
+.prize-sector {
+    position: absolute;
+    width: 60.781vw; /* 1167px → 1167/1920*100 */
+    height: 41.979vw; /* 806px → 806/1920*100 */
+    left: 0px;
+    top: 17.292vw; /* 332px → 332/1920*100 */
+}
+
+/* /////////////////////////// */
+/* winner */
+.winner-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 0.677vw; /* 13px → 13/1920*100 */
+    position: absolute;
+    left: 50.313vw; /* 966px → 966/1920*100 */
+    top: 28.646vw; /* 550px → 550/1920*100 */
+    min-width: 150px;
+}
+
+/* Bg */
+.sec-bg {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0.104vw 0.833vw; /* 2px 16px → 2/1920*100, 16/1920*100 */
+    gap: 1.042vw; /* 20px → 20/1920*100 */
+    width: 5.104vw; /* 98px → 98/1920*100 */
+    height: 1.354vw; /* 26px → 26/1920*100 */
+    background: #D2E8FF;
+    border-radius: 5.208vw; /* 100px → 100/1920*100 */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* 네컷 만화 */
+.sec-text {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.9375vw; /* 18px → 18/1920*100 */
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* 충북 무럭냠냠유치원 */
+.kindergarten-name {
+    width: 9.010vw; /* 173px → 173/1920*100 */
+    height: 1.354vw; /* 26px → 26/1920*100 */
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.146vw; /* 22px → 22/1920*100 */
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+/* 김 철 수 */
+.winner-name {
+    width: 9.010vw; /* 173px → 173/1920*100 */
+    height: 2.813vw; /* 54px → 54/1920*100 */
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.875vw; /* 36px → 36/1920*100 */
+    line-height: 150%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+    flex: none;
+    order: 2;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+/* /////////////////////////// */
+
+/* prize_name */
+.prize-name img{
+    position: absolute;
+    width: 11.829vw; /* 227.12px → 227.12/1920*100 */
+    height: 7.014vw; /* 134.66px → 134.66/1920*100 */
+    left: 48.952vw; /* 939.88px → 939.88/1920*100 */
+    top: 4.905vw; /* 94.17px → 94.17/1920*100 */
+}
+
+.prize-names {
+    width: 11.829vw; /* 227.12px → 227.12/1920*100 */
+    height: 7.014vw; /* 134.66px → 134.66/1920*100 */
+}
+
+/* 대상 */
+.prize-name-text {
+    position: absolute;
+    width: 4.792vw; /* 92px → 92/1920*100 */
+    height: 3.125vw; /* 60px → 60/1920*100 */
+    left: 3.542vw; /* 68px → 68/1920*100 */
+    top: 1.823vw; /* 35px → 35/1920*100 */
+    font-family: 'NanumSquareRound';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 2.604vw; /* 50px → 50/1920*100 */
+    line-height: 120%;
+    text-align: center;
+    color: #000000;
+}
+
+/* prize_img */
+.prize-img {
+    position: absolute;
+    width: 11.829vw; /* 227.12px → 227.12/1920*100 */
+    height: 7.014vw; /* 134.66px → 134.66/1920*100 */
+    left: 48.952vw; /* 939.88px → 939.88/1920*100 */
+    top: 22.196vw; /* 426.17px → 426.17/1920*100 */
+}
+
+/* work_sec */
+.work-sec {
+    position: absolute;
+    width: 36.927vw; /* 709px → 709/1920*100 */
+    height: 41.979vw; /* 806px → 806/1920*100 */
+    left: 0px;
+}
+
+/* work_shadow */
+.work-shadow {
+    position: absolute;
+    width: 36.927vw; /* 709px → 709/1920*100 */
+    height: 7.500vw; /* 144px → 144/1920*100 */
+    left: 0px;
+    top: 34.479vw; /* 662px → 662/1920*100 */
+}
+
+/* work */
+.work {
+    position: absolute;
+    width: 27.083vw; /* 520px → 520/1920*100 */
+    height: 38.229vw; /* 734px → 734/1920*100 */
+    left: 4.948vw; /* 95px → 95/1920*100 */
+    border-radius: 0.521vw; /* 10px → 10/1920*100 */
+}
+
+/* kid_img */
+.kid-img {
+    position: absolute;
+    width: 9.271vw; /* 178px → 178/1920*100 */
+    height: 13.125vw; /* 252px → 252/1920*100 */
+    left: 0px;
+    top: 25.781vw; /* 495px → 495/1920*100 */
+}
+
+/* Cong */
+.cong {
+    position: absolute;
+    width: 46.563vw; /* 894px → 894/1920*100 */
+    height: 6.962vw; /* 133.67px → 133.67/1920*100 */
+    left: 10.313vw; /* 198px → 198/1920*100 */
+    top: 0px;
+}
+
+/* cong_img */
+.cong-img {
+    position: absolute;
+    width: 46.563vw; /* 894px → 894/1920*100 */
+    height: 6.962vw; /* 133.67px → 133.67/1920*100 */
+    top: 0px;
+}
+
+/* 수상을 진심으로 축하드립니다! */
+.cong-text {
+    position: absolute;
+    width: 27.448vw; /* 527px → 527/1920*100 */
+    height: 2.500vw; /* 48px → 48/1920*100 */
+    left: 9.531vw; /* 183px → 183/1920*100 */
+    top: 1.823vw; /* 35px → 35/1920*100 */
+    font-family: 'Tmoney RoundWind';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 2.083vw; /* 40px → 40/1920*100 */
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #232E5E;
+}
+
+/* -------------------------- */
+
+/* golde_sector */
+.prize_sector {
+    position: relative;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+/* gold_sect_container */
+.gold_sec_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 1.302vw; /* 25px → 25/1920*100 */
+    position: absolute;
+    width: 55.260vw; /* 1061px → 1061/1920*100 */
+    height: 104.774vw; /* 2011.66px → 2011.66/1920*100 */
+}
+
+
+
+.gold-bg {
+    background: linear-gradient(to bottom, #FFFCD3 65%, #EFF7FE 100%);
+    height: 154.375vw; /* 2580px → 2580/1920*100 */
+
+    display: flex;
+    justify-content: center;  /* 가로 중앙 */
+    padding: 10vw 0;
+
+}
+
+.silver-bg {
+    height: 114.583vw; /* 2200px → 2200/1920*100 */
+    background-color: #EFF7FE;
+}
+
+.bronze-bg {
+    background-color: #EFF7FE;
+    height: 103.646vw; /* 1990px → 1990/1920*100 */
+    
+    background-image: url(../images/bg/bronz-bg.png);
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 100% auto; /* 가로를 100%로 꽉 채우고, 세로는 비율대로 */
+}
+
+.silver-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 1.302vw; /* 25px → 25/1920*100 */
+    position: absolute;
+    width: 83.333vw; /* 1600px → 1600/1920*100 */
+}
+
+/* prize_name */
+.prize-name {
+    width: 11.829vw; /* 227.12px → 227.12/1920*100 */
+    height: 7.014vw; /* 134.66px → 134.66/1920*100 */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* Frame 79 */
+.gold-4-list {
+    width: 55.260vw; /* 1061px → 1061/1920*100 */
+    height: 96.458vw; /* 1852px → 1852/1920*100 */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+/* Frame 79 */
+.silver-list {
+    width: 83.333vw; /* 1600px → 1600/1920*100 */
+    
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.bronze-list {
+    width: 83.333vw; /* 1600px → 1600/1920*100 */
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+/* sec_1 */
+.sec-1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 1.250vw; /* 24px → 24/1920*100 */
+    position: absolute;
+    width: 27.083vw; /* 520px → 520/1920*100 */
+    height: 45.417vw; /* 872px → 872/1920*100 */
+}
+
+/* image */
+.work-img-gold {
+    width: 27.083vw; /* 520px → 520/1920*100 */
+    height: 38.229vw; /* 734px → 734/1920*100 */
+    border-radius: 0.521vw; /* 10px → 10/1920*100 */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+    
+    display: block;
+    margin: 0 auto;
+}
+
+/* 컨테이너 - 위에서 아래로 배치 */
+.winner-info-gold {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.625vw; /* 12px → 12/1920*100 */
+    padding: 1.042vw; /* 20px → 20/1920*100 */
+}
+
+/* 그림 일기 태그 */
+.bg-sec {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0.104vw 0.833vw; /* 2px 16px → 2/1920*100, 16/1920*100 */
+    gap: 0.521vw; /* 10px → 10/1920*100 */
+    background: #E6F8C2;
+    border-radius: 5.208vw; /* 100px → 100/1920*100 */
+    width: fit-content;
+}
+
+.sec-text {
+    font-family: 'Pretendard', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.729vw; /* 14px → 14/1920*100 */
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+}
+
+/* 유치원 정보 */
+.kindergarten-info {
+    display: flex;
+    justify-content: center;
+}
+
+.kindergarten {
+    font-family: 'Pretendard', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.146vw; /* 22px → 22/1920*100 */
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+}
+
+/* 수상자 이름 */
+.winner-name-gold {
+    font-family: 'Pretendard', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.875vw; /* 36px → 36/1920*100 */
+    line-height: 150%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+}
+
+.work-img-b {
+    width: 20.052vw; /* 385px → 385/1920*100 */
+    height: 28.385vw; /* 545px → 545/1920*100 */
+    border-radius: 0.521vw; /* 10px → 10/1920*100 */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+
+    display: block;
+    margin: 0 auto;
+}
+
+/* 그림일기 */
+.sec-font-style {
+    width: 3.229vw; /* 62px → 62/1920*100 */
+    height: 1.146vw; /* 22px → 22/1920*100 */
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.9375vw; /* 18px → 18/1920*100 */
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.sec {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ----------------------------- */
+.sec-bg-style {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0.104vw 0.833vw; /* 2px 16px → 2/1920*100, 16/1920*100 */
+    gap: 0.521vw; /* 10px → 10/1920*100 */
+    position: absolute;
+    width: 4.896vw; /* 94px → 94/1920*100 */
+    height: 1.169vw; /* 22.45px → 22.45/1920*100 */
+    background: #E6F8C2;
+    border-radius: 5.208vw; /* 100px → 100/1920*100 */
+}
+
+.winner-name-style {
+    position: absolute;
+    width: 5.625vw; /* 108px → 108/1920*100 */
+    height: 2.429vw; /* 46.64px → 46.64/1920*100 */
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.875vw; /* 36px → 36/1920*100 */
+    line-height: 150%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #000000;
+}
+
+/* 금상 */
+.prize-text-style {
+    position: absolute;
+    width: 4.219vw; /* 81px → 81/1920*100 */
+    height: 2.760vw; /* 53px → 53/1920*100 */
+    left: calc(50% - 4.219vw/2 + 0.026vw); /* 0.5px → 0.5/1920*100 */
+    top: 1.823vw; /* 35px → 35/1920*100 */
+    font-family: 'NanumSquareRound';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 2.292vw; /* 44px → 44/1920*100 */
+    line-height: 120%;
+    text-align: center;
+    color: #000000;
+}
+
+.entry {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    min-height: 100vh;
+    gap: 20px;
+    width: 100%; /* 전체 너비 확보 */
+    background-image: url(../images/bg/entry-bg.png);
+        background-repeat: no-repeat;
+        background-position: center 0;
+        background-size: cover;
+}
+
+/* entry_sector */
+.entry-sector {
+    width: 83.333vw; /* 1600px → 1600/1920*100 */
+    height: auto; /* height를 auto로 변경하여 내용에 맞게 조절 */
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* 내부 요소들 간의 간격 */
+}
+
+/* 출품작 */
+.entry-text {
+    font-family: 'NanumSquareRound';
+    font-style: normal;
+    font-weight: 800;
+    font-size: clamp(24px, 1vw, 18px);
+    line-height: 120%;
+    text-align: center;
+    color: #000000;
+    margin-bottom: 1vw; /* 텍스트 아래 여백 추가 */
+}
+
+/* sector_list */
+.sector-list {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6개를 가로로 배치 */
+    justify-items: center; /* grid에서는 justify-items 사용 */
+    align-items: center;
+    padding: 0px;
+    gap: 0.833vw; /* 16px → 16/1920*100 */
+    width: 100%; /* 전체 너비 사용 */
+    margin-bottom: 2vw; /* 섹터 리스트 아래 여백 추가 */
+}
+
+/* 기본 sector-item 스타일 (선택되지 않은 상태) */
+.sector-item {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+    padding: clamp(6px, 0.5vw, 10px) clamp(12px, 1vw, 20px);
+    gap: clamp(4px, 0.4vw, 10px);
+    
+    width: clamp(100px, 15vw, 160px); /* 6개가 한 줄에 들어가도록 조절 */
+    height: clamp(36px, 2.8vw, 54px);
+    border: clamp(1px, 0.1vw, 2px) solid #B2C784;
+    border-radius: clamp(30px, 5vw, 100px);
+    font-size: clamp(14px, 1.1vw, 20px);
+    
+    background: transparent;
+    
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    cursor: pointer;
+    font-family: 'NanumSquareRound';
+    font-style: normal;
+    font-weight: 800;
+    line-height: 120%;
+    color: #B2C784;
+    transition: all 0.2s ease;
+}
+
+/* 버튼 상호작용 효과 */
+.sector-item:hover {
+    opacity: 0.9;
+    transform: translateY(-0.052vw); /* 1px → 1/1920*100 */
+}
+
+.sector-item:active {
+    transform: translateY(0);
+}
+
+/* 선택된 버튼 스타일 */
+.sector-item.active {
+    background: #647937;
+    border-color: #647937;
+    color: #C9D9A4;
+    font-weight: 700;
+    font-size: clamp(13px, 1vw, 18px);
+}
+
+.entry-work-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    width: 83.333vw; /* 1600px → 1600/1920*100 */
+    height: 92.708vw; /* 1780px → 1780/1920*100 */
+    margin-top: 2vw; /* work-list 위쪽 여백 */
+}
+
+@media(max-width: 1025px) {
+    .prize-sector{
+        width: 68.781vw; /* 1167px → 1167/1920*100 */
+    }
+
+    .prize-name-text-style {
+        font-size: 6vw;
+    }
+    
+    .kindergarten-name-text-style,
+    .kindergarten {
+        font-size: 3vw;
+    }
+    
+    .kid-name-text-style,
+    .winner-name-gold {
+        font-size: 4.5vw;
+    }
+    
+    .sector-text-stlye,
+    .sec-text {
+        font-size: 2.5vw;
+    }
+    
+    .silver-list,
+    .bronze-list {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+    
+    .entry-work-list {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+
+    .bg-sec {
+        padding: 4px 12px;
+        gap: 6px;
+        border-radius: 50px;
+        min-width: 50px;
+        
+    }
+
+    .sec-text {
+        font-size: 12px;
+    }
+
+    .winner-info{
+        min-width: 95px;
+        left: 42.313vw; /* 966px → 966/1920*100 */
+
+    }
+
+    .silver-bg {
+        height: 180.583vw; /* 2200px → 2200/1920*100 */ 
+        margin: top 5rem;  
+    }
+
+    .bronze-bg {
+        height: 200.646vw; /* 1990px → 1990/1920*100 */
+        padding-top: 15vw;
+    }
+
+    .hide{
+        display:none;
+    }
+    .entry{
+        background-image: url(../images/bg/entry-bg.png);
+        background-repeat: no-repeat;
+        background-position: center 0;
+        background-size: cover;
+    }
+    .sector-list {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        /* max-width: 60vw; */
+        gap: 1.2vw;
+        justify-items: center; /* 아이템들을 셀 중앙에 배치 */
+        align-items: center;
+    }
+
+}
+
+/* 반응형 미디어 쿼리 추가 */
+@media (max-width: 768px) {
+
+}
