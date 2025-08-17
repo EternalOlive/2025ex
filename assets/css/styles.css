@@ -320,7 +320,7 @@ color: #000000;
         .category {
             font-family: 'NanumSquareRound', sans-serif;
             font-style: normal;
-            font-weight: 500;
+            font-weight: 600;
             font-size: clamp(14px, 1.6vw, 20px);
             line-height: 150%;
             text-align: center;
@@ -798,4 +798,5 @@ z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
     .comment-item {
         padding: 12px;
     }
+
 }
