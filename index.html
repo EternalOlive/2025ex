@@ -2,9 +2,16 @@
 <html lang="kr"> 
     <head>
         <title>2025 유치원 급식 사생대회</title>
+        <!-- 나눔스퀘어 라운드 폰트 -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css" rel="stylesheet">
+        
         <link href="assets/css/styles.css" rel="stylesheet"/>
         <link href="assets/css/prize_sector.css" rel="stylesheet"/>
         <link href="assets/css/footer.css" rel="stylesheet"/>
+        <!-- Supabase 라이브러리 추가 -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <meta property="og:title" content="2025 유치원 급식 사생대회">
         <meta property="og:image" content="https://media.discordapp.net/attachments/1192195057080614932/1394587710949425213/56f963fbe313a5a9.png?ex=68813dc4&is=687fec44&hm=304c7b748f766a4f53c98295fed7c50076acccb5a287f0739bec2fabdbdbf059&=&format=webp&quality=lossless&width=1240&height=698">
         <meta property="og:description" content="한국교육환경보호원 주최《유치원 급식동화》">
@@ -98,15 +105,15 @@
                             </div>
                             <div class="work-sec">
                                 <img src="assets/images/work_shadow.png" class="work-shadow"/>
-                                <img src="assets/images/work.png" alt="대상 수상작" class="work"/>
+                                <img src="assets/images/works/그림일기/[그림일기] 금란자연유치원_엄채원_optimized.jpg" alt="대상 수상작" class="work"/>
                                 <img src="assets/images/kid.png" class="kid-img"/>
                             </div>
                             <div class="winner-info">
                                 <div class="bg-sec">
-                                    <span class="sec-text">네컷만화</span>
+                                    <span class="sec-text">그림일기</span>
                                 </div>
-                                <span class="kindergarten">충북 무럭냠냠유치원</span>
-                                <span class="winner-name-gold">김 철 수</span>
+                                <span class="kindergarten">금란자연유치원</span>
+                                <span class="winner-name-gold">엄 채 원</span>
                             </div>
                         </div>
 
@@ -348,19 +355,6 @@
                 </div>
             </div>
             </div>
-                <script>
-                    function selectCategory(button, category) {
-                        // 모든 버튼에서 active 클래스 제거
-                        document.querySelectorAll('.sector-item').forEach(item => {
-                            item.classList.remove('active');
-                        });
-                        
-                        // 클릭된 버튼에 active 클래스 추가
-                        button.classList.add('active');
-                        
-                        console.log('선택된 카테고리:', category);
-                    }
-                </script>   
         </body>
         <footer class="footer">
             <div class="footer-container">
@@ -423,4 +417,221 @@
             </div>
         </footer>
 
+    <!-- 스크립트들 로드 -->
+    <script>
+        // 댓글 섹션 HTML 생성
+        function createCommentSection(itemId) {
+            // itemId를 안전한 CSS 선택자용 ID로 변환
+            const safeId = itemId.replace(/[^a-zA-Z0-9_-]/g, '_');
+            
+            const container = document.createElement('div');
+            container.className = 'comment-section';
+            container.innerHTML = `
+                <h3>댓글 <span class="comment-count" id="comment-count-${safeId}">(0)</span></h3>
+                
+                <div class="comments-list" id="comments-list-${safeId}">
+                    <div class="no-comments">작성된 댓글이 없습니다.</div>
+                </div>
+                
+                <div class="comment-form">
+                    <textarea 
+                        id="comment-content-${safeId}" 
+                        placeholder="댓글을 작성해주세요 (최대 500자)" 
+                        maxlength="500"
+                        rows="3"
+                    ></textarea>
+                    <div class="comment-form-bottom">
+                        <span class="char-count" id="char-count-${safeId}">0/500</span>
+                        <button class="comment-submit" onclick="submitComment('${itemId}')">댓글 작성</button>
+                    </div>
+                </div>
+            `;
+            
+            // 글자 수 카운터 이벤트 리스너 추가
+            const textarea = container.querySelector(`#comment-content-${safeId}`);
+            const charCount = container.querySelector(`#char-count-${safeId}`);
+            const submitBtn = container.querySelector('.comment-submit');
+            
+            if (textarea && charCount && submitBtn) {
+                textarea.addEventListener('input', function() {
+                    const length = this.value.length;
+                    charCount.textContent = `${length}/500`;
+                    charCount.className = length > 450 ? 'char-count warning' : 'char-count';
+                    submitBtn.disabled = length === 0 || length > 500;
+                });
+            } else {
+                console.error('일부 요소를 찾을 수 없습니다');
+            }
+            
+            return container;
+        }
+
+        // 댓글 불러오기 (Supabase 연결)
+        async function loadComments(itemId) {
+            
+            // itemId를 안전한 CSS 선택자용 ID로 변환
+            const safeId = itemId.replace(/[^a-zA-Z0-9_-]/g, '_');
+            
+            const commentsList = document.getElementById(`comments-list-${safeId}`);
+            const commentCount = document.getElementById(`comment-count-${safeId}`);
+            
+            try {
+                // Supabase를 통한 실제 댓글 로드 시도
+                if (window.supabase && typeof window.supabase.createClient === 'function') {
+                    const supabaseUrl = 'https://pimgwrosozsowpetqeeq.supabase.co';
+                    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbWd3cm9zb3pzb3dwZXRxZWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MTcxMjgsImV4cCI6MjA3MDk5MzEyOH0.VKEsxMu47TDVvV93Gy9I-z4UmfNYlNEhSYkBSS5vDqU';
+                    
+                    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+                    const { data: comments, error } = await supabaseClient
+                        .from('comments')
+                        .select('*')
+                        .eq('item_id', itemId)
+                        .order('created_at', { ascending: false });
+                    
+                    if (error) {
+                        console.error('Supabase 댓글 로드 오류:', error);
+                        throw error;
+                    }
+                    
+                    if (commentCount) {
+                        commentCount.textContent = `(${comments.length})`;
+                    }
+                    
+                    if (commentsList) {
+                        if (comments.length === 0) {
+                            commentsList.innerHTML = '<div class="no-comments">아직 댓글이 없습니다. 첫 댓글을 작성해보세요!</div>';
+                        } else {
+                            commentsList.innerHTML = comments.map(comment => {
+                                const date = new Date(comment.created_at).toLocaleString('ko-KR', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+                                
+                                // HTML 이스케이프
+                                const escapeHtml = (text) => {
+                                    const map = {
+                                        '&': '&amp;',
+                                        '<': '&lt;',
+                                        '>': '&gt;',
+                                        '"': '&quot;',
+                                        "'": '&#039;'
+                                    };
+                                    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+                                };
+                                
+                                return `
+                                    <div class="comment-item">
+                                        <div class="comment-content">${escapeHtml(comment.content)}</div>
+                                        <div class="comment-date">${date}</div>
+                                    </div>
+                                `;
+                            }).join('');
+                        }
+                    }
+                    
+                } else {
+                    throw new Error('Supabase 라이브러리가 로드되지 않았습니다');
+                }
+                
+            } catch (error) {
+                console.error('댓글 로드 실패:', error);
+                
+                if (commentsList) {
+                    commentsList.innerHTML = '<div class="no-comments">아직 댓글이 없습니다. 첫 댓글을 작성해보세요!</div>';
+                }
+                if (commentCount) {
+                    commentCount.textContent = '(0)';
+                }
+            }
+        }
+
+        // 댓글 작성 (Supabase 연결)
+        async function submitComment(itemId) {
+            console.log('submitComment 호출됨:', itemId);
+            
+            // 안전한 ID로 변환
+            const safeId = itemId.replace(/[^a-zA-Z0-9_-]/g, '_');
+            const contentElement = document.getElementById(`comment-content-${safeId}`);
+            
+            if (!contentElement) {
+                console.error('댓글 입력 요소를 찾을 수 없습니다');
+                return;
+            }
+            
+            const content = contentElement.value.trim();
+            
+            if (!content) {
+                alert('댓글 내용을 입력해주세요.');
+                return;
+            }
+            
+            if (content.length > 500) {
+                alert('댓글은 500자 이내로 작성해주세요.');
+                return;
+            }
+            
+            // Supabase를 통한 실제 댓글 저장 시도
+            try {
+                // window.supabase가 있고 설정이 완료된 경우
+                if (window.supabase && typeof window.supabase.createClient === 'function') {
+                    const supabaseUrl = 'https://pimgwrosozsowpetqeeq.supabase.co';
+                    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbWd3cm9zb3pzb3dwZXRxZWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MTcxMjgsImV4cCI6MjA3MDk5MzEyOH0.VKEsxMu47TDVvV93Gy9I-z4UmfNYlNEhSYkBSS5vDqU';
+                    
+                    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+                    
+                    console.log('Supabase에 댓글 저장 시도...');
+                    const { data, error } = await supabaseClient
+                        .from('comments')
+                        .insert([
+                            {
+                                item_id: itemId,
+                                content: content
+                            }
+                        ]);
+                    
+                    if (error) {
+                        console.error('Supabase 오류:', error);
+                        throw error;
+                    }
+                    
+                    console.log('댓글 저장 성공:', data);
+                    
+                    // 댓글 입력창 초기화
+                    contentElement.value = '';
+                    const charCount = document.getElementById(`char-count-${safeId}`);
+                    if (charCount) {
+                        charCount.textContent = '0/500';
+                        charCount.className = 'char-count';
+                    }
+                    
+                    const submitBtn = contentElement.parentElement.querySelector('.comment-submit');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                    }
+                    
+                    // 댓글 목록 새로고침
+                    await loadComments(itemId);
+                    
+                } else {
+                    throw new Error('Supabase 라이브러리가 로드되지 않았습니다');
+                }
+                
+            } catch (error) {
+                console.error('댓글 저장 실패:', error);
+                alert('댓글 저장 중 오류가 발생했습니다. Supabase 설정을 확인해주세요.');
+            }
+        }
+
+        // 전역 함수로 등록
+        window.createCommentSection = createCommentSection;
+        window.loadComments = loadComments;
+        window.submitComment = submitComment;
+    </script>
+    <script src="assets/js/comments.js"></script>
+    <script src="assets/js/awards.js"></script>
+    <script src="assets/js/works.js"></script>
+    <script src="assets/js/navigation.js"></script>
 </html>
