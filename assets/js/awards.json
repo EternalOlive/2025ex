@@ -1,0 +1,110 @@
+{
+  "grand": {
+    "category": "그림일기",
+    "school": "금란자연유치원",
+    "name": "엄 채 원",
+    "filename": "[그림일기] 금란자연유치원_엄채원_optimized.jpg"
+  },
+  "gold": [
+    {
+      "category": "그림일기",
+      "school": "창원진달래유치원",
+      "name": "조 세 라",
+      "filename": "[그림일기] 창원진달래유치원_조세라_optimized.jpg"
+    },
+    {
+      "category": "그림일기",
+      "school": "나성유치원",
+      "name": "김 은 빈",
+      "filename": "[그림일기] 나성유치원_김은빈_optimized.jpg"
+    },
+    {
+      "category": "동시",
+      "school": "나성유치원",
+      "name": "허 단",
+      "filename": "[동시] 나성유치원_허 단_optimized.jpg"
+    },
+    {
+      "category": "네컷만화",
+      "school": "기지유치원",
+      "name": "이 수 호",
+      "filename": "[네컷만화] 기지유치원_이수호_optimized.jpg"
+    }
+  ],
+  "silver": [
+    {
+      "category": "네컷만화",
+      "school": "가람유치원",
+      "name": "신 채 아",
+      "filename": "[네컷만화] 가람유치원_신채아_optimized.jpg"
+    },
+    {
+      "category": "동시",
+      "school": "창원진달래유치원",
+      "name": "신 우 재",
+      "filename": "[동시] 창원진달래유치원_신우재_optimized.jpg"
+    },
+    {
+      "category": "네컷사진",
+      "school": "창원진달래유치원",
+      "name": "새싹4반",
+      "filename": "[네컷사진] 창원진달래유치원_새싹4반_optimized.jpg"
+    },
+    {
+      "category": "글·시",
+      "school": "나성 유치원",
+      "name": "윤수현 가정",
+      "filename": "[글시] 나성유치원_윤수현_optimized.jpg"
+    },
+    {
+      "category": "글·시",
+      "school": "창원진달래유치원",
+      "name": "이지수 가정",
+      "filename": "[글시] 창원진달래유치원_이도운원아가정_optimized.jpg"
+    },
+    {
+      "category": "네컷사진",
+      "school": "강원특별자치도교육청",
+      "name": "신지혜",
+      "filename": "네컷사진_신지혜(강원특별자치도교육청)_optimized.jpg"
+    }
+  ],
+  "bronze": [
+    {
+      "category": "네컷만화",
+      "school": "가람유치원",
+      "name": "신 채 아",
+      "filename": "[네컷만화] 가람유치원_신채아_optimized.jpg"
+    },
+    {
+      "category": "동시",
+      "school": "창원진달래유치원",
+      "name": "신 우 재",
+      "filename": "[동시] 창원진달래유치원_신우재_optimized.jpg"
+    },
+    {
+      "category": "네컷사진",
+      "school": "창원진달래유치원",
+      "name": "새싹4반",
+      "filename": "[네컷사진] 창원진달래유치원_새싹4반_optimized.jpg"
+    },
+    {
+      "category": "글·시",
+      "school": "나성 유치원",
+      "name": "윤수현 가정",
+      "filename": "[글시] 나성유치원_윤수현_optimized.jpg"
+    },
+    {
+      "category": "글·시",
+      "school": "창원진달래유치원",
+      "name": "이지수 가정",
+      "filename": "[글시] 창원진달래유치원_이도운원아가정_optimized.jpg"
+    },
+    {
+      "category": "네컷사진",
+      "school": "강원특별자치도교육청",
+      "name": "신지혜",
+      "filename": "네컷사진_신지혜(강원특별자치도교육청)_optimized.jpg"
+    }
+  ]
+}

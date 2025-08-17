@@ -1,0 +1,76 @@
+{
+  "사례": [
+    {
+      "folderName": "더그림",
+      "title": "더그림 급식 사례",
+      "school": "더그림",
+      "author": "관리자",
+      "images": [
+        "slide_001_optimized.jpg",
+        "slide_002_optimized.jpg",
+        "slide_003_optimized.jpg",
+        "slide_004_optimized.jpg",
+        "slide_005_optimized.jpg",
+        "slide_006_optimized.jpg"
+      ],
+      "thumbnail": "slide_001_optimized.jpg"
+    },
+    {
+      "folderName": "송랑",
+      "title": "송랑 급식 사례",
+      "school": "송랑",
+      "author": "관리자",
+      "images": [
+        "slide_001_optimized.jpg",
+        "slide_002_optimized.jpg",
+        "slide_003_optimized.jpg",
+        "slide_004_optimized.jpg",
+        "slide_005_optimized.jpg",
+        "slide_006_optimized.jpg",
+        "slide_007_optimized.jpg",
+        "slide_008_optimized.jpg",
+        "slide_009_optimized.jpg",
+        "slide_010_optimized.jpg",
+        "slide_011_optimized.jpg"
+      ],
+      "thumbnail": "slide_001_optimized.jpg"
+    },
+    {
+      "folderName": "순천",
+      "title": "순천 급식 사례",
+      "school": "순천",
+      "author": "관리자",
+      "images": [
+        "slide_001_optimized.jpg",
+        "slide_002_optimized.jpg",
+        "slide_003_optimized.jpg",
+        "slide_004_optimized.jpg",
+        "slide_005_optimized.jpg",
+        "slide_006_optimized.jpg",
+        "slide_007_optimized.jpg",
+        "slide_008_optimized.jpg",
+        "slide_009_optimized.jpg",
+        "slide_010_optimized.jpg"
+      ],
+      "thumbnail": "slide_001_optimized.jpg"
+    },
+    {
+      "folderName": "옥산유",
+      "title": "옥산유 급식 사례",
+      "school": "옥산유",
+      "author": "관리자",
+      "images": [
+        "slide_001_optimized.jpg",
+        "slide_002_optimized.jpg",
+        "slide_003_optimized.jpg",
+        "slide_004_optimized.jpg",
+        "slide_005_optimized.jpg",
+        "slide_006_optimized.jpg",
+        "slide_007_optimized.jpg",
+        "slide_008_optimized.jpg",
+        "slide_009_optimized.jpg"
+      ],
+      "thumbnail": "slide_001_optimized.jpg"
+    }
+  ]
+}
