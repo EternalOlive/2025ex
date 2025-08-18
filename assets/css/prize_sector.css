@@ -339,7 +339,7 @@ body, html {
 
 .gold-bg {
     background: linear-gradient(to bottom, #FFFCD3 65%, #EFF7FE 100%);
-    height: 154.375vw; /* 2580px → 2580/1920*100 */
+    height: 165.375vw; /* 2580px → 2580/1920*100 */
 
     display: flex;
     justify-content: center;  /* 가로 중앙 */

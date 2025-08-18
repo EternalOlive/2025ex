@@ -13,12 +13,6 @@
       "filename": "[그림일기] 창원진달래유치원_조세라_optimized.jpg"
     },
     {
-      "category": "그림일기",
-      "school": "나성유치원",
-      "name": "김 은 빈",
-      "filename": "[그림일기] 나성유치원_김은빈_optimized.jpg"
-    },
-    {
       "category": "동시",
       "school": "나성유치원",
       "name": "허 단",
@@ -29,14 +23,26 @@
       "school": "기지유치원",
       "name": "이 수 호",
       "filename": "[네컷만화] 기지유치원_이수호_optimized.jpg"
+    },
+    {
+      "category": "네컷사진",
+      "school": "강원특별자치도교육청",
+      "name": "신지혜",
+      "filename": "네컷사진_신지혜(강원특별자치도교육청)_optimized.jpg"
+    },
+    {
+      "category": "글·시",
+      "school": "나성유치원",
+      "name": "윤수현(학부모)",
+      "filename": "[글시] 나성유치원_윤수현_optimized.jpg"
     }
   ],
   "silver": [
     {
-      "category": "네컷만화",
-      "school": "가람유치원",
-      "name": "신 채 아",
-      "filename": "[네컷만화] 가람유치원_신채아_optimized.jpg"
+      "category": "그림일기",
+      "school": "나성유치원",
+      "name": "김 은 빈",
+      "filename": "[그림일기] 나성유치원_김은빈_optimized.jpg"
     },
     {
       "category": "동시",
@@ -45,66 +51,55 @@
       "filename": "[동시] 창원진달래유치원_신우재_optimized.jpg"
     },
     {
+      "category": "네컷만화",
+      "school": "가람유치원",
+      "name": "신 채 아",
+      "filename": "[네컷만화] 가람유치원_신채아_optimized.jpg"
+    },
+
+    {
       "category": "네컷사진",
       "school": "창원진달래유치원",
-      "name": "새싹4반",
+      "name": "창원진달래유치원 새싹 4반",
       "filename": "[네컷사진] 창원진달래유치원_새싹4반_optimized.jpg"
     },
     {
       "category": "글·시",
-      "school": "나성 유치원",
-      "name": "윤수현 가정",
-      "filename": "[글시] 나성유치원_윤수현_optimized.jpg"
-    },
-    {
-      "category": "글·시",
-      "school": "창원진달래유치원",
-      "name": "이지수 가정",
-      "filename": "[글시] 창원진달래유치원_이도운원아가정_optimized.jpg"
-    },
-    {
-      "category": "네컷사진",
-      "school": "강원특별자치도교육청",
-      "name": "신지혜",
-      "filename": "네컷사진_신지혜(강원특별자치도교육청)_optimized.jpg"
+      "school": "나성유치원",
+      "name": "이지수(학부모)",
+      "filename": "[글시] 창원진달래유치원_이지수원아가정_optimized.jpg"
     }
   ],
   "bronze": [
     {
-      "category": "네컷만화",
-      "school": "가람유치원",
-      "name": "신 채 아",
-      "filename": "[네컷만화] 가람유치원_신채아_optimized.jpg"
+      "category": "그림일기",
+      "school": "기지유치원",
+      "name": "박 주 하",
+      "filename": "[그림일기] 기지유치원_박주하_optimized.jpg"
     },
     {
       "category": "동시",
-      "school": "창원진달래유치원",
-      "name": "신 우 재",
-      "filename": "[동시] 창원진달래유치원_신우재_optimized.jpg"
+      "school": "나성유치원",
+      "name": "정 지 윤",
+      "filename": "[동시] 나성유치원_정지윤_optimized.jpg"
+    },
+    {
+      "category": "네컷만화",
+      "school": "기지유치원",
+      "name": "이 소 윤",
+      "filename": "[네컷만화] 기지유치원_이소윤_optimized.jpg"
     },
     {
       "category": "네컷사진",
-      "school": "창원진달래유치원",
-      "name": "새싹4반",
-      "filename": "[네컷사진] 창원진달래유치원_새싹4반_optimized.jpg"
+      "school": "더그림유치원",
+      "name": "더그림 유치원",
+      "filename": "더그림/네컷사진_더그림유치원-1_optimized.jpg"
     },
     {
       "category": "글·시",
-      "school": "나성 유치원",
-      "name": "윤수현 가정",
-      "filename": "[글시] 나성유치원_윤수현_optimized.jpg"
-    },
-    {
-      "category": "글·시",
-      "school": "창원진달래유치원",
-      "name": "이지수 가정",
-      "filename": "[글시] 창원진달래유치원_이도운원아가정_optimized.jpg"
-    },
-    {
-      "category": "네컷사진",
-      "school": "강원특별자치도교육청",
-      "name": "신지혜",
-      "filename": "네컷사진_신지혜(강원특별자치도교육청)_optimized.jpg"
+      "school": "순천북유치원",
+      "name": "윤미연",
+      "filename": "[글시] 순천북유치원_윤미연_optimized.jpg"
     }
   ]
 }
