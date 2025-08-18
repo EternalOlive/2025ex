@@ -757,7 +757,7 @@ body, html {
     
     .kid-name-text-style,
     .winner-name-gold {
-        font-size: 4.5vw;
+        font-size: 4.0vw;
     }
     
     .winner-name-other {
@@ -861,4 +861,5 @@ body, html {
     .entry-work-list > div:last-child {
         margin-bottom: 20px;
     }
+
 }
