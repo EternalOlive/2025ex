@@ -434,6 +434,14 @@
                 </div>
                 
                 <div class="comment-form">
+                    <input 
+                        type="text"
+                        id="comment-author-${safeId}"
+                        placeholder="작성자 이름"
+                        maxlength="20"
+                        class="comment-author-input"
+                        style="margin-bottom:8px;width:100%;box-sizing:border-box;"
+                    />
                     <textarea 
                         id="comment-content-${safeId}" 
                         placeholder="댓글을 작성해주세요 (최대 500자)" 
@@ -509,7 +517,6 @@
                                     hour: '2-digit',
                                     minute: '2-digit'
                                 });
-                                
                                 // HTML 이스케이프
                                 const escapeHtml = (text) => {
                                     const map = {
@@ -519,13 +526,15 @@
                                         '"': '&quot;',
                                         "'": '&#039;'
                                     };
-                                    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+                                    return text.replace(/[&<>"]'/g, function(m) { return map[m]; });
                                 };
-                                
                                 return `
-                                    <div class="comment-item">
-                                        <div class="comment-content">${escapeHtml(comment.content)}</div>
-                                        <div class="comment-date">${date}</div>
+                                    <div class="comment-item" style="display:flex;justify-content:space-between;align-items:center;">
+                                        <div style="flex:1;">
+                                            <div class="comment-content">${escapeHtml(comment.content)}</div>
+                                            <div class="comment-date">${date}</div>
+                                        </div>
+                                        <div class="comment-author" style="margin-left:16px;color:#888;font-size:13px;white-space:nowrap;">${escapeHtml(comment.author || '')}</div>
                                     </div>
                                 `;
                             }).join('');
@@ -555,19 +564,21 @@
             // 안전한 ID로 변환
             const safeId = itemId.replace(/[^a-zA-Z0-9_-]/g, '_');
             const contentElement = document.getElementById(`comment-content-${safeId}`);
-            
-            if (!contentElement) {
+            const authorElement = document.getElementById(`comment-author-${safeId}`);
+            if (!contentElement || !authorElement) {
                 console.error('댓글 입력 요소를 찾을 수 없습니다');
                 return;
             }
-            
             const content = contentElement.value.trim();
-            
+            const author = authorElement.value.trim();
+            if (!author) {
+                alert('작성자 이름을 입력해주세요.');
+                return;
+            }
             if (!content) {
                 alert('댓글 내용을 입력해주세요.');
                 return;
             }
-            
             if (content.length > 500) {
                 alert('댓글은 500자 이내로 작성해주세요.');
                 return;
@@ -588,7 +599,8 @@
                         .insert([
                             {
                                 item_id: itemId,
-                                content: content
+                                content: content,
+                                author: author
                             }
                         ]);
                     
