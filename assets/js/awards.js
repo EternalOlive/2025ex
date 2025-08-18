@@ -177,10 +177,8 @@ function showAwardModal(awardWork, prizeType) {
         let images = [];
         // awards.json의 images 배열 우선 사용
         if (awardWork.images && Array.isArray(awardWork.images) && awardWork.images.length > 0) {
-            // awards.json의 images 배열 사용
-            images = awardWork.images.map(img => `assets/images/works/사례/${awardWork.school.replace(/유치원|북유치원|유유치원|유치원/g, '').replace(/\s/g, '')}/${img}`);
-            // 폴더명은 case_works.json의 folderName과 다를 수 있으니, 필요시 folderName을 awards.json에 추가하거나 school명 변환 로직을 보완해야 함
-            // 현재는 school명에서 '유치원' 등 제거 후 폴더명으로 사용
+            // awards.json의 images 배열 사용 (folderName을 직접 사용)
+            images = awardWork.images.map(img => `assets/images/works/사례/${awardWork.folderName}/${img}`);
         } else {
             // case_works.json에서 이미지 목록 가져오기 (백업)
             fetch('assets/js/case_works.json')
