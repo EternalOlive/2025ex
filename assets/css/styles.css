@@ -585,6 +585,11 @@ z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
 .lightbox__nav--prev { left: 10px; }
 .lightbox__nav--next { right: 10px; }
 
+@media (min-width: 1025px) {
+    .lightbox__nav--prev { left: 32px; }
+    .lightbox__nav--next { right: 32px; }
+}
+
 .lightbox__fallback {
     color: #999;
     font-family: 'Pretendard', sans-serif;

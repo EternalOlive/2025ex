@@ -1,3 +1,56 @@
+/* entry 사례부문(가로 긴 이미지) 전용 스타일 */
+.entry-work-list .work-img-case {
+    width: 28vw;
+    height: 12vw;
+    object-fit: cover;
+    border-radius: 0.521vw;
+    display: block;
+    margin: 0 auto;
+}
+/* 우수유치원(ex-list, goodex) 이미지 컨테이너 고정 */
+.ex-list .sec, .goodex .sec {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.ex-list .img-container, .goodex .img-container {
+    width: 22vw;
+    height: 12vw; /* 고정 높이, 16:9보다 약간 낮게 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 0.5vw;
+}
+.ex-list .work-img-ex, .goodex .work-img-ex {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0.521vw;
+    display: block;
+    margin: 0 auto;
+}
+/* 우수유치원 전용 이미지 스타일 (원본 비율) */
+.work-img-ex {
+    width: 22vw;
+    height: auto;
+    object-fit: unset;
+    border-radius: 0.521vw;
+    display: block;
+    margin: 5vw auto;
+    padding: 0 2vw;
+    
+}
+/* 우수유치원(ex-list, goodex) 이미지 16:9 비율 적용 */
+.ex-list .work-img-b,
+.goodex  {
+    width: 22vw;
+    height: auto;
+    object-fit: unset;
+    border-radius: 0.521vw;
+    display: block;
+    margin: 0 auto;
+}
 /* 전체 페이지 여백 제거 */
 * {
     margin: 0;
@@ -207,7 +260,7 @@ body, html {
 }
 
 .prize-names {
-    width: 11.829vw; /* 227.12px → 227.12/1920*100 */
+    width: 12.829vw; /* 227.12px → 227.12/1920*100 */
     height: 7.014vw; /* 134.66px → 134.66/1920*100 */
 }
 
@@ -365,6 +418,21 @@ body, html {
     left: 0;
     right: 0;
     bottom: -10px; /* 배경을 아래로 10px 더 확장 */
+    background-color: #EFF7FE;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 100% auto; /* 가로를 100%로 꽉 채우고, 세로는 비율대로 */
+    transform: scaleX(-1);
+    z-index: 0;
+}
+
+.goodkindergarten::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: -10px; /* 배경을 아래로 10px 더 확장 */
     background-image: url(../images/bg/bronz-bg.png);
     background-repeat: no-repeat;
     background-position: center bottom;
@@ -372,6 +440,7 @@ body, html {
     transform: scaleX(-1);
     z-index: 0;
 }
+
 
 .bronze-bg > * {
     position: relative;
@@ -424,6 +493,18 @@ body, html {
 }
 
 .bronze-list {
+    width: 83.333vw; /* 1600px → 1600/1920*100 */
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.ex-list {
     width: 83.333vw; /* 1600px → 1600/1920*100 */
 
     display: grid;
@@ -558,6 +639,24 @@ body, html {
 
     display: block;
     margin: 0 auto;
+}
+/* 사례 이미지 전용 컨테이너 및 이미지 스타일 */
+.case-img-container {
+    width: 20.052vw; /* 기존 work-img-b 가로폭과 동일 */
+    height: 28.385vw; /* 기존 work-img-b 세로폭과 동일 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f8f8; /* 필요시 여백 배경색 */
+    border-radius: 0.521vw;
+    overflow: hidden;
+}
+
+.case-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
 }
 
 /* 그림일기 */
@@ -774,7 +873,8 @@ body, html {
     }
     
     .silver-list,
-    .bronze-list {
+    .bronze-list,
+    .ex-list {
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
     }
@@ -808,8 +908,11 @@ body, html {
     }
 
     .bronze-bg {
-        height: 200.646vw; /* 1990px → 1990/1920*100 */
+        height: 140.646vw; /* 1990px → 1990/1920*100 */
         padding-top: 15vw;
+    }
+    .goodkindergarten{
+        height: 200vw;
     }
 
     .hide{

@@ -84,14 +84,18 @@ function renderPrizeList(prizeType, containerSelector) {
     prizeData.forEach((winner, index) => {
         const sec = document.createElement('div');
         sec.className = 'sec';
-        
-        // 이미지 클래스 결정 (동상은 work-img-b, 나머지는 work-img-gold)
-        const imgClass = prizeType === 'bronze' ? 'work-img-b' : 'work-img-gold';
-        
+        // 이미지 클래스 결정 (동상은 work-img-b, 우수유치원은 work-img-ex, 나머지는 work-img-gold)
+        let imgClass = 'work-img-gold';
+        if (prizeType === 'bronze') imgClass = 'work-img-b';
+        let imgSrc = `assets/images/works/${awardsFolderMapping[winner.category]}/${winner.filename}`;
+        if (prizeType === 'goodex') {
+            imgClass = 'work-img-ex';
+            imgSrc = `assets/images/works/사례/${winner.folderName}/${winner.thumbnail}`;
+        }
         sec.innerHTML = `
-            <img src="assets/images/works/${awardsFolderMapping[winner.category]}/${winner.filename}" 
+            <img src="${imgSrc}" 
                  class="${imgClass}" 
-                 alt="${winner.name} ${prizeType === 'gold' ? '금상' : prizeType === 'silver' ? '은상' : '동상'} 수상작"
+                 alt="${winner.name} ${prizeType === 'gold' ? '금상' : prizeType === 'silver' ? '은상' : prizeType === 'bronze' ? '동상' : '우수유치원'} 수상작"
                  style="cursor: pointer;"
                  onerror="this.style.display='none'; console.warn('수상작 이미지 없음:', this.src)"/>
             <div class="winner-info-gold">
@@ -133,6 +137,7 @@ function renderAllAwards() {
     renderPrizeList('gold', '.gold-4-list');
     renderPrizeList('silver', '.silver-list');
     renderPrizeList('bronze', '.bronze-list');
+    renderPrizeList('goodex', '.goodex');
 }
 
 // 페이지 로드 시 초기화
@@ -162,26 +167,124 @@ function showAwardModal(awardWork, prizeType) {
     const lightbox = document.createElement('div');
     lightbox.className = 'lightbox';
 
+
     // 미디어 영역
     const media = document.createElement('div');
     media.className = 'lightbox__media';
 
-    const img = document.createElement('img');
-    img.className = 'lightbox__image';
-    img.alt = `${awardWork.name} 수상작`;
-    img.src = `assets/images/works/${awardsFolderMapping[awardWork.category]}/${awardWork.filename}`;
-    img.onerror = () => {
-        img.style.display = 'none';
-        fallback.style.display = 'block';
-    };
+    // 우수유치원(사례)일 경우 슬라이드
+    if (prizeType === 'goodex') {
+        let images = [];
+        // awards.json의 images 배열 우선 사용
+        if (awardWork.images && Array.isArray(awardWork.images) && awardWork.images.length > 0) {
+            // awards.json의 images 배열 사용
+            images = awardWork.images.map(img => `assets/images/works/사례/${awardWork.school.replace(/유치원|북유치원|유유치원|유치원/g, '').replace(/\s/g, '')}/${img}`);
+            // 폴더명은 case_works.json의 folderName과 다를 수 있으니, 필요시 folderName을 awards.json에 추가하거나 school명 변환 로직을 보완해야 함
+            // 현재는 school명에서 '유치원' 등 제거 후 폴더명으로 사용
+        } else {
+            // case_works.json에서 이미지 목록 가져오기 (백업)
+            fetch('assets/js/case_works.json')
+                .then(res => res.json())
+                .then(data => {
+                    const caseList = data['사례'];
+                    const found = caseList.find(c => c.school === awardWork.school);
+                    if (found && found.images) {
+                        images = found.images.map(img => `assets/images/works/사례/${found.folderName}/${img}`);
+                    } else {
+                        images = [`assets/images/works/${awardsFolderMapping[awardWork.category]}/${awardWork.filename}`];
+                    }
+                    showGoodexSlider(images);
+                });
+            return;
+        }
+        showGoodexSlider(images);
+        function showGoodexSlider(images) {
+            let currentIdx = 0;
+            const slideImg = document.createElement('img');
+            slideImg.className = 'lightbox__image';
+            slideImg.alt = `${awardWork.name} 수상작`;
+            slideImg.src = images[0];
 
-    const fallback = document.createElement('div');
-    fallback.className = 'lightbox__fallback';
-    fallback.textContent = '이미지를 불러올 수 없습니다.';
-    fallback.style.display = 'none';
+            const fallback = document.createElement('div');
+            fallback.className = 'lightbox__fallback';
+            fallback.textContent = '이미지를 불러올 수 없습니다.';
+            fallback.style.display = 'none';
 
-    media.appendChild(img);
-    media.appendChild(fallback);
+            slideImg.onerror = () => {
+                slideImg.style.display = 'none';
+                fallback.style.display = 'block';
+            };
+
+            // 슬라이드 인디케이터
+            const indicator = document.createElement('div');
+            indicator.className = 'lightbox__indicator';
+            indicator.style.position = 'absolute';
+            indicator.style.bottom = '18px';
+            indicator.style.left = '50%';
+            indicator.style.transform = 'translateX(-50%)';
+            indicator.style.background = 'rgba(0,0,0,0.5)';
+            indicator.style.color = '#fff';
+            indicator.style.padding = '4px 12px';
+            indicator.style.borderRadius = '12px';
+            indicator.style.fontSize = '1rem';
+            indicator.style.zIndex = '10';
+            function updateIndicator() {
+                indicator.textContent = `${currentIdx + 1} / ${images.length}`;
+            }
+            updateIndicator();
+
+            // 슬라이드 버튼
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'lightbox__nav lightbox__nav--prev';
+            prevBtn.innerHTML = '◀';
+            prevBtn.onclick = (e) => {
+                e.stopPropagation();
+                currentIdx = (currentIdx - 1 + images.length) % images.length;
+                slideImg.src = images[currentIdx];
+                updateIndicator();
+            };
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'lightbox__nav lightbox__nav--next';
+            nextBtn.innerHTML = '▶';
+            nextBtn.onclick = (e) => {
+                e.stopPropagation();
+                currentIdx = (currentIdx + 1) % images.length;
+                slideImg.src = images[currentIdx];
+                updateIndicator();
+            };
+
+            media.style.display = 'flex';
+            media.style.alignItems = 'center';
+            media.style.justifyContent = 'center';
+            media.style.gap = '1vw';
+            prevBtn.style.zIndex = '2';
+            nextBtn.style.zIndex = '2';
+            slideImg.style.flex = '0 1 auto';
+            media.appendChild(prevBtn);
+            media.appendChild(slideImg);
+            media.appendChild(nextBtn);
+            media.appendChild(indicator);
+            media.appendChild(fallback);
+        }
+    } else {
+        const img = document.createElement('img');
+        img.className = 'lightbox__image';
+        img.alt = `${awardWork.name} 수상작`;
+        img.src = `assets/images/works/${awardsFolderMapping[awardWork.category]}/${awardWork.filename}`;
+        img.onerror = () => {
+            img.style.display = 'none';
+            fallback.style.display = 'block';
+        };
+
+        const fallback = document.createElement('div');
+        fallback.className = 'lightbox__fallback';
+        fallback.textContent = '이미지를 불러올 수 없습니다.';
+        fallback.style.display = 'none';
+
+        media.appendChild(img);
+        media.appendChild(fallback);
+    }
 
     // 메타 영역
     const meta = document.createElement('div');
@@ -201,11 +304,12 @@ function showAwardModal(awardWork, prizeType) {
         grand: 'winner.png',
         gold: 'gold.png',
         silver: 'silver.png',
-        bronze: 'bronze.png'
+        bronze: 'bronze.png',
+        goodex: 'clover.png'
     };
     const medalImg = document.createElement('img');
     medalImg.className = 'lightbox__medal';
-    const medalFile = prizeType && medalMap[prizeType] ? medalMap[prizeType] : 'colver.png';
+    const medalFile = prizeType && medalMap[prizeType] ? medalMap[prizeType] : 'clover.png';
     medalImg.src = `assets/images/${medalFile}`;
     medalImg.alt = prizeType ? `${prizeType} medal` : 'medal';
     medalImg.onerror = () => { medalImg.style.display = 'none'; };

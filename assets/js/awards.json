@@ -101,5 +101,79 @@
       "name": "윤미연",
       "filename": "[글시] 순천북유치원_윤미연_optimized.jpg"
     }
+  ],
+  "goodex": [
+    {
+          "category": "사례",
+          "school": "더그림유치원",
+          "name": "특별한 급식 프로그램",
+          "folderName": "더그림",
+          "images": [
+            "slide_001_optimized.jpg",
+            "slide_002_optimized.jpg",
+            "slide_003_optimized.jpg",
+            "slide_004_optimized.jpg",
+            "slide_005_optimized.jpg",
+            "slide_006_optimized.jpg"
+          ],
+          "thumbnail": "slide_001_optimized.jpg"
+    },
+    {
+          "category": "사례",
+          "school": "송랑유치원",
+          "name": "키즈 미슐랭 가이드",
+          "folderName": "송랑",
+          "images": [
+            "slide_001_optimized.jpg",
+            "slide_002_optimized.jpg",
+            "slide_003_optimized.jpg",
+            "slide_004_optimized.jpg",
+            "slide_005_optimized.jpg",
+            "slide_006_optimized.jpg",
+            "slide_007_optimized.jpg",
+            "slide_008_optimized.jpg",
+            "slide_009_optimized.jpg",
+            "slide_010_optimized.jpg",
+            "slide_011_optimized.jpg"
+          ],
+          "thumbnail": "slide_001_optimized.jpg"
+    },
+    {
+          "category": "사례",
+          "school": "순천북유치원",
+          "name": "순천북유치원급식실 위생관리",
+          "folderName": "순천",
+          "images": [
+            "slide_001_optimized.jpg",
+            "slide_002_optimized.jpg",
+            "slide_003_optimized.jpg",
+            "slide_004_optimized.jpg",
+            "slide_005_optimized.jpg",
+            "slide_006_optimized.jpg",
+            "slide_007_optimized.jpg",
+            "slide_008_optimized.jpg",
+            "slide_009_optimized.jpg",
+            "slide_010_optimized.jpg"
+          ],
+          "thumbnail": "slide_001_optimized.jpg"
+    },
+    {
+          "category": "사례",
+          "school": "옥산유유치원",
+          "name": "급식교육 오감만족프로젝트",
+          "folderName": "옥산유",
+          "images": [
+            "Slide1.jpg",
+            "Slide2.jpg",
+            "Slide3.jpg",
+            "Slide4.jpg",
+            "Slide5.jpg",
+            "Slide6.jpg",
+            "Slide7.jpg",
+            "Slide8.jpg",
+            "Slide9.jpg"
+          ],
+          "thumbnail": "Slide1.jpg"
+    }
   ]
 }

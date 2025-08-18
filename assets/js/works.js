@@ -1,5 +1,6 @@
 // 작품 데이터 변수 (JSON에서 로드됨)
 let works = [];
+let awardsData = null;
 
 // 폴더명 매핑 (실제 폴더명과 일치하도록 확인 필요)
 const folderMapping = {
@@ -31,12 +32,19 @@ async function loadWorksData() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         works = await response.json();
+        // awards.json도 함께 로드
+        const awardsRes = await fetch('assets/js/awards.json');
+        if (awardsRes.ok) {
+            awardsData = await awardsRes.json();
+        } else {
+            awardsData = null;
+        }
         console.log('작품 데이터 로드 완료:', works.length, '개');
         return works;
     } catch (error) {
         console.error('작품 데이터 로드 실패:', error);
-        // 에러 시 빈 배열 반환
         works = [];
+        awardsData = null;
         return works;
     }
 }
@@ -126,37 +134,50 @@ function renderWorks(category) {
     });
     
     worksToShow.forEach(work => {
-        const img = document.createElement('img');
-        img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
-        img.alt = `${work.name} 작품`;
-        img.className = 'work-img-b';
-        img.style.cursor = 'pointer';
-        img.onclick = (e) => {
-            // 드래그 중이 아닐 때만 모달 열기
-            if (!isDragging) {
-                // 사례 카테고리이거나 네컷사진에서 폴더가 있는 경우 슬라이드 모달
-                if (work.category === '사례' || (work.category === '네컷사진' && work.filename.includes('/'))) {
+        if (work.category === '사례') {
+            // 사례는 컨테이너 div로 감싸고, .case-img 클래스 적용
+            const container = document.createElement('div');
+            container.className = 'case-img-container';
+            const img = document.createElement('img');
+            img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
+            img.alt = `${work.name} 작품`;
+            img.className = 'case-img';
+            img.style.cursor = 'pointer';
+            img.onclick = (e) => {
+                if (!isDragging) {
                     showCaseSlideModal(work);
-                } else {
-                    showWorkModal(work);
                 }
-            }
-        };
-        
-        // 이미지 드래그 방지
-        img.draggable = false;
-        
-        // 이미지 로드 실패 시 처리
-        img.onerror = function() {
-            console.warn(`이미지를 찾을 수 없습니다:`);
-            console.warn(`- 카테고리: ${work.category}`);
-            console.warn(`- 매핑된 폴더: ${folderMapping[work.category]}`);
-            console.warn(`- 파일명: ${work.filename}`);
-            console.warn(`- 전체 경로: ${this.src}`);
-            this.style.display = 'none';
-        };
-        
-        worksContainer.appendChild(img);
+            };
+            img.draggable = false;
+            img.onerror = function() {
+                console.warn(`이미지를 찾을 수 없습니다:`);
+                this.style.display = 'none';
+            };
+            container.appendChild(img);
+            worksContainer.appendChild(container);
+        } else {
+            // 기존 방식 유지
+            const img = document.createElement('img');
+            img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
+            img.alt = `${work.name} 작품`;
+            img.className = 'work-img-b';
+            img.style.cursor = 'pointer';
+            img.onclick = (e) => {
+                if (!isDragging) {
+                    if (work.category === '네컷사진' && work.filename.includes('/')) {
+                        showCaseSlideModal(work);
+                    } else {
+                        showWorkModal(work);
+                    }
+                }
+            };
+            img.draggable = false;
+            img.onerror = function() {
+                console.warn(`이미지를 찾을 수 없습니다:`);
+                this.style.display = 'none';
+            };
+            worksContainer.appendChild(img);
+        }
     });
     
     // 반응형 크기 계산
@@ -314,6 +335,30 @@ function showWorkModal(work) {
     lastFilteredWorks = works.filter(w => w.category === currentCategory);
     const currentIndex = lastFilteredWorks.findIndex(w => w.filename === work.filename);
 
+    // 수상작 여부 및 등급 확인
+    let awardType = null;
+    let medalFile = null;
+    if (awardsData) {
+        if (awardsData.grand && awardsData.grand.filename === work.filename) {
+            awardType = 'grand'; medalFile = 'winner.png';
+        } else if (awardsData.gold && awardsData.gold.some(a => a.filename === work.filename)) {
+            awardType = 'gold'; medalFile = 'gold.png';
+        } else if (awardsData.silver && awardsData.silver.some(a => a.filename === work.filename)) {
+            awardType = 'silver'; medalFile = 'silver.png';
+        } else if (awardsData.bronze && awardsData.bronze.some(a => a.filename === work.filename)) {
+            awardType = 'bronze'; medalFile = 'bronze.png';
+        } else if (awardsData.goodex && awardsData.goodex.some(a => {
+            // goodex는 사례/네컷사진 등 폴더/썸네일 구조이므로 filename이 없을 수 있음
+            // 사례: 첫번째 이미지가 filename과 일치하면 표시
+            if (a.images && a.images.length > 0) {
+                return `사례/${a.folderName}/${a.images[0]}` === work.filename || a.images.includes(work.filename.split('/').pop());
+            }
+            return false;
+        })) {
+            awardType = 'goodex'; medalFile = 'clover.png';
+        }
+    }
+
     // 기존 모달 제거
     const existing = document.getElementById('work-modal');
     if (existing) existing.remove();
@@ -356,9 +401,16 @@ function showWorkModal(work) {
     pill.textContent = work.category;
     pill.style.background = worksCategoryColors[work.category] || '#E6F8C2';
 
-    // awards.js와 같은 세로 레이아웃: 카테고리 → 이름 → 소속
+    // awards.js와 같은 세로 레이아웃: 카테고리 → 이름 → 소속 + 메달
     const titleRow = document.createElement('div');
     titleRow.className = 'lightbox__title-row';
+    if (awardType && medalFile) {
+        const medalImg = document.createElement('img');
+        medalImg.className = 'lightbox__medal';
+        medalImg.src = `assets/images/${medalFile}`;
+        medalImg.alt = `${awardType} medal`;
+        titleRow.appendChild(medalImg);
+    }
     
     // 정보 스택 (카테고리, 이름, 소속)
     const infoStack = document.createElement('div');
@@ -646,9 +698,24 @@ function showCaseSlideModal(work) {
     const meta = document.createElement('div');
     meta.className = 'lightbox__meta';
 
-    // awards.js와 같은 세로 레이아웃
+    // awards.js와 같은 세로 레이아웃 + 메달
     const titleRow = document.createElement('div');
     titleRow.className = 'lightbox__title-row';
+    // 수상작 여부 및 등급 확인 (사례/네컷사진)
+    let awardType = null;
+    let medalFile = null;
+    if (awardsData && work.category === '사례') {
+        if (awardsData.goodex && awardsData.goodex.some(a => a.folderName === folderName)) {
+            awardType = 'goodex'; medalFile = 'clover.png';
+        }
+    }
+    if (awardType && medalFile) {
+        const medalImg = document.createElement('img');
+        medalImg.className = 'lightbox__medal';
+        medalImg.src = `assets/images/${medalFile}`;
+        medalImg.alt = `${awardType} medal`;
+        titleRow.appendChild(medalImg);
+    }
     
     const infoStack = document.createElement('div');
     infoStack.className = 'lightbox__info-stack';

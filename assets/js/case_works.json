@@ -60,17 +60,17 @@
       "school": "옥산유",
       "author": "관리자",
       "images": [
-        "slide_001_optimized.jpg",
-        "slide_002_optimized.jpg",
-        "slide_003_optimized.jpg",
-        "slide_004_optimized.jpg",
-        "slide_005_optimized.jpg",
-        "slide_006_optimized.jpg",
-        "slide_007_optimized.jpg",
-        "slide_008_optimized.jpg",
-        "slide_009_optimized.jpg"
+        "Slide1.jpg",
+        "Slide2.jpg",
+        "Slide3.jpg",
+        "Slide4.jpg",
+        "Slide5.jpg",
+        "Slide6.jpg",
+        "Slide7.jpg",
+        "Slide8.jpg",
+        "Slide9.jpg"
       ],
-      "thumbnail": "slide_001_optimized.jpg"
+      "thumbnail": "Slide1.jpg"
     }
   ]
 }
