@@ -50,7 +50,7 @@ async function loadWorksData() {
 }
 
 // 현재 선택된 카테고리
-let currentCategory = '네컷만화';  // JSON에 있는 실제 카테고리명으로 초기화
+let currentCategory = '그림일기';  // JSON에 있는 실제 카테고리명으로 초기화
 
 // 페이지네이션 설정
 const ITEMS_PER_PAGE = 12; // 3줄 x 4개 = 12개
@@ -919,3 +919,4 @@ function showCaseSlideModal(work) {
 window.selectCategory = selectCategory;
 window.showWorkModal = showWorkModal;
 window.showCaseSlideModal = showCaseSlideModal;
+
