@@ -332,14 +332,14 @@ body, html {
     gap: 1.302vw; /* 25px → 25/1920*100 */
     position: absolute;
     width: 55.260vw; /* 1061px → 1061/1920*100 */
-    height: 104.774vw; /* 2011.66px → 2011.66/1920*100 */
+    /* height: 104.774vw; 2011.66px → 2011.66/1920*100 */
 }
 
 
 
 .gold-bg {
     background: linear-gradient(to bottom, #FFFCD3 65%, #EFF7FE 100%);
-    height: 165.375vw; /* 2580px → 2580/1920*100 */
+    height: 178.375vw; /* 2580px → 2580/1920*100 */
 
     display: flex;
     justify-content: center;  /* 가로 중앙 */
@@ -752,16 +752,16 @@ body, html {
     
     .kindergarten-name-text-style,
     .kindergarten {
-        font-size: 3vw;
+        font-size: 2vw;
     }
     
     .kid-name-text-style,
     .winner-name-gold {
-        font-size: 4.5vw;
+        font-size: 3.2vw;
     }
     
     .winner-name-other {
-        font-size: 3.8vw; /* 대상보다 작게 */
+        font-size: 2.5vw; /* 대상보다 작게 */
     }
     
     .sector-text-stlye,
@@ -770,7 +770,7 @@ body, html {
     }
     
     .sec-text-other {
-        font-size: 2.2vw; /* 기본보다 작게 */
+        font-size: 1.5vw; /* 기본보다 작게 */
     }
     
     .silver-list,
@@ -803,7 +803,7 @@ body, html {
     }
 
     .silver-bg {
-        height: 180.583vw; /* 2200px → 2200/1920*100 */ 
+        height: 162.583vw; /* 2200px → 2200/1920*100 */ 
         margin: top 5rem;  
     }
 
@@ -833,6 +833,23 @@ body, html {
 }
 
 /* 반응형 미디어 쿼리 추가 */
+/* 태블릿 사이즈 (768px~1024px)에서 수상자 이름/소속/분야 폰트 크기 조정 */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .winner-name,
+    .winner-name-gold,
+    .winner-name-other,
+    .winner-name-style,
+    .kid-name-text-style {
+        font-size: 22px !important;
+    }
+    .kindergarten-name,
+    .kindergarten-name-text-style {
+        font-size: 16px !important;
+    }
+    .sector-text-stlye {
+        font-size: 13px !important;
+    }
+}
 @media (max-width: 768px) {
     .entry {
         padding: 20px 15px 60px 15px; /* 아래쪽에 더 많은 여백 추가 */
