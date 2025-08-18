@@ -426,7 +426,7 @@ z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
 .lightbox {
     position: relative;
     width: min(96vw, 1400px);
-    max-height: 85vh;
+    max-height: 95vh;
     background: #ffffff;
     border-radius: 16px;
     overflow: hidden;
@@ -800,3 +800,4 @@ z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
     }
 
 }
+
