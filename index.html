@@ -434,18 +434,30 @@
                 </div>
                 
                 <div class="comment-form">
-                    <input 
+                                     <input 
                         type="text"
                         id="comment-author-${safeId}"
                         placeholder="작성자 이름"
-                        maxlength="20"
-                        class="comment-author-input"
-                        style="margin-bottom:8px;width:100%;box-sizing:border-box;"
-                    />
+                        maxlength="8"
+                        class="comment-author-input stylish-author-input"
+                        style="margin-bottom:12px;width:100%;box-sizing:border-box;border-radius:8px;padding:12px 16px;border:1.5px solid #d1d5db;font-size:16px;background:#f8f9fa;transition:border-color 0.2s;"
+                        /* 예쁜 작성자 입력박스 스타일 */
+                        .stylish-author-input::placeholder {
+                            color: #b0b0b0;
+                            font-size: 15px;
+                            font-family: 'Pretendard', 'NanumSquareRound', sans-serif;
+                            opacity: 1;
+                        }
+                        .stylish-author-input:focus {
+                            border-color: #007bff;
+                            background: #fff;
+                            outline: none;
+                        }
+                                            />
                     <textarea 
                         id="comment-content-${safeId}" 
-                        placeholder="댓글을 작성해주세요 (최대 500자)" 
-                        maxlength="500"
+                        placeholder="댓글을 작성해주세요 (최대 300자)" 
+                        maxlength="300"
                         rows="3"
                     ></textarea>
                     <div class="comment-form-bottom">
@@ -647,3 +659,4 @@
     <script src="assets/js/works.js"></script>
     <script src="assets/js/navigation.js"></script>
 </html>
+
