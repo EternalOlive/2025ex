@@ -757,11 +757,11 @@ body, html {
     
     .kid-name-text-style,
     .winner-name-gold {
-        font-size: 4.0vw;
+        font-size: 4.5vw;
     }
     
     .winner-name-other {
-        font-size: 2.5vw; /* 대상보다 작게 */
+        font-size: 3.8vw; /* 대상보다 작게 */
     }
     
     .sector-text-stlye,
@@ -861,6 +861,4 @@ body, html {
     .entry-work-list > div:last-child {
         margin-bottom: 20px;
     }
-
 }
-
