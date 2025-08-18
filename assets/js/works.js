@@ -132,6 +132,37 @@ function renderWorks(category) {
         isDragging = false;
         worksContainer.style.cursor = 'grab';
     });
+
+    // 모바일 터치 스와이프 기능 추가
+    let touchStartX = 0;
+    let touchEndX = 0;
+    worksContainer.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1) {
+            touchStartX = e.touches[0].clientX;
+        }
+    });
+    worksContainer.addEventListener('touchmove', function(e) {
+        if (e.touches.length === 1) {
+            touchEndX = e.touches[0].clientX;
+        }
+    });
+    worksContainer.addEventListener('touchend', function(e) {
+        const deltaX = touchStartX - touchEndX;
+        if (Math.abs(deltaX) > 50) {
+            if (deltaX > 0 && currentPage < totalPages) {
+                // 오른쪽으로 스와이프 = 다음 페이지
+                currentPage++;
+                renderWorks(category);
+            } else if (deltaX < 0 && currentPage > 1) {
+                // 왼쪽으로 스와이프 = 이전 페이지
+                currentPage--;
+                renderWorks(category);
+            }
+        }
+        // 값 초기화
+        touchStartX = 0;
+        touchEndX = 0;
+    });
     
     worksToShow.forEach(work => {
         if (work.category === '사례') {
@@ -919,4 +950,3 @@ function showCaseSlideModal(work) {
 window.selectCategory = selectCategory;
 window.showWorkModal = showWorkModal;
 window.showCaseSlideModal = showCaseSlideModal;
-
