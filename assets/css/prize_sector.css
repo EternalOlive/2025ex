@@ -761,7 +761,7 @@ body, html {
     }
     
     .winner-name-other {
-        font-size: 3.8vw; /* 대상보다 작게 */
+        font-size: 2.5vw; /* 대상보다 작게 */
     }
     
     .sector-text-stlye,
@@ -863,3 +863,4 @@ body, html {
     }
 
 }
+
