@@ -26,7 +26,7 @@
   {
     "category": "사례",
     "filename": "굿모닝/01_굿모닝유치원.jpg",
-    "school": "대전 굿모닝유치원",
+    "school": "대전굿모닝유치원",
     "name": "요리활동이야기"
   },
   {
@@ -38,7 +38,7 @@
   {
     "category": "네컷사진",
     "filename": "네컷사진_신지혜(강원특별자치도교육청)_optimized.jpg",
-    "school": "강원특별자치도교육청",
+    "school": "강원특별자치교육청",
     "name": "신지혜"
   },
   {
@@ -248,8 +248,8 @@
   {
     "category": "동시",
     "filename": "[동시] 교보원-유치원급식팀_1_optimized.jpg",
-    "school": "교보원-유치원급식팀",
-    "name": "1"
+    "school": "교보원",
+    "name": "유치원급식팀"
   },
   {
     "category": "글시",
@@ -272,8 +272,8 @@
   {
     "category": "동시",
     "filename": "[동시] 교보원-유치원급식팀_2_optimized.jpg",
-    "school": "교보원-유치원급식팀",
-    "name": "2"
+    "school": "교보원",
+    "name": "유치원급식팀"
   },
   {
     "category": "네컷만화",

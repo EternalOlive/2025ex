@@ -1,5 +1,5 @@
 /* entry 사례부문(가로 긴 이미지) 전용 스타일 */
-.entry-work-list .work-img-case {
+ .entry-work-list .work-img-case {
     width: 28vw;
     height: 12vw;
     object-fit: cover;
@@ -12,6 +12,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+/* entry 작품 정보 폰트 크기 축소 (모바일/태블릿) */
+.entry-work-list .work-info > div {
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    word-break: keep-all;
+    white-space: normal !important;
+}
+/* entry 작품 정보 폰트 크기 더 축소 (모바일) */
+.entry-work-list .work-info > div {
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+    word-break: keep-all;
+    white-space: normal !important;
 }
 .ex-list .img-container, .goodex .img-container {
     width: 22vw;
@@ -769,6 +783,25 @@ body, html {
     margin-bottom: 1vw; /* 텍스트 아래 여백 추가 */
 }
 
+/* entry 검색창 스타일 */
+.entry-search {
+    width: 300px;
+    max-width: 80vw;
+    padding: 8px 16px;
+    margin: 0 0 16px 0;
+    font-size: 1rem;
+    border: 1px solid #B2C784;
+    border-radius: 20px;
+    outline: none;
+    box-sizing: border-box;
+    background: #f8fff2;
+    color: #333;
+    transition: border-color 0.2s;
+}
+.entry-search:focus {
+    border-color: #647937;
+}
+
 /* sector_list */
 .sector-list {
     display: grid;
@@ -968,7 +1001,7 @@ body, html {
     .entry {
         padding: 15px 10px 80px 10px; /* 더 큰 아래 여백 */
         min-height: 70vh; /* 더 큰 최소 높이 */
-        gap: 15px;
+        gap: 3px;
     }
     
     .entry-work-list {
@@ -979,6 +1012,23 @@ body, html {
     /* 작품 그리드에 아래 여백 추가 */
     .entry-work-list > div:last-child {
         margin-bottom: 20px;
+    }
+    /* 작품 이미지 컨테이너 */
+    .entry-work-list > div {
+        width: 100%;
+        max-width: 220px;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+    /* 작품 이미지 */
+    .case-img {
+        width: 100%;
+        max-width: 200px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 12px;
+        display: block;
+        margin: 0 auto;
     }
 }
 

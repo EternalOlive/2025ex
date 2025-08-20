@@ -39,7 +39,7 @@ async function loadWorksData() {
         } else {
             awardsData = null;
         }
-        console.log('작품 데이터 로드 완료:', works.length, '개');
+        // console.log('작품 데이터 로드 완료:', works.length, '개');
         return works;
     } catch (error) {
         console.error('작품 데이터 로드 실패:', error);
@@ -84,7 +84,7 @@ function renderWorks(category) {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: repeat(3, 1fr);
-        gap: 15px;
+        gap: 3px;
         margin: 20px 0;
         cursor: grab;
         user-select: none;
@@ -979,3 +979,97 @@ function showCaseSlideModal(work) {
 window.selectCategory = selectCategory;
 window.showWorkModal = showWorkModal;
 window.showCaseSlideModal = showCaseSlideModal;
+// 작품 검색 필터 함수 (검색창에서 호출)
+window.filterWorks = function(keyword) {
+    keyword = keyword.trim();
+    // 현재 카테고리 기준으로만 필터링
+    const filteredWorks = works.filter(work => {
+        const school = work.school || '';
+        const name = work.name || '';
+        // 카테고리 일치 + (검색어가 없거나 school/name에 포함)
+        const categoryMatch = work.category === currentCategory;
+        const keywordMatch = !keyword || school.includes(keyword) || name.includes(keyword);
+        return categoryMatch && keywordMatch;
+    });
+    // 검색어가 없으면 원래대로 페이지네이션 포함 렌더링
+    if (!keyword) {
+        renderWorks(currentCategory);
+    } else {
+        renderWorksFiltered(filteredWorks);
+    }
+};
+
+// 필터링된 배열을 렌더링하는 함수 (페이지네이션 없이 전체 표시)
+function renderWorksFiltered(filteredWorks) {
+    const workList = document.querySelector('.entry-work-list');
+    if (!workList) return;
+    workList.innerHTML = '';
+    const mainContainer = document.createElement('div');
+    mainContainer.style.cssText = `position: relative; width: 100%;`;
+    const worksContainer = document.createElement('div');
+    worksContainer.style.cssText = `
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto;
+        gap: 3px;
+        margin: 20px 0;
+        cursor: grab;
+        user-select: none;
+    `;
+    filteredWorks.forEach(work => {
+        const workItem = document.createElement('div');
+        workItem.style.display = 'flex';
+        workItem.style.flexDirection = 'column';
+        workItem.style.alignItems = 'center';
+        workItem.style.justifyContent = 'center';
+        workItem.style.padding = '8px';
+        const img = document.createElement('img');
+        img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
+        img.alt = `${work.name} 작품`;
+        img.className = (work.category === '사례') ? 'case-img' : 'work-img-b';
+        img.style.cursor = 'pointer';
+        img.onclick = (e) => {
+            if (work.category === '사례' || (work.category === '네컷사진' && work.filename.includes('/'))) {
+                showCaseSlideModal(work);
+            } else {
+                showWorkModal(work);
+            }
+        };
+        img.draggable = false;
+        img.onerror = function() {
+            this.style.display = 'none';
+        };
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'work-info';
+        infoDiv.style.display = 'flex';
+        infoDiv.style.flexDirection = 'column';
+        infoDiv.style.alignItems = 'center';
+        infoDiv.style.marginTop = '8px';
+        infoDiv.style.gap = '2px';
+        const schoolDiv = document.createElement('div');
+        schoolDiv.textContent = work.school || '';
+        schoolDiv.style.fontSize = '15px';
+        schoolDiv.style.fontWeight = '500';
+        schoolDiv.style.color = '#444';
+        schoolDiv.style.padding = '2px 10px';
+        schoolDiv.style.borderRadius = '12px';
+        schoolDiv.style.marginBottom = '2px';
+        const nameDiv = document.createElement('div');
+        nameDiv.textContent = work.name || '';
+        nameDiv.style.fontSize = '17px';
+        nameDiv.style.fontWeight = '700';
+        nameDiv.style.color = '#333';
+        nameDiv.style.padding = '2px 10px';
+        nameDiv.style.borderRadius = '12px';
+        infoDiv.appendChild(schoolDiv);
+        infoDiv.appendChild(nameDiv);
+        workItem.appendChild(img);
+        workItem.appendChild(infoDiv);
+        worksContainer.appendChild(workItem);
+    });
+    mainContainer.appendChild(worksContainer);
+    workList.appendChild(mainContainer);
+    if (filteredWorks.length === 0) {
+        workList.innerHTML = '<p style="text-align: center; color: #666; padding: 50px;">검색 결과가 없습니다.</p>';
+    }
+}
