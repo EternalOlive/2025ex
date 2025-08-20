@@ -652,7 +652,7 @@ z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
 
 /* 댓글 시스템 스타일 */
 .comment-section {
-    margin-top: 30px;
+    margin-top: 10px;
     padding-top: 20px;
     border-top: 1px solid #e0e0e0;
 }
@@ -728,7 +728,7 @@ z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
 }
 
 .comments-list {
-    max-height: 250px;
+    max-height: 100px;
     overflow-y: auto;
     border: 1px solid #e0e0e0;
     border-radius: 6px;
@@ -805,4 +805,5 @@ z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
     }
 
 }
+
 
