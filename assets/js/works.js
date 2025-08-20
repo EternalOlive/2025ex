@@ -173,63 +173,84 @@ function renderWorks(category) {
         workItem.style.justifyContent = 'center';
         workItem.style.padding = '8px';
 
-        // 이미지
-        const img = document.createElement('img');
-        img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
-        img.alt = `${work.name} 작품`;
-        img.className = (work.category === '사례') ? 'case-img' : 'work-img-b';
-        img.style.cursor = 'pointer';
-        img.onclick = (e) => {
-            if (!isDragging) {
-                if (work.category === '사례' || (work.category === '네컷사진' && work.filename.includes('/'))) {
-                    showCaseSlideModal(work);
-                } else {
-                    showWorkModal(work);
-                }
+            // 이미지 및 정보
+            let img;
+            if (work.category === '사례') {
+                const caseContainer = document.createElement('div');
+                caseContainer.className = 'case-img-container';
+                img = document.createElement('img');
+                img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
+                img.alt = `${work.name} 작품`;
+                img.className = 'case-img';
+                img.style.cursor = 'pointer';
+                img.onclick = (e) => {
+                    if (!isDragging) {
+                        showCaseSlideModal(work);
+                    }
+                };
+                img.draggable = false;
+                img.onerror = function() {
+                    console.warn(`이미지를 찾을 수 없습니다:`);
+                    this.style.display = 'none';
+                };
+                caseContainer.appendChild(img);
+                workItem.appendChild(caseContainer);
+            } else {
+                img = document.createElement('img');
+                img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
+                img.alt = `${work.name} 작품`;
+                img.className = 'work-img-b';
+                img.style.cursor = 'pointer';
+                img.onclick = (e) => {
+                    if (!isDragging) {
+                        if (work.category === '네컷사진' && work.filename.includes('/')) {
+                            showCaseSlideModal(work);
+                        } else {
+                            showWorkModal(work);
+                        }
+                    }
+                };
+                img.draggable = false;
+                img.onerror = function() {
+                    console.warn(`이미지를 찾을 수 없습니다:`);
+                    this.style.display = 'none';
+                };
+                workItem.appendChild(img);
             }
-        };
-        img.draggable = false;
-        img.onerror = function() {
-            console.warn(`이미지를 찾을 수 없습니다:`);
-            this.style.display = 'none';
-        };
 
-    // 소속/이름 2줄 정보
-    const infoDiv = document.createElement('div');
-    infoDiv.className = 'work-info';
-    infoDiv.style.display = 'flex';
-    infoDiv.style.flexDirection = 'column';
-    infoDiv.style.alignItems = 'center';
-    infoDiv.style.marginTop = '8px';
-    infoDiv.style.gap = '2px';
+            // 소속/이름 2줄 정보
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'work-info';
+            infoDiv.style.display = 'flex';
+            infoDiv.style.flexDirection = 'column';
+            infoDiv.style.alignItems = 'center';
+            infoDiv.style.marginTop = '8px';
+            infoDiv.style.gap = '2px';
 
-    // 소속
-    const schoolDiv = document.createElement('div');
-    schoolDiv.textContent = work.school || '';
-    schoolDiv.style.fontSize = '15px';
-    schoolDiv.style.fontWeight = '500';
-    schoolDiv.style.color = '#444';
-    // schoolDiv.style.background = '#F3F8E6';
-    schoolDiv.style.padding = '2px 10px';
-    schoolDiv.style.borderRadius = '12px';
-    schoolDiv.style.marginBottom = '2px';
+            // 소속
+            const schoolDiv = document.createElement('div');
+            schoolDiv.textContent = work.school || '';
+            schoolDiv.style.fontSize = '15px';
+            schoolDiv.style.fontWeight = '500';
+            schoolDiv.style.color = '#444';
+            schoolDiv.style.padding = '2px 10px';
+            schoolDiv.style.borderRadius = '12px';
+            schoolDiv.style.marginBottom = '2px';
 
-    // 이름
-    const nameDiv = document.createElement('div');
-    nameDiv.textContent = work.name || '';
-    nameDiv.style.fontSize = '17px';
-    nameDiv.style.fontWeight = '700';
-    nameDiv.style.color = '#333';
-    // nameDiv.style.background = '#F7F7F7';
-    nameDiv.style.padding = '2px 10px';
-    nameDiv.style.borderRadius = '12px';
+            // 이름
+            const nameDiv = document.createElement('div');
+            nameDiv.textContent = work.name || '';
+            nameDiv.style.fontSize = '17px';
+            nameDiv.style.fontWeight = '700';
+            nameDiv.style.color = '#333';
+            nameDiv.style.padding = '2px 10px';
+            nameDiv.style.borderRadius = '12px';
 
-    infoDiv.appendChild(schoolDiv);
-    infoDiv.appendChild(nameDiv);
+            infoDiv.appendChild(schoolDiv);
+            infoDiv.appendChild(nameDiv);
 
-    workItem.appendChild(img);
-    workItem.appendChild(infoDiv);
-    worksContainer.appendChild(workItem);
+            workItem.appendChild(infoDiv);
+            worksContainer.appendChild(workItem);
     });
     
     // 반응형 크기 계산
@@ -1023,49 +1044,69 @@ function renderWorksFiltered(filteredWorks) {
         workItem.style.alignItems = 'center';
         workItem.style.justifyContent = 'center';
         workItem.style.padding = '8px';
-        const img = document.createElement('img');
-        img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
-        img.alt = `${work.name} 작품`;
-        img.className = (work.category === '사례') ? 'case-img' : 'work-img-b';
-        img.style.cursor = 'pointer';
-        img.onclick = (e) => {
-            if (work.category === '사례' || (work.category === '네컷사진' && work.filename.includes('/'))) {
-                showCaseSlideModal(work);
+            let img;
+            if (work.category === '사례') {
+                const caseContainer = document.createElement('div');
+                caseContainer.className = 'case-img-container';
+                img = document.createElement('img');
+                img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
+                img.alt = `${work.name} 작품`;
+                img.className = 'case-img';
+                img.style.cursor = 'pointer';
+                img.onclick = (e) => {
+                    showCaseSlideModal(work);
+                };
+                img.draggable = false;
+                img.onerror = function() {
+                    this.style.display = 'none';
+                };
+                caseContainer.appendChild(img);
+                workItem.appendChild(caseContainer);
             } else {
-                showWorkModal(work);
+                img = document.createElement('img');
+                img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
+                img.alt = `${work.name} 작품`;
+                img.className = 'work-img-b';
+                img.style.cursor = 'pointer';
+                img.onclick = (e) => {
+                    if (work.category === '네컷사진' && work.filename.includes('/')) {
+                        showCaseSlideModal(work);
+                    } else {
+                        showWorkModal(work);
+                    }
+                };
+                img.draggable = false;
+                img.onerror = function() {
+                    this.style.display = 'none';
+                };
+                workItem.appendChild(img);
             }
-        };
-        img.draggable = false;
-        img.onerror = function() {
-            this.style.display = 'none';
-        };
-        const infoDiv = document.createElement('div');
-        infoDiv.className = 'work-info';
-        infoDiv.style.display = 'flex';
-        infoDiv.style.flexDirection = 'column';
-        infoDiv.style.alignItems = 'center';
-        infoDiv.style.marginTop = '8px';
-        infoDiv.style.gap = '2px';
-        const schoolDiv = document.createElement('div');
-        schoolDiv.textContent = work.school || '';
-        schoolDiv.style.fontSize = '15px';
-        schoolDiv.style.fontWeight = '500';
-        schoolDiv.style.color = '#444';
-        schoolDiv.style.padding = '2px 10px';
-        schoolDiv.style.borderRadius = '12px';
-        schoolDiv.style.marginBottom = '2px';
-        const nameDiv = document.createElement('div');
-        nameDiv.textContent = work.name || '';
-        nameDiv.style.fontSize = '17px';
-        nameDiv.style.fontWeight = '700';
-        nameDiv.style.color = '#333';
-        nameDiv.style.padding = '2px 10px';
-        nameDiv.style.borderRadius = '12px';
-        infoDiv.appendChild(schoolDiv);
-        infoDiv.appendChild(nameDiv);
-        workItem.appendChild(img);
-        workItem.appendChild(infoDiv);
-        worksContainer.appendChild(workItem);
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'work-info';
+            infoDiv.style.display = 'flex';
+            infoDiv.style.flexDirection = 'column';
+            infoDiv.style.alignItems = 'center';
+            infoDiv.style.marginTop = '8px';
+            infoDiv.style.gap = '2px';
+            const schoolDiv = document.createElement('div');
+            schoolDiv.textContent = work.school || '';
+            schoolDiv.style.fontSize = '15px';
+            schoolDiv.style.fontWeight = '500';
+            schoolDiv.style.color = '#444';
+            schoolDiv.style.padding = '2px 10px';
+            schoolDiv.style.borderRadius = '12px';
+            schoolDiv.style.marginBottom = '2px';
+            const nameDiv = document.createElement('div');
+            nameDiv.textContent = work.name || '';
+            nameDiv.style.fontSize = '17px';
+            nameDiv.style.fontWeight = '700';
+            nameDiv.style.color = '#333';
+            nameDiv.style.padding = '2px 10px';
+            nameDiv.style.borderRadius = '12px';
+            infoDiv.appendChild(schoolDiv);
+            infoDiv.appendChild(nameDiv);
+            workItem.appendChild(infoDiv);
+            worksContainer.appendChild(workItem);
     });
     mainContainer.appendChild(worksContainer);
     workList.appendChild(mainContainer);
