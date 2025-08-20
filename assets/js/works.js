@@ -220,12 +220,13 @@ function renderWorks(category) {
 
             // 소속/이름 2줄 정보
             const infoDiv = document.createElement('div');
-            infoDiv.className = 'work-info';
-            infoDiv.style.display = 'flex';
-            infoDiv.style.flexDirection = 'column';
-            infoDiv.style.alignItems = 'center';
-            infoDiv.style.marginTop = '8px';
-            infoDiv.style.gap = '2px';
+        infoDiv.className = 'work-info';
+        infoDiv.style.display = 'flex';
+        infoDiv.style.flexDirection = 'column';
+        infoDiv.style.alignItems = 'center';
+        infoDiv.style.marginTop = '8px';
+        infoDiv.style.gap = '2px';
+        infoDiv.style.textAlign = 'center';
 
             // 소속
             const schoolDiv = document.createElement('div');
