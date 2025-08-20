@@ -681,6 +681,11 @@ function showCaseSlideModal(work) {
             count: 9,
             pattern: 'Slide%d.jpg', // Slide1.jpg 형식
             basePath: 'assets/images/works/사례/옥산유/'
+        },
+        '굿모닝': {
+            count: 10,
+            pattern: '%02d_굿모닝유치원.jpg', // Slide1.jpg 형식
+            basePath: 'assets/images/works/사례/굿모닝/'
         }
     };
     
@@ -799,6 +804,9 @@ function showCaseSlideModal(work) {
         } else if (folderName === '옥산유') {
             filename = `Slide${currentSlide}.jpg`;
             imagePath = `assets/images/works/사례/${folderName}/${filename}`;
+        }else if (folderName === '굿모닝') {
+            filename = `${String(currentSlide).padStart(2, '0')}_굿모닝유치원.jpg`;
+            imagePath = `assets/images/works/사례/굿모닝/${filename}`;
         } else {
             filename = `slide_${String(currentSlide).padStart(3, '0')}_optimized.jpg`;
             imagePath = `assets/images/works/사례/${folderName}/${filename}`;
