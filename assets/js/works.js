@@ -165,50 +165,71 @@ function renderWorks(category) {
     });
     
     worksToShow.forEach(work => {
-        if (work.category === '사례') {
-            // 사례는 컨테이너 div로 감싸고, .case-img 클래스 적용
-            const container = document.createElement('div');
-            container.className = 'case-img-container';
-            const img = document.createElement('img');
-            img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
-            img.alt = `${work.name} 작품`;
-            img.className = 'case-img';
-            img.style.cursor = 'pointer';
-            img.onclick = (e) => {
-                if (!isDragging) {
+        // 작품 컨테이너
+        const workItem = document.createElement('div');
+        workItem.style.display = 'flex';
+        workItem.style.flexDirection = 'column';
+        workItem.style.alignItems = 'center';
+        workItem.style.justifyContent = 'center';
+        workItem.style.padding = '8px';
+
+        // 이미지
+        const img = document.createElement('img');
+        img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
+        img.alt = `${work.name} 작품`;
+        img.className = (work.category === '사례') ? 'case-img' : 'work-img-b';
+        img.style.cursor = 'pointer';
+        img.onclick = (e) => {
+            if (!isDragging) {
+                if (work.category === '사례' || (work.category === '네컷사진' && work.filename.includes('/'))) {
                     showCaseSlideModal(work);
+                } else {
+                    showWorkModal(work);
                 }
-            };
-            img.draggable = false;
-            img.onerror = function() {
-                console.warn(`이미지를 찾을 수 없습니다:`);
-                this.style.display = 'none';
-            };
-            container.appendChild(img);
-            worksContainer.appendChild(container);
-        } else {
-            // 기존 방식 유지
-            const img = document.createElement('img');
-            img.src = `assets/images/works/${folderMapping[work.category]}/${work.filename}`;
-            img.alt = `${work.name} 작품`;
-            img.className = 'work-img-b';
-            img.style.cursor = 'pointer';
-            img.onclick = (e) => {
-                if (!isDragging) {
-                    if (work.category === '네컷사진' && work.filename.includes('/')) {
-                        showCaseSlideModal(work);
-                    } else {
-                        showWorkModal(work);
-                    }
-                }
-            };
-            img.draggable = false;
-            img.onerror = function() {
-                console.warn(`이미지를 찾을 수 없습니다:`);
-                this.style.display = 'none';
-            };
-            worksContainer.appendChild(img);
-        }
+            }
+        };
+        img.draggable = false;
+        img.onerror = function() {
+            console.warn(`이미지를 찾을 수 없습니다:`);
+            this.style.display = 'none';
+        };
+
+    // 소속/이름 2줄 정보
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'work-info';
+    infoDiv.style.display = 'flex';
+    infoDiv.style.flexDirection = 'column';
+    infoDiv.style.alignItems = 'center';
+    infoDiv.style.marginTop = '8px';
+    infoDiv.style.gap = '2px';
+
+    // 소속
+    const schoolDiv = document.createElement('div');
+    schoolDiv.textContent = work.school || '';
+    schoolDiv.style.fontSize = '15px';
+    schoolDiv.style.fontWeight = '500';
+    schoolDiv.style.color = '#444';
+    // schoolDiv.style.background = '#F3F8E6';
+    schoolDiv.style.padding = '2px 10px';
+    schoolDiv.style.borderRadius = '12px';
+    schoolDiv.style.marginBottom = '2px';
+
+    // 이름
+    const nameDiv = document.createElement('div');
+    nameDiv.textContent = work.name || '';
+    nameDiv.style.fontSize = '17px';
+    nameDiv.style.fontWeight = '700';
+    nameDiv.style.color = '#333';
+    // nameDiv.style.background = '#F7F7F7';
+    nameDiv.style.padding = '2px 10px';
+    nameDiv.style.borderRadius = '12px';
+
+    infoDiv.appendChild(schoolDiv);
+    infoDiv.appendChild(nameDiv);
+
+    workItem.appendChild(img);
+    workItem.appendChild(infoDiv);
+    worksContainer.appendChild(workItem);
     });
     
     // 반응형 크기 계산

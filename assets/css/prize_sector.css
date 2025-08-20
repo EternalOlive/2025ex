@@ -778,7 +778,7 @@ body, html {
     padding: 0px;
     gap: 0.833vw; /* 16px → 16/1920*100 */
     width: 100%; /* 전체 너비 사용 */
-    margin-bottom: 2vw; /* 섹터 리스트 아래 여백 추가 */
+    /* margin-bottom: 2vw; 섹터 리스트 아래 여백 추가 */
 }
 
 /* 기본 sector-item 스타일 (선택되지 않은 상태) */
@@ -832,11 +832,11 @@ body, html {
 }
 
 .entry-work-list {
-    display: grid;
+    /* display: grid; */
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    height: 92.708vw; /* 1780px → 1780/1920*100 */
-    margin-top: 2vw; /* work-list 위쪽 여백 */
+    height: auto; 
+    /* margin-top: 2vw; work-list 위쪽 여백 */
 }
 
 @media(max-width: 1025px) {
@@ -954,7 +954,7 @@ body, html {
 }
 @media (max-width: 768px) {
     .entry {
-        padding: 20px 15px 60px 15px; /* 아래쪽에 더 많은 여백 추가 */
+        padding: 0px 15px 0px 15px; /* 아래쪽에 더 많은 여백 추가 */
         min-height: 60vh; /* 최소 높이 확보 */
     }
     
