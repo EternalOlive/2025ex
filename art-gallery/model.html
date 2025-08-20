@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Gallery</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <!-- <div class="background_menu">
+        <div id="menu">
+            <div id="img_container">
+                <img src="./img/test.jpg" alt="menu pic">
+            </div>
+
+            <div id="content">
+                <h1>Art Gallery</h1>
+                <div>
+                    <p> This is an interctive 3D gallery</p>
+                    <p> You can view the gallery in 3D and also buy the art pieces</p>
+            </div>
+
+            <div>
+                <p>Instructions</p>
+                <p>Arrow Keys</p>
+                <p>Look around with mouse</p>
+            </div>
+
+            <div id="play_button">
+                <p>Enter The Gallery</p>
+            </div> -->
+        <!-- </div> -->
+        <div id="painting-info"></div>
+    </div>
+
+    <script type="importmap">
+        {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.173.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.173.0/examples/jsm/"
+        }
+        }
+    </script>
+
+    <div id="joystick-container" style="position:fixed;left:20px;bottom:20px;width:120px;height:120px;z-index:1000;touch-action:none;display:none;">
+        <div id="joystick" style="width:80px;height:80px;background:rgba(200,200,200,0.5);border-radius:50%;position:absolute;left:20px;top:20px;"></div>
+        <div id="joystick-knob" style="width:40px;height:40px;background:rgba(100,100,255,0.7);border-radius:50%;position:absolute;left:40px;top:40px;transform:translate(-20px,-20px);"></div>
+    </div>
+    <script src="./js/main.js" type="module" defer></script>
+</body>
+</html>

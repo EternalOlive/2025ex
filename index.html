@@ -18,7 +18,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=0.75">
     </head>
     <body>
-                    <div class="menu">
+        <div class="menu">
             <div class="menu-item">
                 <a href="#exhibition-intro">전시소개</a>
             </div>
@@ -37,7 +37,7 @@
                 <div class="ex-days">2025.09.10 ~ 2025.12.10</div>
 
                 <!-- 입장 버튼 -->
-                <a href="#" class="btn">
+                <a href="#" class="btn" id="enter-gallery-btn">
                     <span class="btn-text">전시입장</span>
                 </a>
                 
@@ -674,6 +674,18 @@
     <script src="assets/js/awards.js"></script>
     <script src="assets/js/works.js"></script>
     <script src="assets/js/navigation.js"></script>
+    </html>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const enterGalleryBtn = document.getElementById('enter-gallery-btn');
+        if (enterGalleryBtn) {
+            enterGalleryBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = 'art-gallery/model.html';
+            });
+        }
+    });
+    </script>
 </html>
 
 
