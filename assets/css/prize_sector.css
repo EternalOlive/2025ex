@@ -15,14 +15,14 @@
 }
 /* entry 작품 정보 폰트 크기 축소 (모바일/태블릿) */
 .entry-work-list .work-info > div {
-    font-size: 13px !important;
+    font-size: 15px !important;
     line-height: 1.2 !important;
     word-break: keep-all;
     white-space: normal !important;
 }
 /* entry 작품 정보 폰트 크기 더 축소 (모바일) */
 .entry-work-list .work-info > div {
-    font-size: 11px !important;
+    font-size: 13px !important;
     line-height: 1.15 !important;
     word-break: keep-all;
     white-space: normal !important;
@@ -1031,4 +1031,5 @@ body, html {
         margin: 0 auto;
     }
 }
+
 
