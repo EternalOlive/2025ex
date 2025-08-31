@@ -20,11 +20,11 @@ export function setupScene() {
 export function setupCamera() {
     const camera = new THREE.PerspectiveCamera(
         75, 
-        window.innerWidth / window.innerHeight, 
+        window.innerWidth / window.innerHeight,  
         0.1, 
         1000 
     );
-    camera.position.set(0, 1.5, 5);
+    camera.position.set(-84.612, 1.5, -6);
     return camera;
 }
 
@@ -37,13 +37,22 @@ export function setupRenderer() {
 }
 
 // Lighting setup
-export function setupLighting(camera) {
-    let ambientLight = new THREE.AmbientLight("white", 2.5);
-    ambientLight.position.set(camera.position);
+export function setupLighting(scene) {
+    // 환경광 - 전체적인 기본 밝기
+    // let ambientLight = new THREE.AmbientLight(0xfaf6f0, 2); // 0.5 → 0.7로 증가
+    let ambientLight = new THREE.AmbientLight(0xffe7d1, 2.0); // 0.5 → 0.7로 증가
+    // ece8db
     
-    let sunLight = new THREE.DirectionalLight(0xfffcfa, 3.0);
-    sunLight.position.set(5, -15, 5); // x=10, y=15, z=5
+    // 방향광 - 메인 조명
+    // let sunLight = new THREE.DirectionalLight(0xfff5eb, 2); // 흰색으로 변경
+    let sunLight = new THREE.DirectionalLight(0xfff5eb, 1); // 흰색으로 변경
+    sunLight.position.set(-5,5,5); // x,z 위치도 설정
+
+    // 3. 벽면 간접광 (벽 반사 느낌)
+    // let wallLight = new THREE.DirectionalLight(0xf5f5f5, 1.5);
+    let wallLight = new THREE.DirectionalLight(0xfff5eb, 1.55);
+    wallLight.position.set(3, 5, 3);
     
-    return { ambientLight, sunLight };
+    return { ambientLight, sunLight, wallLight };
 }
 
