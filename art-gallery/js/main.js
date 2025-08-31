@@ -89,8 +89,54 @@ function loadJSONData(url, callback) {
       .catch(error => console.error('Error loading JSON:', error));
 }
 
-// Load the 3D model and add it to the scene
-let loader = new GLTFLoader();
+// 로딩 상태 관리
+const loadingManager = {
+    gltfProgress: 0,
+    texturesLoaded: 0,
+    totalTextures: 0,
+    isGltfComplete: false,
+    
+    // 전체 진행률 계산 (GLTF 30%, 텍스처 70% 비중)
+    getTotalProgress() {
+        const gltfWeight = 0.3;
+        const textureWeight = 0.7;
+        
+        const gltfPart = this.gltfProgress * gltfWeight;
+        const texturePart = this.totalTextures > 0 ? 
+            (this.texturesLoaded / this.totalTextures) * textureWeight : 0;
+            
+        return Math.min(gltfPart + texturePart, 1.0);
+    },
+    
+    updateProgress() {
+        const totalProgress = this.getTotalProgress();
+        if (window.updateLoadingProgress) {
+            window.updateLoadingProgress(totalProgress);
+        }
+        
+        console.log(`로딩 진행률: GLTF ${Math.round(this.gltfProgress * 100)}%, 텍스처 ${this.texturesLoaded}/${this.totalTextures}, 전체 ${Math.round(totalProgress * 100)}%`);
+    }
+};
+
+// THREE.js LoadingManager 생성
+const threeLoadingManager = new THREE.LoadingManager();
+
+// 텍스처 로딩 추적
+threeLoadingManager.onLoad = () => {
+    console.log('모든 리소스 로딩 완료');
+    isModelLoaded = true;
+    loadingManager.updateProgress();
+    checkAllLoaded();
+};
+
+threeLoadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+    loadingManager.totalTextures = itemsTotal;
+    loadingManager.texturesLoaded = itemsLoaded;
+    loadingManager.updateProgress();
+};
+
+// GLTF 로더에 LoadingManager 적용
+let loader = new GLTFLoader(threeLoadingManager);
 let collidableObjects = [];
 window.checkCollision = checkCollision;
 
@@ -109,43 +155,31 @@ loader.load(
             }
         });
 
-        // console.log('3D 모델 로딩 완료');
-        isModelLoaded = true;
+        loadingManager.isGltfComplete = true;
+        console.log('GLTF 모델 로딩 완료');
         
-        // 로딩 진행률을 100%로 설정
-        if (window.updateLoadingProgress) {
-            window.updateLoadingProgress(1);
-        }
-        
-        checkAllLoaded();
+        // 텍스처가 모두 로드될 때까지 기다림
+        // THREE.LoadingManager의 onLoad에서 최종 완료 처리
     }, 
     
-    // onProgress 콜백
+    // onProgress 콜백 - GLTF 파일만 추적
     function (progress) {
-        if (progress.lengthComputable) {
-            const percentComplete = progress.loaded / progress.total;
-            // console.log('모델 로딩 진행률:', Math.round(percentComplete * 100) + '%');
-            
-            // 로딩 진행률 업데이트
-            if (window.updateLoadingProgress) {
-                window.updateLoadingProgress(percentComplete);
-            }
+        if (progress.lengthComputable && progress.total > 0) {
+            const percentComplete = Math.min(progress.loaded / progress.total, 1.0);
+            loadingManager.gltfProgress = percentComplete;
+            loadingManager.updateProgress();
         } else {
-            // lengthComputable이 false인 경우 (파일 크기를 알 수 없는 경우)
-            console.log('모델 로딩 중...');
+            console.log('GLTF 로딩 중...');
         }
     }, 
     
     // onError 콜백
     function (error) {
         console.error('모델 로딩 실패:', error);
-        
-        // 오류 발생 시에도 로딩 화면 숨기기
         isModelLoaded = true;
         checkAllLoaded();
     }
 );
-
 // 애니메이션 루프에서 조이스틱 이동 적용
 function animate() {
     requestAnimationFrame(animate);
