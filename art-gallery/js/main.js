@@ -278,7 +278,7 @@ rooms.forEach((room, index) => {
             inline: 'center'
         });
 
-        console.log(`카메라 이동: ${room.name} (${room.x}, 1.5, ${room.z || 0})`);
+        // console.log(`카메라 이동: ${room.name} (${room.x}, 1.5, ${room.z || 0})`);
     });
 
     btnWrapper.appendChild(btn);
@@ -412,4 +412,5 @@ function startRendering() {
     }
 
     render(); // 렌더링 시작
+
 }
