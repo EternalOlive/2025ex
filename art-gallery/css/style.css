@@ -1,3 +1,16 @@
+@media (max-width: 768px) {
+  .lightbox__nav {
+    display: block !important;
+    z-index: 100 !important;
+  }
+}
+/* 댓글 카운트 스타일 */
+.comment-section h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+}
 /* Add Animate.css to your project */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css");
 

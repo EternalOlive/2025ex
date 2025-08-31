@@ -3,9 +3,23 @@ import { checkCollision, checkDistance, addEventListeners } from './utilities.js
 import { setupJoystick, addJoystickListeners, updateJoystickMovement } from './joystick.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import * as THREE from 'three';
-// 모듈 import 경로 및 오류 로그 보강
+
+// 로딩 상태 관리
+let isModelLoaded = false;
+let isDataLoaded = false;
+
 let works = [];
 let awardsData = null;
+
+// 로딩 완료 체크 함수
+function checkAllLoaded() {
+    if (isModelLoaded && isDataLoaded && window.hideLoadingScreen) {
+        // console.log('모든 리소스 로딩 완료');
+        setTimeout(() => {
+            window.hideLoadingScreen();
+        }, 300); // 짧은 딜레이 후 로딩 화면 숨김
+    }
+}
 
 async function loadWorksData() {
     try {
@@ -15,11 +29,16 @@ async function loadWorksData() {
         const awardsRes = await fetch('../assets/js/awards.json');
         if (awardsRes.ok) awardsData = await awardsRes.json();
         else awardsData = null;
+        
+        isDataLoaded = true;
+        checkAllLoaded();
         return works;
     } catch (error) {
         console.error('작품 데이터 로드 실패:', error);
         works = [];
         awardsData = null;
+        isDataLoaded = true;
+        checkAllLoaded();
         return works;
     }
 }
@@ -31,7 +50,7 @@ let showWorkModal;
     try {
         const mod = await import('./showWorkModal.js');
         showWorkModal = mod.showWorkModal;
-        console.log('showWorkModal 모듈 import 성공');
+        // console.log('showWorkModal 모듈 import 성공');
     } catch (e) {
         console.error('showWorkModal 모듈 import 실패:', e);
     }
@@ -49,7 +68,7 @@ setupJoystick();
 addJoystickListeners(camera);
 
 // Set up lighting
-const { ambientLight, sunLight,wallLight } = setupLighting(camera);
+const { ambientLight, sunLight, wallLight } = setupLighting(camera);
 scene.add(ambientLight);
 scene.add(sunLight);
 scene.add(wallLight);
@@ -73,23 +92,61 @@ function loadJSONData(url, callback) {
 // Load the 3D model and add it to the scene
 let loader = new GLTFLoader();
 let collidableObjects = [];
-// checkCollision을 window에 등록하여 joystick.js에서 접근 가능하게 함
 window.checkCollision = checkCollision;
-loader.load("models/gallery.gltf", function (gltf) {
-    let model = gltf.scene;
-    scene.add(model);
 
-    model.traverse(function (child) {
-        if (child.isMesh) {
-            collidableObjects.push(child);
+// 모델 로딩 진행률 추적
+loader.load(
+    "models/gallery.gltf", 
+    
+    // onLoad 콜백
+    function (gltf) {
+        let model = gltf.scene;
+        scene.add(model);
+
+        model.traverse(function (child) {
+            if (child.isMesh) {
+                collidableObjects.push(child);
+            }
+        });
+
+        // console.log('3D 모델 로딩 완료');
+        isModelLoaded = true;
+        
+        // 로딩 진행률을 100%로 설정
+        if (window.updateLoadingProgress) {
+            window.updateLoadingProgress(1);
         }
-    });
-}, undefined, function (error) {
-    console.error(error);
-});
+        
+        checkAllLoaded();
+    }, 
+    
+    // onProgress 콜백
+    function (progress) {
+        if (progress.lengthComputable) {
+            const percentComplete = progress.loaded / progress.total;
+            // console.log('모델 로딩 진행률:', Math.round(percentComplete * 100) + '%');
+            
+            // 로딩 진행률 업데이트
+            if (window.updateLoadingProgress) {
+                window.updateLoadingProgress(percentComplete);
+            }
+        } else {
+            // lengthComputable이 false인 경우 (파일 크기를 알 수 없는 경우)
+            console.log('모델 로딩 중...');
+        }
+    }, 
+    
+    // onError 콜백
+    function (error) {
+        console.error('모델 로딩 실패:', error);
+        
+        // 오류 발생 시에도 로딩 화면 숨기기
+        isModelLoaded = true;
+        checkAllLoaded();
+    }
+);
 
 // 애니메이션 루프에서 조이스틱 이동 적용
-
 function animate() {
     requestAnimationFrame(animate);
     // 모달이 열려 있으면 카메라 이동/회전 차단
@@ -98,6 +155,8 @@ function animate() {
     }
     renderer.render(scene, camera);
 }
+
+// 애니메이션 시작 (즉시 시작)
 animate();
 
 // 좌상단에 각 방으로 이동하는 버튼 그룹 추가
@@ -186,6 +245,12 @@ rooms.forEach((room, index) => {
 
     // 클릭 이벤트
     btn.addEventListener('click', () => {
+        // 모델이 로드되지 않았으면 이동 불가
+        if (!isModelLoaded) {
+            console.log('모델 로딩 중... 잠시 기다려주세요.');
+            return;
+        }
+
         // 이전 활성 버튼 스타일 초기화
         if (activeButton) {
             activeButton.style.background = 'transparent';
@@ -199,12 +264,12 @@ rooms.forEach((room, index) => {
         btn.style.fontWeight = '600';
         activeButton = btn;
 
-    // 모달이 열려 있으면 카메라 이동/회전 차단
-    if (!document.getElementById('work-modal')) {
-        camera.position.set(room.x, 1.5, room.z || 0);
-        // 항상 -z축 방향(정면) 바라보게
-        camera.lookAt(room.x, 1.5, (room.z || 0) - 10);
-    }
+        // 모달이 열려 있으면 카메라 이동/회전 차단
+        if (!document.getElementById('work-modal')) {
+            camera.position.set(room.x, 1.5, room.z || 0);
+            // 항상 -z축 방향(정면) 바라보게
+            camera.lookAt(room.x, 1.5, (room.z || 0) - 10);
+        }
 
         // 선택된 버튼이 보이도록 스크롤
         btn.scrollIntoView({
@@ -271,9 +336,11 @@ function handleMobileView(e) {
         });
     }
 }
-    // 모바일/데스크탑 스타일 적용을 위해 초기 실행 및 변경 감지 리스너 추가
-    handleMobileView(mediaQuery);
-    mediaQuery.addEventListener('change', handleMobileView);
+
+// 모바일/데스크탑 스타일 적용을 위해 초기 실행 및 변경 감지 리스너 추가
+handleMobileView(mediaQuery);
+mediaQuery.addEventListener('change', handleMobileView);
+
 // Add event listeners
 // 마우스 클릭 시 해당 mesh의 텍스처 이름 출력
 const raycaster = new THREE.Raycaster();
@@ -281,10 +348,12 @@ const mouse = new THREE.Vector2();
 window.addEventListener('pointerdown', function(event) {
     // 모달이 열려 있으면 텍스처 클릭 시 아무 동작도 하지 않음
     if (document.getElementById('work-modal')) return;
+    
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(scene.children, true);
+    
     if (intersects.length > 0) {
         const mesh = intersects[0].object;
         if (mesh.material && mesh.material.map) {
@@ -306,13 +375,14 @@ window.addEventListener('pointerdown', function(event) {
                     alert('작품 정보를 찾을 수 없습니다.');
                 }
             } else {
-                console.warn('textureWorkMap 매핑 없음:', textureName);
+                // console.warn('textureWorkMap 매핑 없음:', textureName);
             }
         } else {
-            console.log('텍스처 없음:', mesh.name || mesh.uuid);
+            // console.log('텍스처 없음:', mesh.name || mesh.uuid);
         }
     }
 });
+
 addEventListeners(camera, collidableObjects);
 
 // Resize event listener

@@ -12,10 +12,87 @@
         .comment-date {
             text-align: left;
         }
+
+        /* 심플한 로딩 화면 스타일 */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        #loading-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-title {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e9ecef;
+            border-top: 3px solid #6c757d;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-weight: 300;
+        }
+
+        /* 모바일 반응형 */
+        @media (max-width: 768px) {
+            .loading-title {
+                font-size: 1.5rem;
+            }
+            
+            .spinner {
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+        #joystick-knob:active {
+            cursor: grabbing;
+            transform: translate(-16px,-16px) scale(0.9);
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+    <!-- 로딩 화면 -->
+    <div id="loading-screen">
+        <h1 class="loading-title">Art Gallery</h1>
+        <div class="spinner"></div>
+        <div class="progress-text" id="progress-text">Loading...</div>
+    </div>
+
+    <!-- 갤러리 컨텐츠 -->
     <!-- <div class="background_menu">
         <div id="menu">
             <div id="img_container">
@@ -51,10 +128,39 @@
         }
     </script>
 
-    <div id="joystick-container" style="position:fixed;left:20px;bottom:20px;width:120px;height:120px;z-index:1000;touch-action:none;display:none;">
-        <div id="joystick" style="width:80px;height:80px;background:rgba(200,200,200,0.5);border-radius:50%;position:absolute;left:20px;top:20px;"></div>
-        <div id="joystick-knob" style="width:40px;height:40px;background:rgba(100,100,255,0.7);border-radius:50%;position:absolute;left:40px;top:40px;transform:translate(-20px,-20px);"></div>
-    </div>
+    <script>
+        // 로딩 진행률 업데이트 함수
+        function updateLoadingProgress(progress) {
+            const progressText = document.getElementById('progress-text');
+            
+            if (progressText) {
+                const percentage = Math.round(progress * 100);
+                progressText.textContent = `Loading... ${percentage}%`;
+            }
+        }
+
+        // 로딩 완료 함수
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('fade-out');
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        // 글로벌 함수로 등록하여 main.js에서 사용할 수 있게 함
+        window.updateLoadingProgress = updateLoadingProgress;
+        window.hideLoadingScreen = hideLoadingScreen;
+    </script>
+
+    <!-- 기존 joystick-container 부분을 이것으로 교체하세요 -->
+<div id="joystick-container" style="position:fixed;left:20px;bottom:20px;width:120px;height:120px;z-index:1000;touch-action:none;display:none;">
+    <div id="joystick" style="width:80px;height:80px;background:#ffffff;border-radius:50%;position:absolute;left:20px;top:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);border:2px solid #e0e0e0;"></div>
+    <div id="joystick-knob" style="width:32px;height:32px;background:#6366f1;border-radius:50%;position:absolute;left:40px;top:40px;transform:translate(-16px,-16px);cursor:grab;box-shadow:0 2px 6px rgba(99,102,241,0.3);transition:transform 0.1s ease;"></div>
+</div>
+
     <script src="./js/main.js" type="module" defer></script>
 </body>
 </html>
