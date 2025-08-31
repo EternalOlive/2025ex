@@ -115,7 +115,7 @@ const loadingManager = {
             window.updateLoadingProgress(totalProgress);
         }
         
-        console.log(`로딩 진행률: GLTF ${Math.round(this.gltfProgress * 100)}%, 텍스처 ${this.texturesLoaded}/${this.totalTextures}, 전체 ${Math.round(totalProgress * 100)}%`);
+        // console.log(`로딩 진행률: GLTF ${Math.round(this.gltfProgress * 100)}%, 텍스처 ${this.texturesLoaded}/${this.totalTextures}, 전체 ${Math.round(totalProgress * 100)}%`);
     }
 };
 
@@ -449,3 +449,4 @@ function startRendering() {
     render(); // 렌더링 시작
 
 }
+
