@@ -4,6 +4,7 @@ import { setupJoystick, addJoystickListeners, updateJoystickMovement } from './j
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import * as THREE from 'three';
 
+// 제발되라
 // 로딩 상태 관리
 let isModelLoaded = false;
 let isDataLoaded = false;
