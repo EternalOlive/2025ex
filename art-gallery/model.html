@@ -13,6 +13,37 @@
             text-align: left;
         }
 
+        /* 뒤로가기 버튼 스타일 */
+        #back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        #back-button:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+        /* 화살표 아이콘 */
+        .arrow-icon {
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 15px solid #333;
+        }
+
         /* 심플한 로딩 화면 스타일 */
         #loading-screen {
             position: fixed;
@@ -75,6 +106,19 @@
                 width: 35px;
                 height: 35px;
             }
+
+            #back-button {
+                width: 45px;
+                height: 45px;
+                top: 15px;
+                left: 15px;
+            }
+
+            .arrow-icon {
+                border-top: 8px solid transparent;
+                border-bottom: 8px solid transparent;
+                border-right: 12px solid #333;
+            }
         }
 
         #joystick-knob:active {
@@ -85,6 +129,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+    <!-- 뒤로가기 버튼 -->
+    <div id="back-button" onclick="goBack()" title="뒤로가기" aria-label="뒤로가기">
+        <div class="arrow-icon"></div>
+    </div>
+
     <!-- 로딩 화면 -->
     <div id="loading-screen">
         <h1 class="loading-title">유치원급식 사생대회</h1>
@@ -129,6 +178,11 @@
     </script>
 
     <script>
+        // 뒤로가기 함수
+        function goBack() {
+            window.location.href = 'https://유치원급식사생대회.com';
+        }
+
         // 로딩 진행률 업데이트 함수
         function updateLoadingProgress(progress) {
             const progressText = document.getElementById('progress-text');
@@ -165,5 +219,3 @@
 </body>
 
 </html>
-
-
