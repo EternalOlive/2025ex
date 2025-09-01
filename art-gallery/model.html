@@ -354,6 +354,17 @@
             window.location.href = 'https://유치원급식사생대회.com';
         }
 
+        // 모바일 터치 이벤트도 뒤로가기 버튼에 추가
+        document.addEventListener('DOMContentLoaded', function() {
+            const backBtn = document.getElementById('back-button');
+            if (backBtn) {
+                backBtn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    goBack();
+                }, { passive: false });
+            }
+        });
+
         // 로딩 진행률 업데이트 함수
         function updateLoadingProgress(progress) {
             const progressText = document.getElementById('progress-text');
@@ -400,6 +411,30 @@
 
     <script src="./js/main.js" type="module" defer></script>
     <script src="./js/controlGuide.js" type="module"></script>
+    <script>
+    // 모바일 터치 이벤트도 ?(도움말) 버튼에 추가
+    document.addEventListener('DOMContentLoaded', function() {
+        const helpBtn = document.getElementById('help-button');
+        if (helpBtn) {
+            helpBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                helpBtn.click();
+            }, { passive: false });
+        }
+    });
+    // 동적으로 생성되는 help-button에도 적용
+    const observer = new MutationObserver(() => {
+        const helpBtn = document.getElementById('help-button');
+        if (helpBtn && !helpBtn._touchAdded) {
+            helpBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                helpBtn.click();
+            }, { passive: false });
+            helpBtn._touchAdded = true;
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    </script>
 </body>
 
 </html>
