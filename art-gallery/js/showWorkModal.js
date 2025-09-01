@@ -11,6 +11,77 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         console.error('comments.js import 실패:', e);
     }
 
+    // 댓글 섹션 폴백 함수 (import 실패 시 사용)
+    function createCommentSectionFallback(itemId) {
+        const safeId = itemId.replace(/[^a-zA-Z0-9_-]/g, '_');
+        const container = document.createElement('div');
+        container.className = 'comment-section';
+        container.innerHTML = `
+            <h3 style="text-align: left;">댓글 <span class="comment-count" id="comment-count-${safeId}">(0)</span></h3>
+            <div class="comments-list" id="comments-list-${safeId}">
+                <div class="no-comments">작성된 댓글이 없습니다.</div>
+            </div>
+            <div class="comment-form">
+                <input 
+                    type="text"
+                    id="comment-author-${safeId}"
+                    placeholder="작성자 이름"
+                    maxlength="8"
+                    style="margin-bottom:12px;width:100%;box-sizing:border-box;border-radius:8px;padding:12px 16px;border:1.5px solid #d1d5db;font-size:16px;background:#f8f9fa;transition:border-color 0.2s;"
+                />
+                <textarea 
+                    id="comment-content-${safeId}" 
+                    placeholder="댓글을 작성해주세요 (최대 300자)" 
+                    maxlength="300"
+                    rows="3"
+                    style="width:100%;box-sizing:border-box;border-radius:8px;padding:12px 16px;border:1.5px solid #d1d5db;font-size:14px;background:#f8f9fa;resize:vertical;min-height:80px;"
+                ></textarea>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+                    <span id="char-count-${safeId}" style="font-size:12px;color:#666;">0/300</span>
+                    <button id="comment-submit-${safeId}" disabled style="background:#6366f1;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;opacity:0.5;">댓글 작성</button>
+                </div>
+            </div>
+        `;
+        
+        // 이벤트 리스너 추가
+        const textarea = container.querySelector(`#comment-content-${safeId}`);
+        const charCount = container.querySelector(`#char-count-${safeId}`);
+        const submitBtn = container.querySelector(`#comment-submit-${safeId}`);
+        const authorInput = container.querySelector(`#comment-author-${safeId}`);
+        
+        if (textarea && charCount && submitBtn && authorInput) {
+            textarea.addEventListener('input', function() {
+                const length = this.value.length;
+                charCount.textContent = `${length}/300`;
+                const authorLength = authorInput.value.trim().length;
+                submitBtn.disabled = length === 0 || length > 300 || authorLength === 0;
+                submitBtn.style.opacity = submitBtn.disabled ? '0.5' : '1';
+            });
+            
+            authorInput.addEventListener('input', function() {
+                const authorLength = this.value.trim().length;
+                const contentLength = textarea.value.length;
+                submitBtn.disabled = contentLength === 0 || contentLength > 300 || authorLength === 0;
+                submitBtn.style.opacity = submitBtn.disabled ? '0.5' : '1';
+            });
+            
+            submitBtn.addEventListener('click', async function() {
+                if (!submitBtn.disabled && submitComment) {
+                    await submitComment(itemId);
+                }
+            });
+            
+            submitBtn.addEventListener('touchstart', async function(e) {
+                e.preventDefault();
+                if (!submitBtn.disabled && submitComment) {
+                    await submitComment(itemId);
+                }
+            }, { passive: false });
+        }
+        
+        return container;
+    }
+
     const folderMapping = {
         '그림일기': '그림일기',
         '동시': '동시',
@@ -297,6 +368,15 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
                 if (typeof loadComments === 'function') {
                     loadComments(currentSlide.filename);
                 }
+            } else {
+                // 폴백 함수 사용
+                const commentSection = createCommentSectionFallback(currentSlide.filename);
+                meta.appendChild(commentSection);
+                
+                // 댓글 로드 시도
+                if (typeof loadComments === 'function') {
+                    loadComments(currentSlide.filename);
+                }
             }
         }
 
@@ -306,12 +386,26 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
             const newIdx = (currentSlideIdx - 1 + slideList.length) % slideList.length;
             updateSlide(newIdx);
         });
+        // 모바일 터치 이벤트 추가
+        prevBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const newIdx = (currentSlideIdx - 1 + slideList.length) % slideList.length;
+            updateSlide(newIdx);
+        }, { passive: false });
 
         nextBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             const newIdx = (currentSlideIdx + 1) % slideList.length;
             updateSlide(newIdx);
         });
+        // 모바일 터치 이벤트 추가
+        nextBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const newIdx = (currentSlideIdx + 1) % slideList.length;
+            updateSlide(newIdx);
+        }, { passive: false });
 
         // 미디어 영역 스타일 설정
         media.style.position = 'relative';
@@ -351,10 +445,14 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         const commentSection = createCommentSection(currentWork.filename);
         meta.appendChild(commentSection);
     } else {
-        const commentFallback = document.createElement('div');
-        commentFallback.className = 'comment-section';
-        commentFallback.innerHTML = '<h3>댓글 기능을 사용할 수 없습니다.</h3>';
-        meta.appendChild(commentFallback);
+        // 댓글 섹션을 직접 생성 (index.html의 코드 기반)
+        const commentSection = createCommentSectionFallback(currentWork.filename);
+        meta.appendChild(commentSection);
+    }
+
+    // 댓글 로드
+    if (typeof loadComments === 'function') {
+        loadComments(currentWork.filename);
     }
 
     // 닫기 버튼
@@ -367,6 +465,13 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         backdrop.remove();
         document.removeEventListener('keydown', onKey);
     });
+    // 모바일 터치 이벤트 추가
+    closeBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        backdrop.remove();
+        document.removeEventListener('keydown', onKey);
+    }, { passive: false });
 
     // 키보드 지원
     function onKey(e) {
@@ -398,14 +503,17 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         backdrop.remove();
         document.removeEventListener('keydown', onKey);
     });
+    // 모바일 터치 이벤트 추가
+    backdrop.addEventListener('touchstart', (e) => {
+        if (e.target === backdrop) {
+            e.preventDefault();
+            backdrop.remove();
+            document.removeEventListener('keydown', onKey);
+        }
+    }, { passive: false });
 
     // 컨텐츠 클릭 전파 방지
     lightbox.addEventListener('click', (e) => e.stopPropagation());
 
     document.body.appendChild(backdrop);
-
-    // 댓글 로드
-    if (typeof loadComments === 'function') {
-        loadComments(currentWork.filename);
-    }
 }

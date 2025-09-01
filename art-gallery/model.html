@@ -30,10 +30,18 @@
             cursor: pointer;
             z-index: 1001;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         #back-button:hover {
             background: rgba(255, 255, 255, 1);
+        }
+
+        #back-button:active {
+            transform: scale(0.95);
+            background: rgba(240, 240, 240, 1);
         }
 
         /* 홈 아이콘 */
@@ -418,16 +426,19 @@
         if (helpBtn) {
             helpBtn.addEventListener('touchstart', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 helpBtn.click();
             }, { passive: false });
         }
     });
+    
     // 동적으로 생성되는 help-button에도 적용
     const observer = new MutationObserver(() => {
         const helpBtn = document.getElementById('help-button');
         if (helpBtn && !helpBtn._touchAdded) {
             helpBtn.addEventListener('touchstart', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 helpBtn.click();
             }, { passive: false });
             helpBtn._touchAdded = true;
