@@ -1,3 +1,4 @@
+// comments.js
 // 댓글 UI 및 기능 모듈화
 
 export function createCommentSection(itemId) {
@@ -5,7 +6,7 @@ export function createCommentSection(itemId) {
     const container = document.createElement('div');
     container.className = 'comment-section';
     container.innerHTML = `
-        <h3 style="text-align: left;">댓글 <span class="comment-count" id="comment-count-${safeId}">(0)</span></h3>
+
         <div class="comments-list" id="comments-list-${safeId}">
             <div class="no-comments">작성된 댓글이 없습니다.</div>
         </div>
@@ -23,11 +24,10 @@ export function createCommentSection(itemId) {
                 placeholder="댓글을 작성해주세요 (최대 300자)" 
                 maxlength="300"
                 rows="3"
-                style="width:100%;box-sizing:border-box;border-radius:8px;padding:12px 16px;border:1.5px solid #d1d5db;font-size:14px;background:#f8f9fa;resize:vertical;min-height:80px;"
             ></textarea>
-            <div class="comment-form-bottom" style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
-                <span class="char-count" id="char-count-${safeId}" style="font-size:12px;color:#666;">0/300</span>
-                <button class="comment-submit" id="comment-submit-${safeId}" disabled style="background:#6366f1;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;">댓글 작성</button>
+            <div class="comment-form-bottom">
+                <span class="char-count" id="char-count-${safeId}">0/300</span>
+                <button class="comment-submit" id="comment-submit-${safeId}">댓글 작성</button>
             </div>
         </div>
     `;
@@ -35,47 +35,14 @@ export function createCommentSection(itemId) {
     const textarea = container.querySelector(`#comment-content-${safeId}`);
     const charCount = container.querySelector(`#char-count-${safeId}`);
     const submitBtn = container.querySelector(`#comment-submit-${safeId}`);
-    const authorInput = container.querySelector(`#comment-author-${safeId}`);
-    
     if (textarea && charCount && submitBtn) {
-        // 텍스트 입력 시 글자 수 카운터 업데이트
         textarea.addEventListener('input', function() {
             const length = this.value.length;
             charCount.textContent = `${length}/300`;
             charCount.className = length > 250 ? 'char-count warning' : 'char-count';
-            
-            // 작성자 이름과 댓글 내용이 모두 있을 때만 버튼 활성화
-            const authorLength = authorInput.value.trim().length;
-            submitBtn.disabled = length === 0 || length > 300 || authorLength === 0;
-            submitBtn.style.opacity = submitBtn.disabled ? '0.5' : '1';
-            submitBtn.style.cursor = submitBtn.disabled ? 'not-allowed' : 'pointer';
+            submitBtn.disabled = length === 0 || length > 300;
         });
-        
-        // 작성자 이름 입력 시 버튼 상태 업데이트
-        authorInput.addEventListener('input', function() {
-            const authorLength = this.value.trim().length;
-            const contentLength = textarea.value.length;
-            submitBtn.disabled = contentLength === 0 || contentLength > 300 || authorLength === 0;
-            submitBtn.style.opacity = submitBtn.disabled ? '0.5' : '1';
-            submitBtn.style.cursor = submitBtn.disabled ? 'not-allowed' : 'pointer';
-        });
-        
-        // 댓글 작성 버튼 클릭 이벤트
-        submitBtn.addEventListener('click', async function() {
-            if (!submitBtn.disabled) {
-                await submitComment(itemId);
-            }
-        });
-        
-        // 모바일 터치 이벤트 추가
-        submitBtn.addEventListener('touchstart', async function(e) {
-            e.preventDefault();
-            if (!submitBtn.disabled) {
-                await submitComment(itemId);
-            }
-        }, { passive: false });
     }
-    
     return container;
 }
 
@@ -86,14 +53,8 @@ export async function loadComments(itemId) {
     try {
         if (window.supabase && typeof window.supabase.createClient === 'function') {
             if (!window.supabaseClient) {
-                // 환경변수에서 설정값 가져오기
-                const supabaseUrl = window.SUPABASE_URL || 'https://pimgwrosozsowpetqeeq.supabase.co';
-                const supabaseKey = window.SUPABASE_ANON_KEY;
-                
-                if (!supabaseKey) {
-                    throw new Error('Supabase API 키가 설정되지 않았습니다.');
-                }
-                
+                const supabaseUrl = 'https://pimgwrosozsowpetqeeq.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbWd3cm9zb3pzb3dwZXRxZWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MTcxMjgsImV4cCI6MjA3MDk5MzEyOH0.VKEsxMu47TDVvV93Gy9I-z4UmfNYlNEhSYkBSS5vDqU';
                 window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
             }
             const supabaseClient = window.supabaseClient;
@@ -172,14 +133,8 @@ export async function submitComment(itemId) {
     try {
         if (window.supabase && typeof window.supabase.createClient === 'function') {
             if (!window.supabaseClient) {
-                // 환경변수에서 설정값 가져오기
-                const supabaseUrl = window.SUPABASE_URL || 'https://pimgwrosozsowpetqeeq.supabase.co';
-                const supabaseKey = window.SUPABASE_ANON_KEY;
-                
-                if (!supabaseKey) {
-                    throw new Error('Supabase API 키가 설정되지 않았습니다.');
-                }
-                
+                const supabaseUrl = 'https://pimgwrosozsowpetqeeq.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbWd3cm9zb3pzb3dwZXRxZWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MTcxMjgsImV4cCI6MjA3MDk5MzEyOH0.VKEsxMu47TDVvV93Gy9I-z4UmfNYlNEhSYkBSS5vDqU';
                 window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
             }
             const supabaseClient = window.supabaseClient;
