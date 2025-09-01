@@ -512,7 +512,7 @@ function showWorkModal(work) {
 
     // 댓글 섹션 추가 (createCommentSection 함수가 존재하는 경우에만)
     if (typeof createCommentSection === 'function') {
-        const commentSection = createCommentSection(`work_${work.filename}`);
+        const commentSection = createCommentSection(`${work.filename}`);
         meta.appendChild(commentSection);
     } else {
         console.warn('Works - createCommentSection 함수를 찾을 수 없습니다 - 직접 HTML 삽입');
@@ -577,7 +577,7 @@ function showWorkModal(work) {
         
         // 작품이 변경될 때마다 댓글 새로 로드
         if (typeof loadComments === 'function') {
-            loadComments(`work_${w.filename}`);
+            loadComments(`${w.filename}`);
         }
     }
 
@@ -629,7 +629,7 @@ function showWorkModal(work) {
     
     // 댓글 로드 (loadComments 함수가 존재하는 경우에만)
     if (typeof loadComments === 'function') {
-        loadComments(`work_${work.filename}`);
+        loadComments(`${work.filename}`);
     } else {
         console.warn('Works - loadComments 함수를 찾을 수 없습니다');
     }
@@ -1115,3 +1115,4 @@ function renderWorksFiltered(filteredWorks) {
         workList.innerHTML = '<p style="text-align: center; color: #666; padding: 50px;">검색 결과가 없습니다.</p>';
     }
 }
+
