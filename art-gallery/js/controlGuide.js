@@ -260,7 +260,7 @@ export function createControlGuide() {
                                 text-align: center;
                                 line-height: 1.3;
                                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                            ">마우스를 드래그하여<br> 시점 변경</div>
+                            ">마우스를 드래그하여 시점 변경</div>
                         </div>
                     </div>
 
@@ -402,6 +402,11 @@ export function createControlGuide() {
                     cursor: pointer;
                     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     margin-top: 5px;
+                    touch-action: manipulation;
+                    user-select: none;
+                    -webkit-user-select: none;
+                    -webkit-tap-highlight-color: transparent;
+                    transition: all 0.2s ease;
                 ">시작하기</button>
             </div>
         </div>
@@ -424,6 +429,26 @@ export function createControlGuide() {
 
     // 시작 버튼 클릭 이벤트
     startButton.addEventListener('click', hideControlGuide);
+    
+    // 모바일/태블릿 터치 이벤트 추가
+    startButton.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        hideControlGuide();
+    });
+    
+    // 터치 시작시 스타일 변경 (시각적 피드백)
+    startButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        startButton.style.background = '#5856eb';
+        startButton.style.transform = 'scale(0.98)';
+    });
+    
+    // 터치 취소시 원래 스타일로 복원
+    startButton.addEventListener('touchcancel', () => {
+        startButton.style.background = '#6366f1';
+        startButton.style.transform = 'scale(1)';
+    });
 
     // 실제 모바일 디바이스에서만 조이스틱 표시 (화면 크기 무관)
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);

@@ -470,24 +470,24 @@ function preventMobileScroll() {
         document.body.style.overflow = 'hidden';
         document.documentElement.style.overflow = 'hidden';
         
-        // 터치 이벤트에서 기본 동작 방지 (단, 조이스틱 제외)
+        // 터치 이벤트에서 기본 동작 방지 (단, 조이스틱과 가이드 제외)
         document.addEventListener('touchstart', function(e) {
-            // 조이스틱 영역이 아닌 경우만 방지
-            if (!e.target.closest('#joystick-container')) {
+            // 조이스틱 영역이나 조작 가이드 영역이 아닌 경우만 방지
+            if (!e.target.closest('#joystick-container') && !e.target.closest('#control-guide')) {
                 e.preventDefault();
             }
         }, { passive: false });
         
         document.addEventListener('touchend', function(e) {
-            // 조이스틱 영역이 아닌 경우만 방지
-            if (!e.target.closest('#joystick-container')) {
+            // 조이스틱 영역이나 조작 가이드 영역이 아닌 경우만 방지
+            if (!e.target.closest('#joystick-container') && !e.target.closest('#control-guide')) {
                 e.preventDefault();
             }
         }, { passive: false });
         
         document.addEventListener('touchmove', function(e) {
-            // 조이스틱 영역이 아닌 경우만 방지
-            if (!e.target.closest('#joystick-container')) {
+            // 조이스틱 영역이나 조작 가이드 영역이 아닌 경우만 방지
+            if (!e.target.closest('#joystick-container') && !e.target.closest('#control-guide')) {
                 e.preventDefault();
             }
         }, { passive: false });

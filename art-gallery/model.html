@@ -167,7 +167,150 @@
         <h1 class="loading-title">유치원급식 사생대회</h1>
         <div class="spinner"></div>
         <div class="progress-text" id="progress-text">Loading...</div>
+        
+        <!-- 로딩 중 조작 가이드 -->
+        <div id="loading-controls" style="
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 2s forwards;
+        ">
+            <div style="
+                color: #666;
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            ">로딩 중... 조작법을 미리 확인해보세요!</div>
+            
+            <div style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                max-width: 300px;
+                margin: 0 auto;
+            ">
+                <!-- WASD 키 -->
+                <div style="
+                    text-align: center;
+                    background: rgba(255, 255, 255, 0.1);
+                    padding: 15px;
+                    border-radius: 8px;
+                ">
+                    <div style="
+                        display: grid;
+                        grid-template-columns: repeat(3, 14px);
+                        gap: 2px;
+                        justify-content: center;
+                        margin-bottom: 10px;
+                    ">
+                        <div></div>
+                        <div class="loading-key">W</div>
+                        <div></div>
+                        <div class="loading-key">A</div>
+                        <div class="loading-key">S</div>
+                        <div class="loading-key">D</div>
+                    </div>
+                    <div style="font-size: 0.75rem; color: #888;">이동하기</div>
+                </div>
+                
+                <!-- 마우스 -->
+                <div style="
+                    text-align: center;
+                    background: rgba(255, 255, 255, 0.1);
+                    padding: 15px;
+                    border-radius: 8px;
+                ">
+                    <div style="
+                        width: 20px;
+                        height: 28px;
+                        background: rgba(255, 255, 255, 0.3);
+                        border: 1px solid rgba(255, 255, 255, 0.5);
+                        border-radius: 10px 10px 5px 5px;
+                        margin: 0 auto 10px;
+                        position: relative;
+                    ">
+                        <div style="
+                            position: absolute;
+                            top: 3px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 1px;
+                            height: 5px;
+                            background: rgba(255, 255, 255, 0.7);
+                        "></div>
+                        <div style="
+                            position: absolute;
+                            top: 25px;
+                            left: -15px;
+                            width: 50px;
+                            height: 2px;
+                            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.8), transparent);
+                            animation: loadingDrag 2s ease-in-out infinite;
+                        "></div>
+                    </div>
+                    <div style="font-size: 0.75rem; color: #888;">둘러보기</div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes loadingKeyPress {
+            0%, 80%, 100% { 
+                background: rgba(255, 255, 255, 0.2);
+                transform: scale(1);
+            }
+            10%, 20% { 
+                background: rgba(99, 102, 241, 0.8);
+                transform: scale(0.95);
+            }
+        }
+        
+        @keyframes loadingDrag {
+            0%, 100% { transform: translateX(-10px); opacity: 0.3; }
+            50% { transform: translateX(10px); opacity: 1; }
+        }
+        
+        .loading-key {
+            width: 14px;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 7px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .loading-key:nth-child(2) { /* W */
+            animation: loadingKeyPress 3s ease-in-out infinite;
+        }
+        
+        .loading-key:nth-child(4) { /* A */
+            animation: loadingKeyPress 3s ease-in-out infinite 0.75s;
+        }
+        
+        .loading-key:nth-child(6) { /* D */
+            animation: loadingKeyPress 3s ease-in-out infinite 1.5s;
+        }
+        
+        .loading-key:nth-child(5) { /* S */
+            animation: loadingKeyPress 3s ease-in-out infinite 2.25s;
+        }
+    </style>
 
     <!-- 갤러리 컨텐츠 -->
     <!-- <div class="background_menu">
