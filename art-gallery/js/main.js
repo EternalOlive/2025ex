@@ -122,9 +122,22 @@ const loadingManager = {
 // THREE.js LoadingManager 생성
 const threeLoadingManager = new THREE.LoadingManager();
 
-// 텍스처 로딩 추적
+// 텍스처 품질 향상을 위한 설정
 threeLoadingManager.onLoad = () => {
     console.log('모든 리소스 로딩 완료');
+    
+    // 로딩 완료 후 모든 텍스처의 필터링 개선
+    scene.traverse((child) => {
+        if (child.isMesh && child.material) {
+            if (child.material.map) {
+                child.material.map.generateMipmaps = true;
+                child.material.map.minFilter = THREE.LinearMipmapLinearFilter;
+                child.material.map.magFilter = THREE.LinearFilter;
+                child.material.map.anisotropy = renderer.capabilities.getMaxAnisotropy();
+            }
+        }
+    });
+    
     isModelLoaded = true;
     loadingManager.updateProgress();
     checkAllLoaded();
@@ -376,25 +389,22 @@ function handleMobileView(e) {
 handleMobileView(mediaQuery);
 mediaQuery.addEventListener('change', handleMobileView);
 
-// Add event listeners
-// 마우스 클릭 시 해당 mesh의 텍스처 이름 출력
+
+// 더블 클릭(데스크탑) 또는 더블 탭(모바일) 시 모달 오픈
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-window.addEventListener('pointerdown', function(event) {
-    // 모달이 열려 있으면 텍스처 클릭 시 아무 동작도 하지 않음
+
+function handleTextureModal(event) {
     if (document.getElementById('work-modal')) return;
-    
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(scene.children, true);
-    
     if (intersects.length > 0) {
         const mesh = intersects[0].object;
         if (mesh.material && mesh.material.map) {
             const tex = mesh.material.map;
             const textureName = tex.name || mesh.name || tex.uuid;
-            // textureWorkMap에서 filename 찾기
             const mapping = textureWorkMap.find(m => m.textureName === textureName);
             if (mapping) {
                 if (showWorkModal && works.length > 0) {
@@ -409,13 +419,28 @@ window.addEventListener('pointerdown', function(event) {
                     console.warn('showWorkModal 함수 또는 작품 데이터 없음');
                     alert('작품 정보를 찾을 수 없습니다.');
                 }
-            } else {
-                // console.warn('textureWorkMap 매핑 없음:', textureName);
             }
-        } else {
-            // console.log('텍스처 없음:', mesh.name || mesh.uuid);
         }
     }
+}
+
+// 데스크탑: 더블 클릭
+window.addEventListener('dblclick', handleTextureModal);
+
+// 모바일: 더블 탭 감지
+let lastTap = 0;
+window.addEventListener('touchend', function(event) {
+    const now = Date.now();
+    if (now - lastTap < 350) { // 350ms 이내 두 번 터치
+        // 더블 탭으로 간주
+        // touch 이벤트는 clientX, clientY가 없으므로 touches[0] 또는 changedTouches[0] 사용
+        if (event.changedTouches && event.changedTouches.length > 0) {
+            event.clientX = event.changedTouches[0].clientX;
+            event.clientY = event.changedTouches[0].clientY;
+        }
+        handleTextureModal(event);
+    }
+    lastTap = now;
 });
 
 addEventListeners(camera, collidableObjects);
@@ -424,6 +449,7 @@ addEventListeners(camera, collidableObjects);
 window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
