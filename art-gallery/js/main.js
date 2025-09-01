@@ -285,9 +285,6 @@ rooms.forEach((room, index) => {
         min-width: 80px;
         text-align: center;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        touch-action: manipulation;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
     `;
 
     // 첫 번째 버튼을 활성화
@@ -348,12 +345,6 @@ rooms.forEach((room, index) => {
 
         // console.log(`카메라 이동: ${room.name} (${room.x}, 1.5, ${room.z || 0})`);
     });
-
-    // 모바일 터치 이벤트 추가
-    btn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        btn.click(); // 기존 클릭 이벤트 재사용
-    }, { passive: false });
 
     btnWrapper.appendChild(btn);
 });
@@ -479,42 +470,24 @@ function preventMobileScroll() {
         document.body.style.overflow = 'hidden';
         document.documentElement.style.overflow = 'hidden';
         
-        // 터치 이벤트에서 기본 동작 방지 (단, 조이스틱과 가이드, 버튼들 제외)
+        // 터치 이벤트에서 기본 동작 방지 (단, 조이스틱과 가이드 제외)
         document.addEventListener('touchstart', function(e) {
-            // 조이스틱 영역이나 조작 가이드 영역, 버튼들이 아닌 경우만 방지
-            if (!e.target.closest('#joystick-container') && 
-                !e.target.closest('#control-guide') &&
-                !e.target.closest('button') &&
-                !e.target.closest('.lightbox') &&
-                !e.target.closest('[role="button"]') &&
-                !e.target.closest('.lightbox__nav') &&
-                !e.target.closest('.lightbox__close')) {
+            // 조이스틱 영역이나 조작 가이드 영역이 아닌 경우만 방지
+            if (!e.target.closest('#joystick-container') && !e.target.closest('#control-guide')) {
                 e.preventDefault();
             }
         }, { passive: false });
         
         document.addEventListener('touchend', function(e) {
-            // 조이스틱 영역이나 조작 가이드 영역, 버튼들이 아닌 경우만 방지
-            if (!e.target.closest('#joystick-container') && 
-                !e.target.closest('#control-guide') &&
-                !e.target.closest('button') &&
-                !e.target.closest('.lightbox') &&
-                !e.target.closest('[role="button"]') &&
-                !e.target.closest('.lightbox__nav') &&
-                !e.target.closest('.lightbox__close')) {
+            // 조이스틱 영역이나 조작 가이드 영역이 아닌 경우만 방지
+            if (!e.target.closest('#joystick-container') && !e.target.closest('#control-guide')) {
                 e.preventDefault();
             }
         }, { passive: false });
         
         document.addEventListener('touchmove', function(e) {
-            // 조이스틱 영역이나 조작 가이드 영역, 버튼들이 아닌 경우만 방지
-            if (!e.target.closest('#joystick-container') && 
-                !e.target.closest('#control-guide') &&
-                !e.target.closest('button') &&
-                !e.target.closest('.lightbox') &&
-                !e.target.closest('[role="button"]') &&
-                !e.target.closest('.lightbox__nav') &&
-                !e.target.closest('.lightbox__close')) {
+            // 조이스틱 영역이나 조작 가이드 영역이 아닌 경우만 방지
+            if (!e.target.closest('#joystick-container') && !e.target.closest('#control-guide')) {
                 e.preventDefault();
             }
         }, { passive: false });
@@ -591,9 +564,6 @@ function createHelpButton() {
         color: #666;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         transition: all 0.2s ease;
-        touch-action: manipulation;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
     `;
 
     // 호버 효과
@@ -613,12 +583,6 @@ function createHelpButton() {
     helpButton.addEventListener('click', () => {
         showControlGuide();
     });
-
-    // 모바일 터치 이벤트 추가
-    helpButton.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        showControlGuide();
-    }, { passive: false });
 
     helpButton.title = '조작 가이드 보기';
     document.body.appendChild(helpButton);

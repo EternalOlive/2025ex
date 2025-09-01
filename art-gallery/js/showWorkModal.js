@@ -11,77 +11,6 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         console.error('comments.js import 실패:', e);
     }
 
-    // 댓글 섹션 폴백 함수 (import 실패 시 사용)
-    function createCommentSectionFallback(itemId) {
-        const safeId = itemId.replace(/[^a-zA-Z0-9_-]/g, '_');
-        const container = document.createElement('div');
-        container.className = 'comment-section';
-        container.innerHTML = `
-            <h3 style="text-align: left;">댓글 <span class="comment-count" id="comment-count-${safeId}">(0)</span></h3>
-            <div class="comments-list" id="comments-list-${safeId}">
-                <div class="no-comments">작성된 댓글이 없습니다.</div>
-            </div>
-            <div class="comment-form">
-                <input 
-                    type="text"
-                    id="comment-author-${safeId}"
-                    placeholder="작성자 이름"
-                    maxlength="8"
-                    style="margin-bottom:12px;width:100%;box-sizing:border-box;border-radius:8px;padding:12px 16px;border:1.5px solid #d1d5db;font-size:16px;background:#f8f9fa;transition:border-color 0.2s;"
-                />
-                <textarea 
-                    id="comment-content-${safeId}" 
-                    placeholder="댓글을 작성해주세요 (최대 300자)" 
-                    maxlength="300"
-                    rows="3"
-                    style="width:100%;box-sizing:border-box;border-radius:8px;padding:12px 16px;border:1.5px solid #d1d5db;font-size:14px;background:#f8f9fa;resize:vertical;min-height:80px;"
-                ></textarea>
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
-                    <span id="char-count-${safeId}" style="font-size:12px;color:#666;">0/300</span>
-                    <button id="comment-submit-${safeId}" disabled style="background:#6366f1;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;opacity:0.5;">댓글 작성</button>
-                </div>
-            </div>
-        `;
-        
-        // 이벤트 리스너 추가
-        const textarea = container.querySelector(`#comment-content-${safeId}`);
-        const charCount = container.querySelector(`#char-count-${safeId}`);
-        const submitBtn = container.querySelector(`#comment-submit-${safeId}`);
-        const authorInput = container.querySelector(`#comment-author-${safeId}`);
-        
-        if (textarea && charCount && submitBtn && authorInput) {
-            textarea.addEventListener('input', function() {
-                const length = this.value.length;
-                charCount.textContent = `${length}/300`;
-                const authorLength = authorInput.value.trim().length;
-                submitBtn.disabled = length === 0 || length > 300 || authorLength === 0;
-                submitBtn.style.opacity = submitBtn.disabled ? '0.5' : '1';
-            });
-            
-            authorInput.addEventListener('input', function() {
-                const authorLength = this.value.trim().length;
-                const contentLength = textarea.value.length;
-                submitBtn.disabled = contentLength === 0 || contentLength > 300 || authorLength === 0;
-                submitBtn.style.opacity = submitBtn.disabled ? '0.5' : '1';
-            });
-            
-            submitBtn.addEventListener('click', async function() {
-                if (!submitBtn.disabled && submitComment) {
-                    await submitComment(itemId);
-                }
-            });
-            
-            submitBtn.addEventListener('touchstart', async function(e) {
-                e.preventDefault();
-                if (!submitBtn.disabled && submitComment) {
-                    await submitComment(itemId);
-                }
-            }, { passive: false });
-        }
-        
-        return container;
-    }
-
     const folderMapping = {
         '그림일기': '그림일기',
         '동시': '동시',
@@ -360,38 +289,15 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
             const oldCommentSection = meta.querySelector('.comment-section');
             if (oldCommentSection) oldCommentSection.remove();
             
-            let commentSection;
-            if (typeof window.createCommentSection === 'function') {
-                commentSection = window.createCommentSection(currentSlide.filename);
-            } else if (typeof createCommentSection === 'function') {
-                commentSection = createCommentSection(currentSlide.filename);
-            } else {
-                // 폴백 함수 사용
-                commentSection = createCommentSectionFallback(currentSlide.filename);
+            if (typeof createCommentSection === 'function') {
+                const commentSection = createCommentSection(currentSlide.filename);
+                meta.appendChild(commentSection);
+                
+                // 댓글 로드
+                if (typeof loadComments === 'function') {
+                    loadComments(currentSlide.filename);
+                }
             }
-            meta.appendChild(commentSection);
-            
-            // 댓글 로드
-            setTimeout(() => {
-                let loadCommentsFunc = null;
-                
-                if (window.loadComments && typeof window.loadComments === 'function') {
-                    loadCommentsFunc = window.loadComments;
-                } else if (loadComments && typeof loadComments === 'function') {
-                    loadCommentsFunc = loadComments;
-                }
-                
-                if (loadCommentsFunc) {
-                    console.log('슬라이드 댓글 로드:', currentSlide.filename);
-                    try {
-                        loadCommentsFunc(currentSlide.filename);
-                    } catch (error) {
-                        console.error('슬라이드 댓글 로드 중 오류:', error);
-                    }
-                } else {
-                    console.warn('슬라이드용 loadComments 함수를 찾을 수 없습니다');
-                }
-            }, 100);
         }
 
         // 버튼 이벤트 리스너
@@ -400,26 +306,12 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
             const newIdx = (currentSlideIdx - 1 + slideList.length) % slideList.length;
             updateSlide(newIdx);
         });
-        // 모바일 터치 이벤트 추가
-        prevBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const newIdx = (currentSlideIdx - 1 + slideList.length) % slideList.length;
-            updateSlide(newIdx);
-        }, { passive: false });
 
         nextBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             const newIdx = (currentSlideIdx + 1) % slideList.length;
             updateSlide(newIdx);
         });
-        // 모바일 터치 이벤트 추가
-        nextBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const newIdx = (currentSlideIdx + 1) % slideList.length;
-            updateSlide(newIdx);
-        }, { passive: false });
 
         // 미디어 영역 스타일 설정
         media.style.position = 'relative';
@@ -455,49 +347,15 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
     };
 
     // 댓글 섹션 추가
-    let commentSection;
-    if (typeof window.createCommentSection === 'function') {
-        console.log('window.createCommentSection 사용');
-        commentSection = window.createCommentSection(currentWork.filename);
-    } else if (typeof createCommentSection === 'function') {
-        console.log('imported createCommentSection 사용');
-        commentSection = createCommentSection(currentWork.filename);
+    if (typeof createCommentSection === 'function') {
+        const commentSection = createCommentSection(currentWork.filename);
+        meta.appendChild(commentSection);
     } else {
-        console.log('폴백 createCommentSection 사용');
-        // 댓글 섹션을 직접 생성 (index.html의 코드 기반)
-        commentSection = createCommentSectionFallback(currentWork.filename);
+        const commentFallback = document.createElement('div');
+        commentFallback.className = 'comment-section';
+        commentFallback.innerHTML = '<h3>댓글 기능을 사용할 수 없습니다.</h3>';
+        meta.appendChild(commentFallback);
     }
-    meta.appendChild(commentSection);
-
-    // 댓글 로드 (DOM 요소가 추가된 후 실행)
-    setTimeout(() => {
-        // 여러 방법으로 loadComments 함수 찾기
-        let loadCommentsFunc = null;
-        
-        if (window.loadComments && typeof window.loadComments === 'function') {
-            loadCommentsFunc = window.loadComments;
-            console.log('window.loadComments 사용');
-        } else if (loadComments && typeof loadComments === 'function') {
-            loadCommentsFunc = loadComments;
-            console.log('imported loadComments 사용');
-        }
-        
-        if (loadCommentsFunc) {
-            console.log('댓글 로드 시작:', currentWork.filename);
-            try {
-                loadCommentsFunc(currentWork.filename);
-            } catch (error) {
-                console.error('댓글 로드 중 오류:', error);
-            }
-        } else {
-            console.warn('loadComments 함수를 찾을 수 없습니다. 사용 가능한 함수들:', {
-                'window.loadComments': typeof window.loadComments,
-                'loadComments': typeof loadComments,
-                'window.createCommentSection': typeof window.createCommentSection,
-                'window.submitComment': typeof window.submitComment
-            });
-        }
-    }, 200);
 
     // 닫기 버튼
     const closeBtn = document.createElement('button');
@@ -509,13 +367,6 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         backdrop.remove();
         document.removeEventListener('keydown', onKey);
     });
-    // 모바일 터치 이벤트 추가
-    closeBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        backdrop.remove();
-        document.removeEventListener('keydown', onKey);
-    }, { passive: false });
 
     // 키보드 지원
     function onKey(e) {
@@ -547,17 +398,14 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         backdrop.remove();
         document.removeEventListener('keydown', onKey);
     });
-    // 모바일 터치 이벤트 추가
-    backdrop.addEventListener('touchstart', (e) => {
-        if (e.target === backdrop) {
-            e.preventDefault();
-            backdrop.remove();
-            document.removeEventListener('keydown', onKey);
-        }
-    }, { passive: false });
 
     // 컨텐츠 클릭 전파 방지
     lightbox.addEventListener('click', (e) => e.stopPropagation());
 
     document.body.appendChild(backdrop);
+
+    // 댓글 로드
+    if (typeof loadComments === 'function') {
+        loadComments(currentWork.filename);
+    }
 }
