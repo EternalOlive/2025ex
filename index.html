@@ -577,6 +577,22 @@
 
     <!-- 스크립트들 로드 -->
     <script>
+        // Supabase 클라이언트 전역 생성 (한 번만)
+        const SUPABASE_URL = 'https://pimgwrosozsowpetqeeq.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbWd3cm9zb3pzb3dwZXRxZWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MTcxMjgsImV4cCI6MjA3MDk5MzEyOH0.VKEsxMu47TDVvV93Gy9I-z4UmfNYlNEhSYkBSS5vDqU';
+        
+        // 전역 Supabase 클라이언트 인스턴스 (페이지당 한 번만 생성)
+        window.globalSupabaseClient = null;
+        
+        // Supabase 클라이언트 초기화 함수
+        function initSupabaseClient() {
+            if (!window.globalSupabaseClient && window.supabase && typeof window.supabase.createClient === 'function') {
+                window.globalSupabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('Supabase 클라이언트 초기화 완료');
+            }
+            return window.globalSupabaseClient;
+        }
+
         // 댓글 섹션 HTML 생성
         function createCommentSection(itemId) {
             // itemId를 안전한 CSS 선택자용 ID로 변환
@@ -654,12 +670,10 @@
             const commentCount = document.getElementById(`comment-count-${safeId}`);
             
             try {
-                // Supabase를 통한 실제 댓글 로드 시도
-                if (window.supabase && typeof window.supabase.createClient === 'function') {
-                    const supabaseUrl = 'https://pimgwrosozsowpetqeeq.supabase.co';
-                    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbWd3cm9zb3pzb3dwZXRxZWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MTcxMjgsImV4cCI6MjA3MDk5MzEyOH0.VKEsxMu47TDVvV93Gy9I-z4UmfNYlNEhSYkBSS5vDqU';
-                    
-                    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+                // 전역 Supabase 클라이언트 사용
+                const supabaseClient = initSupabaseClient();
+                
+                if (supabaseClient) {
                     const { data: comments, error } = await supabaseClient
                         .from('comments')
                         .select('*')
@@ -756,13 +770,10 @@
             
             // Supabase를 통한 실제 댓글 저장 시도
             try {
-                // window.supabase가 있고 설정이 완료된 경우
-                if (window.supabase && typeof window.supabase.createClient === 'function') {
-                    const supabaseUrl = 'https://pimgwrosozsowpetqeeq.supabase.co';
-                    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbWd3cm9zb3pzb3dwZXRxZWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MTcxMjgsImV4cCI6MjA3MDk5MzEyOH0.VKEsxMu47TDVvV93Gy9I-z4UmfNYlNEhSYkBSS5vDqU';
-                    
-                    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-                    
+                // 전역 Supabase 클라이언트 사용
+                const supabaseClient = initSupabaseClient();
+                
+                if (supabaseClient) {
                     // console.log('Supabase에 댓글 저장 시도...');
                     const { data, error } = await supabaseClient
                         .from('comments')
@@ -907,6 +918,9 @@
     <script>
         // 페이지 로드 후 기존 함수들을 백업
         document.addEventListener('DOMContentLoaded', function() {
+            // Supabase 클라이언트 초기화
+            initSupabaseClient();
+            
             // 기존 함수들 백업
             if (typeof window.filterWorks !== 'undefined') {
                 window.originalFilterWorks = window.filterWorks;
