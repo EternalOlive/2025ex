@@ -211,21 +211,26 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
 
     const lightbox = document.createElement('div');
     lightbox.className = 'lightbox';
-    lightbox.style.position = 'relative';
-    lightbox.style.zIndex = '1';
-    lightbox.style.background = 'white';
-    lightbox.style.borderRadius = '16px';
-    lightbox.style.boxShadow = '0 4px 32px rgba(0,0,0,0.18)';
-    lightbox.style.minWidth = '320px';
-    lightbox.style.maxWidth = '95vw';
-    lightbox.style.maxHeight = '90vh';
-    lightbox.style.overflowY = 'auto';
-    lightbox.style.textAlign = 'center';
+    lightbox.style.cssText = `
+        position: relative;
+        z-index: 1;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+        min-width: 320px;
+        max-width: 90vw;
+        max-height: 90vh;
+        overflow-y: auto;
+        text-align: center;
+    `;
 
-    // 미디어 영역 - 이제 스크롤 가능
+    // 미디어 영역
     const media = document.createElement('div');
     media.className = 'lightbox__media';
-    media.style.padding = '32px 24px 16px 24px';
+    media.style.cssText = `
+        padding: 32px 24px 16px 24px;
+        text-align: center;
+    `;
 
     // 이미지 요소
     const img = document.createElement('img');
