@@ -178,7 +178,7 @@
             if (!window.globalSupabaseClient && window.supabase && typeof window.supabase.createClient === 'function') {
                 try {
                     window.globalSupabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                    console.log('Supabase 클라이언트 초기화 완료 (model.html)');
+                    // console.log('Supabase 클라이언트 초기화 완료 (model.html)');
                 } catch (error) {
                     console.error('Supabase 클라이언트 초기화 실패:', error);
                 }
@@ -708,5 +708,6 @@
 </body>
 
 </html>
+
 
 
