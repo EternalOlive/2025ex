@@ -260,7 +260,7 @@ export function createControlGuide() {
                                 text-align: center;
                                 line-height: 1.3;
                                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                            ">마우스를 드래그하여 시점 변경</div>
+                            ">마우스를 드래그하여<br> 시점 변경</div>
                         </div>
                     </div>
 
