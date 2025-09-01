@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <link href="../assets/css/index.css" rel="stylesheet"/>
     <link rel="stylesheet" href="../assets/css/prize_sector.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .comment-content,
         .comment-date {
@@ -16,10 +17,10 @@
         /* 뒤로가기 버튼 스타일 */
         #back-button {
             position: fixed;
-            top: 20px;
+            top: 21px;
             left: 20px;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             background: rgba(255, 255, 255, 0.9);
             border: 2px solid #e0e0e0;
             border-radius: 8px;
@@ -35,13 +36,10 @@
             background: rgba(255, 255, 255, 1);
         }
 
-        /* 화살표 아이콘 */
-        .arrow-icon {
-            width: 0;
-            height: 0;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            border-right: 15px solid #333;
+        /* 홈 아이콘 */
+        .home-icon {
+            font-size: 18px;
+            color: #333;
         }
 
         /* 심플한 로딩 화면 스타일 */
@@ -98,6 +96,22 @@
 
         /* 모바일 반응형 */
         @media (max-width: 768px) {
+            body {
+                overflow: hidden;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+                -webkit-overflow-scrolling: none;
+            }
+            
+            html {
+                overflow: hidden;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+            }
+            
             .loading-title {
                 font-size: 1.5rem;
             }
@@ -108,13 +122,30 @@
             }
 
             #back-button {
-                display: none;
+                display: flex;
+                top: auto;
+                left: auto;
+                bottom: 20px;
+                right: 20px;
+                width: 35px !important;
+                height: 35px !important;
             }
 
-            .arrow-icon {
-                border-top: 8px solid transparent;
-                border-bottom: 8px solid transparent;
-                border-right: 12px solid #333;
+            .home-icon {
+                font-size: 16px !important;
+            }
+
+            /* 모바일 도움말 버튼 */
+            #help-button {
+                display: flex !important;
+                position: fixed !important;
+                top: auto !important;
+                left: auto !important;
+                bottom: 65px !important;
+                right: 20px !important;
+                width: 35px !important;
+                height: 35px !important;
+                font-size: 16px !important;
             }
         }
 
@@ -128,7 +159,7 @@
 <body>
     <!-- 뒤로가기 버튼 -->
     <div id="back-button" onclick="goBack()" title="뒤로가기" aria-label="뒤로가기">
-        <div class="arrow-icon"></div>
+        <i class="fa-solid fa-house home-icon"></i>
     </div>
 
     <!-- 로딩 화면 -->

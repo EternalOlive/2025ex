@@ -232,6 +232,7 @@ navContainer.style.cssText = `
     z-index: 2000;
     display: flex;
     justify-content: center;
+    align-items: center;
     pointer-events: none;
 `;
 
@@ -450,6 +451,71 @@ window.addEventListener('touchend', function(event) {
 
 addEventListeners(camera, collidableObjects);
 
+// 모바일에서 스크롤 방지 및 터치 제어 개선
+function preventMobileScroll() {
+    // 모바일 감지
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // 전체 페이지 스크롤 방지
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        
+        // 터치 이벤트에서 기본 동작 방지 (단, 조이스틱 제외)
+        document.addEventListener('touchstart', function(e) {
+            // 조이스틱 영역이 아닌 경우만 방지
+            if (!e.target.closest('#joystick-container')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        document.addEventListener('touchend', function(e) {
+            // 조이스틱 영역이 아닌 경우만 방지
+            if (!e.target.closest('#joystick-container')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(e) {
+            // 조이스틱 영역이 아닌 경우만 방지
+            if (!e.target.closest('#joystick-container')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // iOS Safari의 bounce 효과 방지
+        document.addEventListener('touchmove', function(e) {
+            if (e.scale !== 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // 더블탭 줌 방지
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // 뷰포트 메타태그 추가/수정 (줌 방지)
+        let viewport = document.querySelector('meta[name=viewport]');
+        if (viewport) {
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+        } else {
+            viewport = document.createElement('meta');
+            viewport.name = 'viewport';
+            viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
+            document.getElementsByTagName('head')[0].appendChild(viewport);
+        }
+    }
+}
+
+// 모바일 스크롤 방지 실행
+preventMobileScroll();
+
 // Resize event listener
 window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -460,19 +526,21 @@ window.addEventListener("resize", () => {
 
 // PC에서 조작 가이드 다시 보기 버튼 추가
 function createHelpButton() {
-    // 모바일에서는 버튼을 표시하지 않음
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    if (isMobile) return;
+    // 기존에 있는 버튼이 있으면 제거
+    const existingButton = document.getElementById('help-button');
+    if (existingButton) {
+        existingButton.remove();
+    }
 
     const helpButton = document.createElement('div');
     helpButton.id = 'help-button';
     helpButton.innerHTML = '?';
     helpButton.style.cssText = `
         position: fixed;
-        top: 20px;
+        top: 21px;
         right: 20px;
-        width: 35px;
-        height: 35px;
+        width: 45px;
+        height: 45px;
         background: rgba(255, 255, 255, 0.9);
         border: 2px solid #e0e0e0;
         border-radius: 50%;
@@ -482,7 +550,7 @@ function createHelpButton() {
         cursor: pointer;
         z-index: 1001;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        font-size: 16px;
+        font-size: 18px;
         font-weight: bold;
         color: #666;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
