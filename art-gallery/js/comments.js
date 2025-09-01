@@ -217,6 +217,13 @@ export async function submitComment(itemId) {
 }
 
 // 전역 등록 (model.html에서 window로도 접근 가능하게)
-window.createCommentSection = createCommentSection;
-window.loadComments = loadComments;
-window.submitComment = submitComment;
+// model.html에서 이미 정의되어 있지 않은 경우에만 등록
+if (!window.createCommentSection) {
+    window.createCommentSection = createCommentSection;
+}
+if (!window.loadComments) {
+    window.loadComments = loadComments;
+}
+if (!window.submitComment) {
+    window.submitComment = submitComment;
+}
