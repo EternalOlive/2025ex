@@ -588,7 +588,7 @@
         function initSupabaseClient() {
             if (!window.globalSupabaseClient && window.supabase && typeof window.supabase.createClient === 'function') {
                 window.globalSupabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                console.log('Supabase 클라이언트 초기화 완료');
+                // console.log('Supabase 클라이언트 초기화 완료');
             }
             return window.globalSupabaseClient;
         }
@@ -971,6 +971,7 @@
     });
     </script>
 </html>
+
 
 
 
