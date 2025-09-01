@@ -410,7 +410,7 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
                 }
                 
                 if (loadCommentsFunc) {
-                    console.log('슬라이드 댓글 로드:', currentSlide.filename);
+                    // console.log('슬라이드 댓글 로드:', currentSlide.filename);
                     try {
                         loadCommentsFunc(currentSlide.filename);
                     } catch (error) {
@@ -503,13 +503,13 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
     // 댓글 섹션 추가
     let commentSection;
     if (typeof window.createCommentSection === 'function') {
-        console.log('window.createCommentSection 사용');
+        // console.log('window.createCommentSection 사용');
         commentSection = window.createCommentSection(currentWork.filename);
     } else if (typeof createCommentSection === 'function') {
-        console.log('imported createCommentSection 사용');
+        // console.log('imported createCommentSection 사용');
         commentSection = createCommentSection(currentWork.filename);
     } else {
-        console.log('폴백 createCommentSection 사용');
+        // console.log('폴백 createCommentSection 사용');
         // 댓글 섹션을 직접 생성 (index.html의 코드 기반)
         commentSection = createCommentSectionFallback(currentWork.filename);
     }
@@ -522,14 +522,14 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         
         if (window.loadComments && typeof window.loadComments === 'function') {
             loadCommentsFunc = window.loadComments;
-            console.log('window.loadComments 사용');
+            // console.log('window.loadComments 사용');
         } else if (loadComments && typeof loadComments === 'function') {
             loadCommentsFunc = loadComments;
-            console.log('imported loadComments 사용');
+            // console.log('imported loadComments 사용');
         }
         
         if (loadCommentsFunc) {
-            console.log('댓글 로드 시작:', currentWork.filename);
+            // console.log('댓글 로드 시작:', currentWork.filename);
             try {
                 loadCommentsFunc(currentWork.filename);
             } catch (error) {
@@ -664,3 +664,4 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
 
     document.body.appendChild(backdrop);
 }
+
