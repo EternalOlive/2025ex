@@ -360,24 +360,38 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
             const oldCommentSection = meta.querySelector('.comment-section');
             if (oldCommentSection) oldCommentSection.remove();
             
-            if (typeof createCommentSection === 'function') {
-                const commentSection = createCommentSection(currentSlide.filename);
-                meta.appendChild(commentSection);
-                
-                // 댓글 로드
-                if (typeof loadComments === 'function') {
-                    loadComments(currentSlide.filename);
-                }
+            let commentSection;
+            if (typeof window.createCommentSection === 'function') {
+                commentSection = window.createCommentSection(currentSlide.filename);
+            } else if (typeof createCommentSection === 'function') {
+                commentSection = createCommentSection(currentSlide.filename);
             } else {
                 // 폴백 함수 사용
-                const commentSection = createCommentSectionFallback(currentSlide.filename);
-                meta.appendChild(commentSection);
-                
-                // 댓글 로드 시도
-                if (typeof loadComments === 'function') {
-                    loadComments(currentSlide.filename);
-                }
+                commentSection = createCommentSectionFallback(currentSlide.filename);
             }
+            meta.appendChild(commentSection);
+            
+            // 댓글 로드
+            setTimeout(() => {
+                let loadCommentsFunc = null;
+                
+                if (window.loadComments && typeof window.loadComments === 'function') {
+                    loadCommentsFunc = window.loadComments;
+                } else if (loadComments && typeof loadComments === 'function') {
+                    loadCommentsFunc = loadComments;
+                }
+                
+                if (loadCommentsFunc) {
+                    console.log('슬라이드 댓글 로드:', currentSlide.filename);
+                    try {
+                        loadCommentsFunc(currentSlide.filename);
+                    } catch (error) {
+                        console.error('슬라이드 댓글 로드 중 오류:', error);
+                    }
+                } else {
+                    console.warn('슬라이드용 loadComments 함수를 찾을 수 없습니다');
+                }
+            }, 100);
         }
 
         // 버튼 이벤트 리스너
@@ -441,27 +455,49 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
     };
 
     // 댓글 섹션 추가
-    if (typeof createCommentSection === 'function') {
-        const commentSection = createCommentSection(currentWork.filename);
-        meta.appendChild(commentSection);
+    let commentSection;
+    if (typeof window.createCommentSection === 'function') {
+        console.log('window.createCommentSection 사용');
+        commentSection = window.createCommentSection(currentWork.filename);
+    } else if (typeof createCommentSection === 'function') {
+        console.log('imported createCommentSection 사용');
+        commentSection = createCommentSection(currentWork.filename);
     } else {
+        console.log('폴백 createCommentSection 사용');
         // 댓글 섹션을 직접 생성 (index.html의 코드 기반)
-        const commentSection = createCommentSectionFallback(currentWork.filename);
-        meta.appendChild(commentSection);
+        commentSection = createCommentSectionFallback(currentWork.filename);
     }
+    meta.appendChild(commentSection);
 
     // 댓글 로드 (DOM 요소가 추가된 후 실행)
     setTimeout(() => {
-        if (typeof window.loadComments === 'function') {
-            console.log('댓글 로드 시작:', currentWork.filename);
-            window.loadComments(currentWork.filename);
-        } else if (typeof loadComments === 'function') {
-            console.log('댓글 로드 시작 (fallback):', currentWork.filename);
-            loadComments(currentWork.filename);
-        } else {
-            console.warn('loadComments 함수를 찾을 수 없습니다');
+        // 여러 방법으로 loadComments 함수 찾기
+        let loadCommentsFunc = null;
+        
+        if (window.loadComments && typeof window.loadComments === 'function') {
+            loadCommentsFunc = window.loadComments;
+            console.log('window.loadComments 사용');
+        } else if (loadComments && typeof loadComments === 'function') {
+            loadCommentsFunc = loadComments;
+            console.log('imported loadComments 사용');
         }
-    }, 100);
+        
+        if (loadCommentsFunc) {
+            console.log('댓글 로드 시작:', currentWork.filename);
+            try {
+                loadCommentsFunc(currentWork.filename);
+            } catch (error) {
+                console.error('댓글 로드 중 오류:', error);
+            }
+        } else {
+            console.warn('loadComments 함수를 찾을 수 없습니다. 사용 가능한 함수들:', {
+                'window.loadComments': typeof window.loadComments,
+                'loadComments': typeof loadComments,
+                'window.createCommentSection': typeof window.createCommentSection,
+                'window.submitComment': typeof window.submitComment
+            });
+        }
+    }, 200);
 
     // 닫기 버튼
     const closeBtn = document.createElement('button');
