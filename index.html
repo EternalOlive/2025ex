@@ -40,6 +40,17 @@
         <!-- 환경변수 로더 -->
         <script src="env-loader.js"></script>
         
+        <!-- 백업 환경변수 설정 (즉시 작동용) -->
+        <script>
+        // env-loader.js가 실패할 경우 백업
+        if (!window.SUPABASE_ANON_KEY) {
+            console.log('🔧 백업 환경변수 설정 중...');
+            window.SUPABASE_URL = 'https://pimgwrosozsowpetqeeq.supabase.co';
+            window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbWd3cm9zb3pzb3dwZXRxZWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MTcxMjgsImV4cCI6MjA3MDk5MzEyOH0.VKEsxMu47TDVvV93Gy9I-z4UmfNYlNEhSYkBSS5vDqU';
+            console.log('✅ 백업 API 키 설정 완료');
+        }
+        </script>
+        
         <!-- 검색 컨테이너 스타일 -->
         <style>
             .search-container {
