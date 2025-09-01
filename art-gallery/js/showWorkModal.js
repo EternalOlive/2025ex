@@ -450,10 +450,18 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         meta.appendChild(commentSection);
     }
 
-    // 댓글 로드
-    if (typeof loadComments === 'function') {
-        loadComments(currentWork.filename);
-    }
+    // 댓글 로드 (DOM 요소가 추가된 후 실행)
+    setTimeout(() => {
+        if (typeof window.loadComments === 'function') {
+            console.log('댓글 로드 시작:', currentWork.filename);
+            window.loadComments(currentWork.filename);
+        } else if (typeof loadComments === 'function') {
+            console.log('댓글 로드 시작 (fallback):', currentWork.filename);
+            loadComments(currentWork.filename);
+        } else {
+            console.warn('loadComments 함수를 찾을 수 없습니다');
+        }
+    }, 100);
 
     // 닫기 버튼
     const closeBtn = document.createElement('button');
