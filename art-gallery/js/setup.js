@@ -24,7 +24,7 @@ export function setupCamera() {
         0.1, 
         1000 
     );
-    camera.position.set(-84.612, 1.5, -6);
+    camera.position.set(-84.612, 1.9, -6);
     return camera;
 }
 

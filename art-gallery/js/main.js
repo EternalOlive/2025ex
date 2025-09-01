@@ -3,6 +3,7 @@ import { checkCollision, checkDistance, addEventListeners } from './utilities.js
 import { setupJoystick, addJoystickListeners, updateJoystickMovement } from './joystick.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import * as THREE from 'three';
+import { showControlGuide } from './controlGuide.js';
 
 // 제발되라
 // 로딩 상태 관리
@@ -13,12 +14,16 @@ let works = [];
 let awardsData = null;
 
 // 로딩 완료 체크 함수
+// 기존 checkAllLoaded 함수 수정
 function checkAllLoaded() {
     if (isModelLoaded && isDataLoaded && window.hideLoadingScreen) {
-        // console.log('모든 리소스 로딩 완료');
         setTimeout(() => {
             window.hideLoadingScreen();
-        }, 300); // 짧은 딜레이 후 로딩 화면 숨김
+            // 로딩 완료 후 조작 가이드 표시
+            showControlGuide();
+            // 도움말 버튼 생성
+            createHelpButton();
+        }, 300);
     }
 }
 
@@ -410,7 +415,7 @@ function handleTextureModal(event) {
                 if (showWorkModal && works.length > 0) {
                     try {
                         showWorkModal(mapping.filename, works, awardsData, { imageBasePath: '../assets/images/works', medalBasePath: '../assets/images' });
-                        console.log('모달 오픈:', mapping.filename);
+                        // console.log('모달 오픈:', mapping.filename);
                     } catch (e) {
                         console.error('모달 오픈 실패:', e);
                         alert('모달 오픈 중 오류 발생');
@@ -452,6 +457,59 @@ window.addEventListener("resize", () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+// PC에서 조작 가이드 다시 보기 버튼 추가
+function createHelpButton() {
+    // 모바일에서는 버튼을 표시하지 않음
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) return;
+
+    const helpButton = document.createElement('div');
+    helpButton.id = 'help-button';
+    helpButton.innerHTML = '?';
+    helpButton.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 35px;
+        height: 35px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid #e0e0e0;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 1001;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        font-size: 16px;
+        font-weight: bold;
+        color: #666;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        transition: all 0.2s ease;
+    `;
+
+    // 호버 효과
+    helpButton.addEventListener('mouseenter', () => {
+        helpButton.style.background = 'rgba(255, 255, 255, 1)';
+        helpButton.style.transform = 'scale(1.05)';
+        helpButton.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
+    });
+
+    helpButton.addEventListener('mouseleave', () => {
+        helpButton.style.background = 'rgba(255, 255, 255, 0.9)';
+        helpButton.style.transform = 'scale(1)';
+        helpButton.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
+    });
+
+    // 클릭 이벤트 - 조작 가이드 다시 표시
+    helpButton.addEventListener('click', () => {
+        showControlGuide();
+    });
+
+    helpButton.title = '조작 가이드 보기';
+    document.body.appendChild(helpButton);
+}
 
 // JSON 파일을 로드하고 그 데이터로 콜백을 처리하는 부분
 loadJSONData('data/paintingInfo.json', function(data) {

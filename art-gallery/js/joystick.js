@@ -102,7 +102,7 @@ export function updateJoystickMovement(camera, collidableObjects) {
     const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
     if (isMobile) {
         if (!joystickVector) return;
-        const speed = 0.09;
+        const speed = 0.15; // 0.09 → 0.15로 증가
         let forward = new THREE.Vector3();
         camera.getWorldDirection(forward);
         forward.y = 0;
@@ -112,6 +112,7 @@ export function updateJoystickMovement(camera, collidableObjects) {
         let move = new THREE.Vector3();
         move.addScaledVector(forward, -joystickVector.y * speed);
         move.addScaledVector(right, joystickVector.x * speed);
+        
         let nextPosition = camera.position.clone().add(move);
         if (typeof window.checkCollision === 'function') {
             if (!window.checkCollision(nextPosition, camera, collidableObjects)) {
@@ -124,7 +125,7 @@ export function updateJoystickMovement(camera, collidableObjects) {
         // PC 환경: 드래그 중일 때만 이동
         if (!window.joystickActive) return;
         if (!joystickVector) return;
-        const speed = 0.09;
+        const speed = 0.15; // 0.09 → 0.15로 증가
         let forward = new THREE.Vector3();
         camera.getWorldDirection(forward);
         forward.y = 0;
@@ -134,6 +135,7 @@ export function updateJoystickMovement(camera, collidableObjects) {
         let move = new THREE.Vector3();
         move.addScaledVector(forward, -joystickVector.y * speed);
         move.addScaledVector(right, joystickVector.x * speed);
+        
         let nextPosition = camera.position.clone().add(move);
         if (typeof window.checkCollision === 'function') {
             if (!window.checkCollision(nextPosition, camera, collidableObjects)) {
