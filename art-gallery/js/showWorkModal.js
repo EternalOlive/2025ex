@@ -3,10 +3,7 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
     // 댓글 모듈 import
     let createCommentSection, loadComments, submitComment;
     try {
-        const commentsMod = await imp    // 메타 영역 - 이제 이미지와 함께 스크롤
-    const meta = document.createElement('div');
-    meta.className = 'lightbox__meta';
-    meta.style.padding = '0 24px 24px 24px';comments.js');
+        const commentsMod = await import('./comments.js');
         createCommentSection = commentsMod.createCommentSection;
         loadComments = commentsMod.loadComments;
         submitComment = commentsMod.submitComment;
