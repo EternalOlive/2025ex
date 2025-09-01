@@ -2,7 +2,23 @@
 <html lang="kr"> 
     <head>
         <!-- Google Tag Manager -->
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        <script>(funct                .entry-search {
+                    font-size: 16px; /* iOS 줌 방지 */
+                    padding: 8px 40px 8px 14px;
+                    height: 40px;
+                    line-height: 1.4;
+                }
+                
+                .search-btn {
+                    width: 40px;
+                    height: 40px;
+                    font-size: 14px;
+                    border-radius: 10px;
+                }
+                
+                .search-clear-btn {
+                    right: 10px;
+                }l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
@@ -17,6 +33,115 @@
         <link href="assets/css/index.css" rel="stylesheet"/>
         <link href="assets/css/prize_sector.css" rel="stylesheet"/>
         <link href="assets/css/footer.css" rel="stylesheet"/>
+        
+        <!-- Font Awesome 아이콘 라이브러리 -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        
+        <!-- 검색 컨테이너 스타일 -->
+        <style>
+            .search-container {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                max-width: 320px;
+                margin: 20px 0;
+                gap: 10px;
+            }
+            
+            .input-wrapper {
+                position: relative;
+                flex: 1;
+            }
+            
+            .entry-search {
+                width: 100%;
+                padding: 10px 45px 10px 16px;
+                border: 2px solid #e0e0e0;
+                border-radius: 25px;
+                font-size: 14px;
+                outline: none;
+                transition: border-color 0.3s ease;
+                box-sizing: border-box;
+                height: 44px;
+                line-height: 1.4;
+                vertical-align: middle;
+            }
+            
+            .entry-search:focus {
+                border-color: #6366f1;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            }
+            
+            .search-btn {
+                background: #647937;
+                border: none;
+                border-radius: 12px;
+                width: 44px;
+                height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                color: white;
+                font-size: 16px;
+                flex-shrink: 0;
+            }
+            
+            .search-btn:hover {
+                background: #5a6b31;
+                transform: scale(1.05);
+            }
+            
+            .search-clear-btn {
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                color: #999;
+                cursor: pointer;
+                display: none;
+                font-size: 16px;
+                padding: 4px;
+                width: 24px;
+                height: 24px;
+                transition: color 0.2s ease;
+                border-radius: 50%;
+            }
+            
+            .search-clear-btn:hover {
+                color: #666;
+                background: #f5f5f5;
+            }
+            
+            @media (max-width: 768px) {
+                .search-container {
+                    max-width: 280px;
+                    margin: 15px 0;
+                    gap: 8px;
+                }
+                
+                .entry-search {
+                    font-size: 16px; /* iOS 줌 방지 */
+                    padding: 8px 50px 8px 14px;
+                    height: 40px;
+                    line-height: 1.4;
+                }
+                
+                .search-btn {
+                    width: 40px;
+                    height: 40px;
+                    font-size: 14px;
+                    border-radius: 10px;
+                }
+                
+                .search-clear-btn {
+                    right: 18px;
+                }
+            }
+        </style>
         <!-- Supabase 라이브러리 추가 -->
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <meta property="og:title" content="2025 유치원 급식 사생대회">
@@ -368,7 +493,17 @@
             <div class="entry entry-bg">
                 <div class="entry-sector">
                     <span class="entry-text">출품작</span>
-                    <input type="text" class="entry-search" placeholder="유치원 또는 출품자 이름 검색" oninput="filterWorks(this.value)">
+                    <div class="search-container">
+                        <div class="input-wrapper">
+                            <input type="text" class="entry-search" id="entry-search-input" placeholder="유치원 또는 출품자 이름 검색">
+                            <button class="search-clear-btn" id="search-clear-btn" onclick="clearSearch()" style="display: none;">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <button type="button" class="search-btn" onclick="performSearch()">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
                     <div class="sector-list">
                         <button class="sector-item active" onclick="selectCategory(this, '그림일기')">그림일기</button>
                         <button class="sector-item" onclick="selectCategory(this, '동시')">동시</button>
@@ -681,11 +816,139 @@
         window.createCommentSection = createCommentSection;
         window.loadComments = loadComments;
         window.submitComment = submitComment;
+
+        // 검색 기능 개선 - 버튼 클릭 방식
+        function performSearch() {
+            const searchInput = document.getElementById('entry-search-input');
+            const searchTerm = searchInput.value.trim();
+            
+            // 기존 filterWorks 로직 실행
+            if (window.originalFilterWorks) {
+                window.originalFilterWorks(searchTerm);
+            }
+            
+            // X 버튼 표시/숨김
+            const clearBtn = document.getElementById('search-clear-btn');
+            if (searchTerm !== '') {
+                clearBtn.style.display = 'block';
+            } else {
+                clearBtn.style.display = 'none';
+                showAllWorks();
+            }
+        }
+
+        function filterWorks(searchTerm) {
+            // 이 함수는 이제 performSearch에서만 호출됨
+            const clearBtn = document.getElementById('search-clear-btn');
+            
+            // X 버튼 표시/숨김
+            if (searchTerm.trim() !== '') {
+                clearBtn.style.display = 'block';
+            } else {
+                clearBtn.style.display = 'none';
+            }
+            
+            // 기존 filterWorks 로직 실행
+            if (window.originalFilterWorks) {
+                window.originalFilterWorks(searchTerm);
+            }
+            
+            // 검색어가 비어있으면 모든 작품 표시
+            if (searchTerm.trim() === '') {
+                showAllWorks();
+            }
+        }
+
+        // 검색 초기화 함수
+        function clearSearch() {
+            const searchInput = document.getElementById('entry-search-input');
+            const clearBtn = document.getElementById('search-clear-btn');
+            
+            searchInput.value = '';
+            clearBtn.style.display = 'none';
+            
+            // 모든 작품 표시
+            showAllWorks();
+            
+            // 기존 filterWorks 로직도 실행
+            if (window.originalFilterWorks) {
+                window.originalFilterWorks('');
+            }
+        }
+
+        // 모든 작품 표시 함수
+        function showAllWorks() {
+            // 현재 선택된 카테고리의 모든 작품을 표시
+            const activeCategory = document.querySelector('.sector-item.active');
+            if (activeCategory && window.selectCategory) {
+                const categoryName = activeCategory.textContent.trim();
+                window.selectCategory(activeCategory, categoryName);
+            }
+        }
+
+        // 탭 전환 시 검색 초기화
+        function selectCategory(element, category) {
+            // 기존 selectCategory 함수가 있다면 실행
+            if (window.originalSelectCategory) {
+                window.originalSelectCategory(element, category);
+            }
+            
+            // 검색 초기화
+            clearSearch();
+        }
+
+        // 전역 함수로 등록
+        window.performSearch = performSearch;
+        window.filterWorks = filterWorks;
+        window.clearSearch = clearSearch;
+        window.selectCategory = selectCategory;
     </script>
     <script src="assets/js/comments.js"></script>
     <script src="assets/js/awards.js"></script>
     <script src="assets/js/works.js"></script>
     <script src="assets/js/navigation.js"></script>
+    
+    <!-- 기존 함수들 백업 및 새로운 함수 오버라이드 -->
+    <script>
+        // 페이지 로드 후 기존 함수들을 백업
+        document.addEventListener('DOMContentLoaded', function() {
+            // 기존 함수들 백업
+            if (typeof window.filterWorks !== 'undefined') {
+                window.originalFilterWorks = window.filterWorks;
+            }
+            if (typeof window.selectCategory !== 'undefined') {
+                window.originalSelectCategory = window.selectCategory;
+            }
+            
+            // 검색 입력 필드에 이벤트 리스너 추가
+            const searchInput = document.getElementById('entry-search-input');
+            if (searchInput) {
+                // Enter 키 감지
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        performSearch();
+                    }
+                });
+                
+                // 실시간 검색 제거 - 버튼 클릭이나 Enter 키로만 검색
+            }
+            
+            // 탭 버튼들에 클릭 이벤트 추가
+            const categoryButtons = document.querySelectorAll('.sector-item');
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 기존 active 클래스 제거
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    // 현재 버튼에 active 클래스 추가
+                    this.classList.add('active');
+                    
+                    // 검색 초기화
+                    clearSearch();
+                });
+            });
+        });
+    </script>
     </html>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
