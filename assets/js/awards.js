@@ -339,7 +339,7 @@ function showAwardModal(awardWork, prizeType) {
 
     // 댓글 섹션 추가 (createCommentSection 함수가 존재하는 경우에만)
     if (typeof createCommentSection === 'function') {
-        const commentSection = createCommentSection(`award_${awardWork.filename}`);
+        const commentSection = createCommentSection(`${awardWork.filename}`);
         meta.appendChild(commentSection);
     } else {
         console.warn('Awards - createCommentSection 함수를 찾을 수 없습니다 - 직접 HTML 삽입');
@@ -401,8 +401,9 @@ function showAwardModal(awardWork, prizeType) {
     
     // 댓글 로드 (loadComments 함수가 존재하는 경우에만)
     if (typeof loadComments === 'function') {
-        loadComments(`award_${awardWork.filename}`);
+        loadComments(`${awardWork.filename}`);
     } else {
         console.warn('Awards - loadComments 함수를 찾을 수 없습니다');
     }
 }
+
