@@ -86,8 +86,14 @@ export async function loadComments(itemId) {
     try {
         if (window.supabase && typeof window.supabase.createClient === 'function') {
             if (!window.supabaseClient) {
-                const supabaseUrl = 'https://pimgwrosozsowpetqeeq.supabase.co';
-                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbWd3cm9zb3pzb3dwZXRxZWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MTcxMjgsImV4cCI6MjA3MDk5MzEyOH0.VKEsxMu47TDVvV93Gy9I-z4UmfNYlNEhSYkBSS5vDqU';
+                // 환경변수에서 설정값 가져오기
+                const supabaseUrl = window.SUPABASE_URL || 'https://pimgwrosozsowpetqeeq.supabase.co';
+                const supabaseKey = window.SUPABASE_ANON_KEY;
+                
+                if (!supabaseKey) {
+                    throw new Error('Supabase API 키가 설정되지 않았습니다.');
+                }
+                
                 window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
             }
             const supabaseClient = window.supabaseClient;
@@ -166,8 +172,14 @@ export async function submitComment(itemId) {
     try {
         if (window.supabase && typeof window.supabase.createClient === 'function') {
             if (!window.supabaseClient) {
-                const supabaseUrl = 'https://pimgwrosozsowpetqeeq.supabase.co';
-                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbWd3cm9zb3pzb3dwZXRxZWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MTcxMjgsImV4cCI6MjA3MDk5MzEyOH0.VKEsxMu47TDVvV93Gy9I-z4UmfNYlNEhSYkBSS5vDqU';
+                // 환경변수에서 설정값 가져오기
+                const supabaseUrl = window.SUPABASE_URL || 'https://pimgwrosozsowpetqeeq.supabase.co';
+                const supabaseKey = window.SUPABASE_ANON_KEY;
+                
+                if (!supabaseKey) {
+                    throw new Error('Supabase API 키가 설정되지 않았습니다.');
+                }
+                
                 window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
             }
             const supabaseClient = window.supabaseClient;
