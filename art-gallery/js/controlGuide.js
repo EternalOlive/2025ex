@@ -260,7 +260,7 @@ export function createControlGuide() {
                                 text-align: center;
                                 line-height: 1.3;
                                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                            ">마우스를 클릭하고 이동하여 시점 변경</div>
+                            ">마우스를 드래그하여 시점 변경</div>
                         </div>
                     </div>
 
@@ -425,12 +425,14 @@ export function createControlGuide() {
     // 시작 버튼 클릭 이벤트
     startButton.addEventListener('click', hideControlGuide);
 
-    // 모바일 감지하여 조이스틱 표시
+    // 실제 모바일 디바이스에서만 조이스틱 표시 (화면 크기 무관)
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    if (isMobile) {
-        const joystick = document.getElementById('joystick-container');
-        if (joystick) {
-            joystick.style.display = 'block';
+    const joystick = document.getElementById('joystick-container');
+    if (joystick) {
+        if (isMobile) {
+            joystick.classList.add('mobile-only');
+        } else {
+            joystick.classList.remove('mobile-only');
         }
     }
 

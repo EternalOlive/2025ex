@@ -69,9 +69,17 @@ const renderer = setupRenderer();
 window.camera = camera;
 window.scene = scene;
 
-// 모바일 조이스틱 UI 초기화
-setupJoystick();
-addJoystickListeners(camera);
+// 모바일 조이스틱 UI 초기화 (실제 모바일 디바이스에서만)
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+if (isMobile) {
+    setupJoystick();
+    addJoystickListeners(camera);
+    // 조이스틱 컨테이너에 모바일 클래스 추가
+    const joystickContainer = document.getElementById('joystick-container');
+    if (joystickContainer) {
+        joystickContainer.classList.add('mobile-only');
+    }
+}
 
 // Set up lighting
 const { ambientLight, sunLight, wallLight } = setupLighting(camera);
@@ -204,7 +212,10 @@ function animate() {
     requestAnimationFrame(animate);
     // 모달이 열려 있으면 카메라 이동/회전 차단
     if (!document.getElementById('work-modal')) {
-        updateJoystickMovement(camera, collidableObjects);
+        // 모바일에서만 조이스틱 업데이트
+        if (isMobile) {
+            updateJoystickMovement(camera, collidableObjects);
+        }
     }
     renderer.render(scene, camera);
 }
@@ -453,9 +464,7 @@ addEventListeners(camera, collidableObjects);
 
 // 모바일에서 스크롤 방지 및 터치 제어 개선
 function preventMobileScroll() {
-    // 모바일 감지
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
+    // 이미 정의된 isMobile 변수 사용
     if (isMobile) {
         // 전체 페이지 스크롤 방지
         document.body.style.overflow = 'hidden';

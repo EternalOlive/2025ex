@@ -243,6 +243,18 @@
     <div id="joystick-knob" style="width:32px;height:32px;background:#6366f1;border-radius:50%;position:absolute;left:40px;top:40px;transform:translate(-16px,-16px);cursor:grab;box-shadow:0 2px 6px rgba(99,102,241,0.3);transition:transform 0.1s ease;"></div>
 </div>
 
+    <style>
+        /* 기본적으로 조이스틱 숨김 */
+        #joystick-container {
+            display: none !important;
+        }
+        
+        /* 모바일 디바이스에서만 조이스틱 표시 (JavaScript에서 제어) */
+        #joystick-container.mobile-only {
+            display: block !important;
+        }
+    </style>
+
     <script src="./js/main.js" type="module" defer></script>
     <script src="./js/controlGuide.js" type="module"></script>
 </body>
