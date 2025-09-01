@@ -3,12 +3,86 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
     // 댓글 모듈 import
     let createCommentSection, loadComments, submitComment;
     try {
-        const commentsMod = await import('./comments.js');
+        const commentsMod = await imp    // 메타 영역 - 이제 이미지와 함께 스크롤
+    const meta = document.createElement('div');
+    meta.className = 'lightbox__meta';
+    meta.style.padding = '0 24px 24px 24px';comments.js');
         createCommentSection = commentsMod.createCommentSection;
         loadComments = commentsMod.loadComments;
         submitComment = commentsMod.submitComment;
     } catch (e) {
         console.error('comments.js import 실패:', e);
+    }
+
+    // 댓글 섹션 폴백 함수 (import 실패 시 사용)
+    function createCommentSectionFallback(itemId) {
+        const safeId = itemId.replace(/[^a-zA-Z0-9_-]/g, '_');
+        const container = document.createElement('div');
+        container.className = 'comment-section';
+        container.innerHTML = `
+            <h3 style="text-align: left;">댓글 <span class="comment-count" id="comment-count-${safeId}">(0)</span></h3>
+            <div class="comments-list" id="comments-list-${safeId}">
+                <div class="no-comments">작성된 댓글이 없습니다.</div>
+            </div>
+            <div class="comment-form">
+                <input 
+                    type="text"
+                    id="comment-author-${safeId}"
+                    placeholder="작성자 이름"
+                    maxlength="8"
+                    style="margin-bottom:12px;width:100%;box-sizing:border-box;border-radius:8px;padding:12px 16px;border:1.5px solid #d1d5db;font-size:16px;background:#f8f9fa;transition:border-color 0.2s;"
+                />
+                <textarea 
+                    id="comment-content-${safeId}" 
+                    placeholder="댓글을 작성해주세요 (최대 300자)" 
+                    maxlength="300"
+                    rows="3"
+                    style="width:100%;box-sizing:border-box;border-radius:8px;padding:12px 16px;border:1.5px solid #d1d5db;font-size:14px;background:#f8f9fa;resize:vertical;min-height:80px;"
+                ></textarea>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+                    <span id="char-count-${safeId}" style="font-size:12px;color:#666;">0/300</span>
+                    <button id="comment-submit-${safeId}" disabled style="background:#6366f1;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;opacity:0.5;">댓글 작성</button>
+                </div>
+            </div>
+        `;
+        
+        // 이벤트 리스너 추가
+        const textarea = container.querySelector(`#comment-content-${safeId}`);
+        const charCount = container.querySelector(`#char-count-${safeId}`);
+        const submitBtn = container.querySelector(`#comment-submit-${safeId}`);
+        const authorInput = container.querySelector(`#comment-author-${safeId}`);
+        
+        if (textarea && charCount && submitBtn && authorInput) {
+            textarea.addEventListener('input', function() {
+                const length = this.value.length;
+                charCount.textContent = `${length}/300`;
+                const authorLength = authorInput.value.trim().length;
+                submitBtn.disabled = length === 0 || length > 300 || authorLength === 0;
+                submitBtn.style.opacity = submitBtn.disabled ? '0.5' : '1';
+            });
+            
+            authorInput.addEventListener('input', function() {
+                const authorLength = this.value.trim().length;
+                const contentLength = textarea.value.length;
+                submitBtn.disabled = contentLength === 0 || contentLength > 300 || authorLength === 0;
+                submitBtn.style.opacity = submitBtn.disabled ? '0.5' : '1';
+            });
+            
+            submitBtn.addEventListener('click', async function() {
+                if (!submitBtn.disabled && submitComment) {
+                    await submitComment(itemId);
+                }
+            });
+            
+            submitBtn.addEventListener('touchstart', async function(e) {
+                e.preventDefault();
+                if (!submitBtn.disabled && submitComment) {
+                    await submitComment(itemId);
+                }
+            }, { passive: false });
+        }
+        
+        return container;
     }
 
     const folderMapping = {
@@ -145,16 +219,16 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
     lightbox.style.background = 'white';
     lightbox.style.borderRadius = '16px';
     lightbox.style.boxShadow = '0 4px 32px rgba(0,0,0,0.18)';
-    lightbox.style.padding = '32px 24px 24px 24px';
     lightbox.style.minWidth = '320px';
     lightbox.style.maxWidth = '95vw';
     lightbox.style.maxHeight = '90vh';
     lightbox.style.overflowY = 'auto';
     lightbox.style.textAlign = 'center';
 
-    // 미디어 영역
+    // 미디어 영역 - 이제 스크롤 가능
     const media = document.createElement('div');
     media.className = 'lightbox__media';
+    media.style.padding = '32px 24px 16px 24px';
 
     // 이미지 요소
     const img = document.createElement('img');
@@ -167,9 +241,10 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
     fallback.textContent = '이미지를 불러올 수 없습니다.';
     fallback.style.display = 'none';
 
-    // 메타 정보 영역
+    // 메타 정보 영역 - 이제 이미지와 함께 스크롤
     const meta = document.createElement('div');
     meta.className = 'lightbox__meta';
+    meta.style.padding = '0 24px 24px 24px';
 
     const titleRow = document.createElement('div');
     titleRow.className = 'lightbox__title-row';
@@ -230,34 +305,56 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         const prevBtn = document.createElement('button');
         prevBtn.className = 'lightbox__nav lightbox__nav--prev';
         prevBtn.innerHTML = '◀';
-        prevBtn.style.position = 'absolute';
-        prevBtn.style.left = '20px';
-        prevBtn.style.top = '50%';
-        prevBtn.style.transform = 'translateY(-50%)';
-        prevBtn.style.background = 'rgba(0,0,0,0.5)';
-        prevBtn.style.color = '#fff';
-        prevBtn.style.border = 'none';
-        prevBtn.style.borderRadius = '50%';
-        prevBtn.style.width = '40px';
-        prevBtn.style.height = '40px';
-        prevBtn.style.cursor = 'pointer';
-        prevBtn.style.zIndex = '10';
+        
+        // 모바일 터치 최적화 스타일
+        prevBtn.style.cssText = `
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        `;
 
         const nextBtn = document.createElement('button');
         nextBtn.className = 'lightbox__nav lightbox__nav--next';
         nextBtn.innerHTML = '▶';
-        nextBtn.style.position = 'absolute';
-        nextBtn.style.right = '20px';
-        nextBtn.style.top = '50%';
-        nextBtn.style.transform = 'translateY(-50%)';
-        nextBtn.style.background = 'rgba(0,0,0,0.5)';
-        nextBtn.style.color = '#fff';
-        nextBtn.style.border = 'none';
-        nextBtn.style.borderRadius = '50%';
-        nextBtn.style.width = '40px';
-        nextBtn.style.height = '40px';
-        nextBtn.style.cursor = 'pointer';
-        nextBtn.style.zIndex = '10';
+        
+        // 모바일 터치 최적화 스타일
+        nextBtn.style.cssText = `
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        `;
 
         // 슬라이드 업데이트 함수
         function updateSlide(idx) {
@@ -289,29 +386,84 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
             const oldCommentSection = meta.querySelector('.comment-section');
             if (oldCommentSection) oldCommentSection.remove();
             
-            if (typeof createCommentSection === 'function') {
-                const commentSection = createCommentSection(currentSlide.filename);
-                meta.appendChild(commentSection);
-                
-                // 댓글 로드
-                if (typeof loadComments === 'function') {
-                    loadComments(currentSlide.filename);
-                }
+            let commentSection;
+            if (typeof window.createCommentSection === 'function') {
+                commentSection = window.createCommentSection(currentSlide.filename);
+            } else if (typeof createCommentSection === 'function') {
+                commentSection = createCommentSection(currentSlide.filename);
+            } else {
+                // 폴백 함수 사용
+                commentSection = createCommentSectionFallback(currentSlide.filename);
             }
+            meta.appendChild(commentSection);
+            
+            // 댓글 로드
+            setTimeout(() => {
+                let loadCommentsFunc = null;
+                
+                if (window.loadComments && typeof window.loadComments === 'function') {
+                    loadCommentsFunc = window.loadComments;
+                } else if (loadComments && typeof loadComments === 'function') {
+                    loadCommentsFunc = loadComments;
+                }
+                
+                if (loadCommentsFunc) {
+                    console.log('슬라이드 댓글 로드:', currentSlide.filename);
+                    try {
+                        loadCommentsFunc(currentSlide.filename);
+                    } catch (error) {
+                        console.error('슬라이드 댓글 로드 중 오류:', error);
+                    }
+                } else {
+                    console.warn('슬라이드용 loadComments 함수를 찾을 수 없습니다');
+                }
+            }, 100);
         }
 
         // 버튼 이벤트 리스너
-        prevBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
+        function goToPrevSlide() {
             const newIdx = (currentSlideIdx - 1 + slideList.length) % slideList.length;
             updateSlide(newIdx);
+        }
+        
+        function goToNextSlide() {
+            const newIdx = (currentSlideIdx + 1) % slideList.length;
+            updateSlide(newIdx);
+        }
+        
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            goToPrevSlide();
         });
+        
+        // 모바일 터치 이벤트 (더 민감하게)
+        prevBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            goToPrevSlide();
+        }, { passive: false });
+        
+        prevBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        }, { passive: false });
 
         nextBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const newIdx = (currentSlideIdx + 1) % slideList.length;
-            updateSlide(newIdx);
+            goToNextSlide();
         });
+        
+        // 모바일 터치 이벤트 (더 민감하게)
+        nextBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            goToNextSlide();
+        }, { passive: false });
+        
+        nextBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        }, { passive: false });
 
         // 미디어 영역 스타일 설정
         media.style.position = 'relative';
@@ -347,26 +499,100 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
     };
 
     // 댓글 섹션 추가
-    if (typeof createCommentSection === 'function') {
-        const commentSection = createCommentSection(currentWork.filename);
-        meta.appendChild(commentSection);
+    let commentSection;
+    if (typeof window.createCommentSection === 'function') {
+        console.log('window.createCommentSection 사용');
+        commentSection = window.createCommentSection(currentWork.filename);
+    } else if (typeof createCommentSection === 'function') {
+        console.log('imported createCommentSection 사용');
+        commentSection = createCommentSection(currentWork.filename);
     } else {
-        const commentFallback = document.createElement('div');
-        commentFallback.className = 'comment-section';
-        commentFallback.innerHTML = '<h3>댓글 기능을 사용할 수 없습니다.</h3>';
-        meta.appendChild(commentFallback);
+        console.log('폴백 createCommentSection 사용');
+        // 댓글 섹션을 직접 생성 (index.html의 코드 기반)
+        commentSection = createCommentSectionFallback(currentWork.filename);
     }
+    meta.appendChild(commentSection);
+
+    // 댓글 로드 (DOM 요소가 추가된 후 실행)
+    setTimeout(() => {
+        // 여러 방법으로 loadComments 함수 찾기
+        let loadCommentsFunc = null;
+        
+        if (window.loadComments && typeof window.loadComments === 'function') {
+            loadCommentsFunc = window.loadComments;
+            console.log('window.loadComments 사용');
+        } else if (loadComments && typeof loadComments === 'function') {
+            loadCommentsFunc = loadComments;
+            console.log('imported loadComments 사용');
+        }
+        
+        if (loadCommentsFunc) {
+            console.log('댓글 로드 시작:', currentWork.filename);
+            try {
+                loadCommentsFunc(currentWork.filename);
+            } catch (error) {
+                console.error('댓글 로드 중 오류:', error);
+            }
+        } else {
+            console.warn('loadComments 함수를 찾을 수 없습니다. 사용 가능한 함수들:', {
+                'window.loadComments': typeof window.loadComments,
+                'loadComments': typeof loadComments,
+                'window.createCommentSection': typeof window.createCommentSection,
+                'window.submitComment': typeof window.submitComment
+            });
+        }
+    }, 200);
 
     // 닫기 버튼
     const closeBtn = document.createElement('button');
     closeBtn.className = 'lightbox__close';
     closeBtn.setAttribute('aria-label', '닫기');
     closeBtn.innerHTML = '✕';
-    closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+    
+    // 모바일 터치 최적화 스타일 - fixed 위치로 스크롤과 무관하게 고정
+    closeBtn.style.cssText = `
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        width: 44px;
+        height: 44px;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 1001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    `;
+    
+    function closeModal() {
         backdrop.remove();
         document.removeEventListener('keydown', onKey);
+    }
+    
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeModal();
     });
+    
+    // 모바일 터치 이벤트 (더 민감하게)
+    closeBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeModal();
+    }, { passive: false });
+    
+    closeBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    }, { passive: false });
 
     // 키보드 지원
     function onKey(e) {
@@ -387,25 +613,52 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
     }
     document.addEventListener('keydown', onKey);
 
-    // 조립
+    // 조립 - 닫기 버튼은 backdrop에 직접 추가하여 스크롤과 무관하게 고정
     lightbox.appendChild(media);
     lightbox.appendChild(meta);
-    lightbox.appendChild(closeBtn);
     backdrop.appendChild(lightbox);
+    backdrop.appendChild(closeBtn);
 
     // 배경 클릭 시 닫기
-    backdrop.addEventListener('click', () => {
-        backdrop.remove();
-        document.removeEventListener('keydown', onKey);
+    let touchStartTime = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    
+    backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) {
+            closeModal();
+        }
     });
+    
+    // 모바일 터치 이벤트 개선
+    backdrop.addEventListener('touchstart', (e) => {
+        if (e.target === backdrop) {
+            touchStartTime = Date.now();
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }
+    }, { passive: false });
+    
+    backdrop.addEventListener('touchend', (e) => {
+        if (e.target === backdrop) {
+            const touchEndTime = Date.now();
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            const timeDiff = touchEndTime - touchStartTime;
+            const xDiff = Math.abs(touchEndX - touchStartX);
+            const yDiff = Math.abs(touchEndY - touchStartY);
+            
+            // 짧은 탭이고 움직임이 적으면 닫기
+            if (timeDiff < 300 && xDiff < 20 && yDiff < 20) {
+                e.preventDefault();
+                closeModal();
+            }
+        }
+    }, { passive: false });
 
     // 컨텐츠 클릭 전파 방지
     lightbox.addEventListener('click', (e) => e.stopPropagation());
 
     document.body.appendChild(backdrop);
-
-    // 댓글 로드
-    if (typeof loadComments === 'function') {
-        loadComments(currentWork.filename);
-    }
 }
