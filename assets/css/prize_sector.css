@@ -999,14 +999,15 @@ body, html {
 /* 더 작은 모바일 화면 (480px 이하) */
 @media (max-width: 480px) {
     .entry {
-        padding: 15px 10px 80px 10px; /* 더 큰 아래 여백 */
+        /* padding: 15px 10px 80px 10px; 더 큰 아래 여백 */
         min-height: 70vh; /* 더 큰 최소 높이 */
         gap: 3px;
     }
     
     .entry-work-list {
-        margin-bottom: 60px; /* 더 큰 아래 여백 */
-        padding-bottom: 20px;
+        /* margin-bottom: 60px; 더 큰 아래 여백 */
+        /* padding-bottom: 20px; */
+        min-width: 100vw;
     }
     
     /* 작품 그리드에 아래 여백 추가 */
@@ -1019,6 +1020,10 @@ body, html {
         max-width: 220px;
         min-width: 0;
         box-sizing: border-box;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     /* 작품 이미지 */
     .case-img {
@@ -1031,6 +1036,5 @@ body, html {
         margin: 0 auto;
     }
 }
-
 
 
