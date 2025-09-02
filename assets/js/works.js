@@ -167,11 +167,7 @@ function renderWorks(category) {
     worksToShow.forEach(work => {
         // 작품 컨테이너
         const workItem = document.createElement('div');
-        workItem.style.display = 'flex';
-        workItem.style.flexDirection = 'column';
-        workItem.style.alignItems = 'center';
-        workItem.style.justifyContent = 'center';
-        workItem.style.padding = '2px';
+        workItem.className = 'work-item-container';
 
             // 이미지 및 정보
             let img;
@@ -284,7 +280,7 @@ function renderWorks(category) {
             z-index: 10;
             width: auto;
             height: auto;
-            display: ${isVerySmall ? 'none' : 'block'}; //테스트
+            display: ${isVerySmall ? 'none' : 'block'};
         `;
         
         if (hasLeftPage) {
@@ -1054,11 +1050,7 @@ function renderWorksFiltered(filteredWorks) {
     `;
     filteredWorks.forEach(work => {
         const workItem = document.createElement('div');
-        workItem.style.display = 'flex';
-        workItem.style.flexDirection = 'column';
-        workItem.style.alignItems = 'center';
-        workItem.style.justifyContent = 'center';
-        workItem.style.padding = '8px';
+        workItem.className = 'work-item-container';
             let img;
             if (work.category === '사례') {
                 const caseContainer = document.createElement('div');
@@ -1129,6 +1121,4 @@ function renderWorksFiltered(filteredWorks) {
         workList.innerHTML = '<p style="text-align: center; color: #666; padding: 50px;">검색 결과가 없습니다.</p>';
     }
 }
-
-
 
