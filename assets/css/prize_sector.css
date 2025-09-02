@@ -1001,7 +1001,6 @@ body, html {
     .entry {
         /* padding: 15px 10px 80px 10px; 더 큰 아래 여백 */
         min-height: 70vh; /* 더 큰 최소 높이 */
-        gap: 3px;
     }
     
     .entry-work-list {
@@ -1036,5 +1035,6 @@ body, html {
         margin: 0 auto;
     }
 }
+
 
 
