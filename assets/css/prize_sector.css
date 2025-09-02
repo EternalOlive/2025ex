@@ -957,7 +957,7 @@ body, html {
         background-size: cover;
     }
     .sector-list {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(2, 1fr);
         /* max-width: 60vw; */
         gap: 1.2vw;
@@ -1031,5 +1031,6 @@ body, html {
         margin: 0 auto;
     }
 }
+
 
 
