@@ -256,6 +256,7 @@ function renderWorks(category) {
     
     // 반응형 크기 계산
     const isMobile = window.innerWidth <= 768;
+    const isVerySmall = window.innerWidth <= 480;
     const fontSize = isMobile ? '20px' : '40px';
     const buttonPosition = isMobile ? '-15px' : '-30px';
     const scaleY = isMobile ? '1.5' : '2.0';
@@ -283,6 +284,7 @@ function renderWorks(category) {
             z-index: 10;
             width: auto;
             height: auto;
+            display: ${isVerySmall ? 'none' : 'block'};
         `;
         
         if (hasLeftPage) {
@@ -324,6 +326,7 @@ function renderWorks(category) {
             z-index: 10;
             width: auto;
             height: auto;
+            display: ${isVerySmall ? 'none' : 'block'};
         `;
         
         if (hasRightPage) {
