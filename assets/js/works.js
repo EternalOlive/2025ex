@@ -284,7 +284,7 @@ function renderWorks(category) {
             z-index: 10;
             width: auto;
             height: auto;
-            display: ${isVerySmall ? 'none' : 'block'};
+            display: ${isVerySmall ? 'none' : 'block'}; //테스트
         `;
         
         if (hasLeftPage) {
@@ -1129,4 +1129,5 @@ function renderWorksFiltered(filteredWorks) {
         workList.innerHTML = '<p style="text-align: center; color: #666; padding: 50px;">검색 결과가 없습니다.</p>';
     }
 }
+
 
