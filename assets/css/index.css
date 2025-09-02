@@ -625,7 +625,7 @@ z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
 @media (max-width: 480px) {
     .lightbox {
         width: 96vw;
-        max-height: 95vh;
+        max-height: 85vh;
         border-radius: 12px;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
