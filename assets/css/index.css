@@ -159,21 +159,6 @@ color: #000000;
 
 /* 모바일 */
 @media (max-width: 480px) {
-    .landing {
-        background-size: auto 100%;
-        background-position: center center;
-        align-items: flex-start;
-        padding-top: 10.67vw; /* 80px / 480px * 100 */
-    }
-    
-    .landing-info {
-        gap: 3vw; /* 30px / 480px * 100 */
-        width: 90vw;
-        padding: 6.25vw 4.17vw; /* 30px 20px / 480px * 100 */
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 3.33vw; /* 16px / 480px * 100 */
-    }
-    
     .ex-days {
         font-size: 3.33vw; /* 16px / 480px * 100 */
     }
@@ -805,5 +790,6 @@ z-index: -2; /* 배경 이미지가 다른 요소 뒤에 오도록 설정 */
     }
 
 }
+
 
 
