@@ -384,42 +384,8 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
             // 인디케이터 업데이트
             updateIndicator();
             
-            // 댓글 섹션 업데이트
-            const oldCommentSection = meta.querySelector('.comment-section');
-            if (oldCommentSection) oldCommentSection.remove();
-            
-            let commentSection;
-            if (typeof window.createCommentSection === 'function') {
-                commentSection = window.createCommentSection(currentSlide.filename);
-            } else if (typeof createCommentSection === 'function') {
-                commentSection = createCommentSection(currentSlide.filename);
-            } else {
-                // 폴백 함수 사용
-                commentSection = createCommentSectionFallback(currentSlide.filename);
-            }
-            meta.appendChild(commentSection);
-            
-            // 댓글 로드
-            setTimeout(() => {
-                let loadCommentsFunc = null;
-                
-                if (window.loadComments && typeof window.loadComments === 'function') {
-                    loadCommentsFunc = window.loadComments;
-                } else if (loadComments && typeof loadComments === 'function') {
-                    loadCommentsFunc = loadComments;
-                }
-                
-                if (loadCommentsFunc) {
-                    // console.log('슬라이드 댓글 로드:', currentSlide.filename);
-                    try {
-                        loadCommentsFunc(currentSlide.filename);
-                    } catch (error) {
-                        console.error('슬라이드 댓글 로드 중 오류:', error);
-                    }
-                } else {
-                    console.warn('슬라이드용 loadComments 함수를 찾을 수 없습니다');
-                }
-            }, 100);
+            // 슬라이드가 바뀌어도 댓글은 같은 사례에 대한 것이므로 새로 로드하지 않음
+            // 사례의 경우 case_더그림, case_굿모닝 등으로 통일된 ID를 사용
         }
 
         // 버튼 이벤트 리스너
@@ -500,18 +466,23 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         fallback.style.display = 'block';
     };
 
-    // 댓글 섹션 추가
+    // 댓글 섹션 추가 - 사례는 case_ 접두사로 통일된 ID 사용
+    let commentItemId = currentWork.filename;
+    if (isSlideCase && folderName) {
+        commentItemId = `case_${folderName}`;
+    }
+    
     let commentSection;
     if (typeof window.createCommentSection === 'function') {
         // console.log('window.createCommentSection 사용');
-        commentSection = window.createCommentSection(currentWork.filename);
+        commentSection = window.createCommentSection(commentItemId);
     } else if (typeof createCommentSection === 'function') {
         // console.log('imported createCommentSection 사용');
-        commentSection = createCommentSection(currentWork.filename);
+        commentSection = createCommentSection(commentItemId);
     } else {
         // console.log('폴백 createCommentSection 사용');
         // 댓글 섹션을 직접 생성 (index.html의 코드 기반)
-        commentSection = createCommentSectionFallback(currentWork.filename);
+        commentSection = createCommentSectionFallback(commentItemId);
     }
     meta.appendChild(commentSection);
 
@@ -529,9 +500,9 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
         }
         
         if (loadCommentsFunc) {
-            // console.log('댓글 로드 시작:', currentWork.filename);
+            // console.log('댓글 로드 시작:', commentItemId);
             try {
-                loadCommentsFunc(currentWork.filename);
+                loadCommentsFunc(commentItemId);
             } catch (error) {
                 console.error('댓글 로드 중 오류:', error);
             }
