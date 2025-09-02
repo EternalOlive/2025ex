@@ -171,7 +171,7 @@ function renderWorks(category) {
         workItem.style.flexDirection = 'column';
         workItem.style.alignItems = 'center';
         workItem.style.justifyContent = 'center';
-        workItem.style.padding = '8px';
+        workItem.style.padding = '2px';
 
             // 이미지 및 정보
             let img;
@@ -1129,5 +1129,6 @@ function renderWorksFiltered(filteredWorks) {
         workList.innerHTML = '<p style="text-align: center; color: #666; padding: 50px;">검색 결과가 없습니다.</p>';
     }
 }
+
 
 
