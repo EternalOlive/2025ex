@@ -338,8 +338,14 @@ function showAwardModal(awardWork, prizeType) {
     meta.appendChild(titleRow);
 
     // 댓글 섹션 추가 (createCommentSection 함수가 존재하는 경우에만)
+    // 우수유치원(goodex)의 경우 case_ 접두사로 통일된 ID 사용
+    let commentItemId = awardWork.filename;
+    if (prizeType === 'goodex' && awardWork.folderName) {
+        commentItemId = `case_${awardWork.folderName}`;
+    }
+    
     if (typeof createCommentSection === 'function') {
-        const commentSection = createCommentSection(`${awardWork.filename}`);
+        const commentSection = createCommentSection(commentItemId);
         meta.appendChild(commentSection);
     } else {
         console.warn('Awards - createCommentSection 함수를 찾을 수 없습니다 - 직접 HTML 삽입');
@@ -400,8 +406,16 @@ function showAwardModal(awardWork, prizeType) {
     document.body.appendChild(backdrop);
     
     // 댓글 로드 (loadComments 함수가 존재하는 경우에만)
+    // 우수유치원(goodex)의 경우 case_ 접두사로 통일된 ID 사용
+    let loadCommentItemId = awardWork.filename;
+    if (prizeType === 'goodex' && awardWork.folderName) {
+        loadCommentItemId = `case_${awardWork.folderName}`;
+    }
+    
     if (typeof loadComments === 'function') {
-        loadComments(`${awardWork.filename}`);
+        setTimeout(() => {
+            loadComments(loadCommentItemId);
+        }, 100);
     } else {
         console.warn('Awards - loadComments 함수를 찾을 수 없습니다');
     }

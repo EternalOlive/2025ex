@@ -834,6 +834,17 @@ function showCaseSlideModal(work) {
     if (typeof createCommentSection === 'function') {
         const commentSection = createCommentSection(`case_${folderName}`);
         meta.appendChild(commentSection);
+        
+        // 댓글 로드
+        setTimeout(() => {
+            if (typeof loadComments === 'function') {
+                try {
+                    loadComments(`case_${folderName}`);
+                } catch (error) {
+                    console.error('사례 댓글 로드 중 오류:', error);
+                }
+            }
+        }, 100);
     }
 
     // 이미지 업데이트 함수
