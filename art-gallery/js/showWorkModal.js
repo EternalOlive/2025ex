@@ -246,7 +246,7 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
     // 메타 정보 영역 - 이제 이미지와 함께 스크롤
     const meta = document.createElement('div');
     meta.className = 'lightbox__meta';
-    meta.style.padding = '0 24px 24px 24px';
+    meta.style.padding = '24px 24px 24px 24px';
 
     const titleRow = document.createElement('div');
     titleRow.className = 'lightbox__title-row';
@@ -635,4 +635,5 @@ export async function showWorkModal(filename, works, awardsData, options = {}) {
 
     document.body.appendChild(backdrop);
 }
+
 
