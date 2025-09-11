@@ -229,7 +229,7 @@ threeLoadingManager.onLoad = () => {
                                 material.map.anisotropy = 2; // 중간: 적당
                                 break;
                             case 'high':
-                                material.map.anisotropy = 4; // 고메모리: 고품질
+                                material.map.anisotropy = 2; // 고메모리: 고품질
                                 break;
                             default:
                                 material.map.anisotropy = 2;
@@ -878,6 +878,7 @@ function startRendering() {
     render(); // 렌더링 시작
 
 }
+
 
 
 
