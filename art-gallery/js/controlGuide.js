@@ -408,6 +408,16 @@ export function createControlGuide() {
                     -webkit-tap-highlight-color: transparent;
                     transition: all 0.2s ease;
                 ">시작하기</button>
+                
+                <div style="
+                    margin-top: 15px;
+                    padding-top: 12px;
+                    border-top: 1px solid #e5e5e5;
+                    font-size: 0.7rem;
+                    color: #888;
+                    line-height: 1.4;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                ">※ 가급적 PC에서 감상을 권합니다</div>
             </div>
         </div>
     `;
