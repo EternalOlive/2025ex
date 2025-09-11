@@ -358,7 +358,7 @@ function animate() {
         const now = Date.now();
         if (!animate.lastTime) animate.lastTime = now;
         
-        if (now - animate.lastTime >= 22) { // 약 45fps
+        if (now - animate.lastTime >= 33) { // 약 30fps
             renderer.render(scene, camera);
             animate.lastTime = now;
         }
@@ -878,6 +878,7 @@ function startRendering() {
     render(); // 렌더링 시작
 
 }
+
 
 
 
