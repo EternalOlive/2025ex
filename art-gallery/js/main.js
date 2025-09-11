@@ -14,10 +14,10 @@ function checkDevicePerformance() {
     // 메모리 기반 품질 등급 설정
     let qualityLevel = 'high';
     if (isMobile) {
-        if (deviceMemory <= 2) {
+        if (deviceMemory <= 4) {
             qualityLevel = 'low';
             console.log('저메모리 모바일 디바이스 감지 (2GB 이하) - 저품질 모드');
-        } else if (deviceMemory <= 4) {
+        } else if (deviceMemory <= 6) {
             qualityLevel = 'medium';
             console.log('중간 메모리 모바일 디바이스 감지 (4GB 이하) - 중품질 모드');
         } else {
@@ -813,13 +813,13 @@ window.addEventListener("resize", () => {
                 pixelRatio = Math.min(window.devicePixelRatio, 1.0);
                 break;
             case 'medium':
-                pixelRatio = Math.min(window.devicePixelRatio, 1.25);
+                pixelRatio = Math.min(window.devicePixelRatio, 1.2);
                 break;
             case 'high':
-                pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+                pixelRatio = Math.min(window.devicePixelRatio, 1.2);
                 break;
             default:
-                pixelRatio = Math.min(window.devicePixelRatio, 1.25);
+                pixelRatio = Math.min(window.devicePixelRatio, 1.2);
         }
         
         renderer.setPixelRatio(pixelRatio);
@@ -916,6 +916,7 @@ function startRendering() {
     render(); // 렌더링 시작
 
 }
+
 
 
 
