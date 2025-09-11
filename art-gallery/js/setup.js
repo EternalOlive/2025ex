@@ -30,24 +30,43 @@ export function setupCamera() {
 
 // Renderer setup
 export function setupRenderer() {
+    // 모바일 디바이스 감지
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
     const renderer = new THREE.WebGLRenderer({ 
-        antialias: true,
-        powerPreference: "high-performance",
-        precision: "highp"
+        antialias: !isMobile, // 모바일에서는 안티에일리어싱 비활성화
+        powerPreference: isMobile ? "default" : "high-performance",
+        precision: isMobile ? "mediump" : "highp",
+        alpha: false,
+        stencil: false
     });
     
-    // 고해상도 디스플레이 지원
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // 모바일 최적화된 픽셀 비율
+    if (isMobile) {
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
+    } else {
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    }
+    
     renderer.setSize(window.innerWidth, window.innerHeight);
     
-    // 렌더링 품질 향상
+    // 렌더링 품질 설정
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0; // 1.0 → 1.3으로 증가 (더 밝게)
     
-    // 그림자 설정 (필요시)
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    if (isMobile) {
+        // 모바일: 기본 톤매핑으로 성능 향상
+        renderer.toneMapping = THREE.LinearToneMapping;
+        renderer.toneMappingExposure = 1.0;
+        // 그림자 비활성화
+        renderer.shadowMap.enabled = false;
+    } else {
+        // 데스크탑: 고품질 설정
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.0;
+        // 그림자 설정 (필요시)
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    }
     
     document.body.appendChild(renderer.domElement);
     return renderer;

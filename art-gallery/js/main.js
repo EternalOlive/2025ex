@@ -5,6 +5,32 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import * as THREE from 'three';
 import { showControlGuide } from './controlGuide.js';
 
+// 초기 성능 체크 및 최적화 설정
+function checkDevicePerformance() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isLowMemory = navigator.deviceMemory ? navigator.deviceMemory <= 4 : false;
+    const isLowCpu = navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : false;
+    
+    if (isMobile || isLowMemory || isLowCpu) {
+        console.log('저사양 디바이스 감지 - 최적화 모드 활성화');
+        
+        // 브라우저별 최적화
+        if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+            // Safari 특별 최적화
+            document.body.style.webkitTransform = 'translateZ(0)';
+            document.body.style.webkitBackfaceVisibility = 'hidden';
+        }
+        
+        // 메모리 경고 설정
+        if ('memory' in performance && performance.memory.jsHeapSizeLimit < 1073741824) { // 1GB 미만
+            console.warn('메모리 제한 감지:', Math.round(performance.memory.jsHeapSizeLimit / 1024 / 1024) + 'MB');
+        }
+    }
+}
+
+// 성능 체크 실행
+checkDevicePerformance();
+
 // 제발되라
 // 로딩 상태 관리
 let isModelLoaded = false;
@@ -71,7 +97,12 @@ window.scene = scene;
 
 // 모바일 조이스틱 UI 초기화 (실제 모바일 디바이스에서만)
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// 모바일 최적화 설정 (기존 isMobile 변수 활용)
 if (isMobile) {
+    // 픽셀 비율 제한으로 메모리 절약
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
+    
     setupJoystick();
     addJoystickListeners(camera);
     // 조이스틱 컨테이너에 모바일 클래스 추가
@@ -79,6 +110,9 @@ if (isMobile) {
     if (joystickContainer) {
         joystickContainer.classList.add('mobile-only');
     }
+} else {
+    // 데스크탑은 적당한 품질 유지
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 }
 
 // Set up lighting
@@ -142,12 +176,25 @@ threeLoadingManager.onLoad = () => {
     // 로딩 완료 후 모든 텍스처의 필터링 개선
     scene.traverse((child) => {
         if (child.isMesh && child.material) {
-            if (child.material.map) {
-                child.material.map.generateMipmaps = true;
-                child.material.map.minFilter = THREE.LinearMipmapLinearFilter;
-                child.material.map.magFilter = THREE.LinearFilter;
-                child.material.map.anisotropy = renderer.capabilities.getMaxAnisotropy();
-            }
+            const materials = Array.isArray(child.material) ? child.material : [child.material];
+            materials.forEach(material => {
+                if (material.map) {
+                    if (isMobile) {
+                        // 모바일: 메모리 절약 설정
+                        material.map.generateMipmaps = false;
+                        material.map.minFilter = THREE.LinearFilter;
+                        material.map.magFilter = THREE.LinearFilter;
+                        material.map.anisotropy = 1;
+                    } else {
+                        // 데스크탑: 기존 고품질 설정
+                        material.map.generateMipmaps = true;
+                        material.map.minFilter = THREE.LinearMipmapLinearFilter;
+                        material.map.magFilter = THREE.LinearFilter;
+                        material.map.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+                    }
+                    material.map.needsUpdate = true;
+                }
+            });
         }
     });
     
@@ -179,6 +226,21 @@ loader.load(
         model.traverse(function (child) {
             if (child.isMesh) {
                 collidableObjects.push(child);
+                
+                // 모바일에서 추가 최적화
+                if (isMobile && child.material) {
+                    const materials = Array.isArray(child.material) ? child.material : [child.material];
+                    materials.forEach(material => {
+                        // 그림자 관련 설정 비활성화 (메모리 절약)
+                        material.castShadow = false;
+                        material.receiveShadow = false;
+                        
+                        // 복잡한 재질 효과 단순화
+                        if (material.normalMap) {
+                            material.normalScale?.set(0.5, 0.5); // 노멀맵 강도 줄이기
+                        }
+                    });
+                }
             }
         });
 
@@ -210,6 +272,7 @@ loader.load(
 // 애니메이션 루프에서 조이스틱 이동 적용
 function animate() {
     requestAnimationFrame(animate);
+    
     // 모달이 열려 있으면 카메라 이동/회전 차단
     if (!document.getElementById('work-modal')) {
         // 모바일에서만 조이스틱 업데이트
@@ -217,7 +280,21 @@ function animate() {
             updateJoystickMovement(camera, collidableObjects);
         }
     }
-    renderer.render(scene, camera);
+    
+    // 모바일에서 성능 최적화: 낮은 FPS로 렌더링
+    if (isMobile) {
+        // 30fps로 제한 (성능 향상)
+        const now = Date.now();
+        if (!animate.lastTime) animate.lastTime = now;
+        
+        if (now - animate.lastTime >= 33) { // 약 30fps
+            renderer.render(scene, camera);
+            animate.lastTime = now;
+        }
+    } else {
+        // 데스크탑: 60fps
+        renderer.render(scene, camera);
+    }
 }
 
 // 애니메이션 시작 (즉시 시작)
@@ -552,11 +629,86 @@ function preventMobileScroll() {
 // 모바일 스크롤 방지 실행
 preventMobileScroll();
 
+// 모바일 메모리 관리 최적화
+function optimizeMemoryForMobile() {
+    if (isMobile) {
+        // 주기적 메모리 정리 (3분마다)
+        setInterval(() => {
+            // 가비지 컬렉션 강제 실행 (개발자 도구에서만 작동)
+            if (window.gc) {
+                window.gc();
+            }
+            
+            // 사용하지 않는 텍스처 메모리 정리
+            scene.traverse((child) => {
+                if (child.isMesh && child.material) {
+                    const materials = Array.isArray(child.material) ? child.material : [child.material];
+                    materials.forEach(material => {
+                        // 텍스처 메모리 체크 및 정리
+                        if (material.map && material.map.image && !material.map.image.complete) {
+                            // 로딩되지 않은 텍스처는 제거
+                            material.map.dispose();
+                            material.map = null;
+                        }
+                    });
+                }
+            });
+        }, 180000); // 3분
+        
+        // 메모리 사용량 모니터링 (Chrome에서만 지원)
+        if ('memory' in performance) {
+            setInterval(() => {
+                const memInfo = performance.memory;
+                const usedMB = Math.round(memInfo.usedJSHeapSize / 1024 / 1024);
+                const limitMB = Math.round(memInfo.jsHeapSizeLimit / 1024 / 1024);
+                const usagePercent = (usedMB / limitMB) * 100;
+                
+                // 메모리 사용률이 80% 이상이면 경고
+                if (usagePercent > 80) {
+                    console.warn(`메모리 사용률 높음: ${usedMB}MB/${limitMB}MB (${Math.round(usagePercent)}%)`);
+                    
+                    // 긴급 메모리 정리
+                    if (window.gc) window.gc();
+                }
+            }, 15000); // 15초마다 체크
+        }
+        
+        // 페이지 숨김/표시 시 메모리 관리
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // 페이지가 숨겨졌을 때 렌더링 일시정지
+                renderer.setAnimationLoop(null);
+                
+                // 텍스처 품질 낮추기
+                scene.traverse((child) => {
+                    if (child.isMesh && child.material && child.material.map) {
+                        child.material.map.generateMipmaps = false;
+                        child.material.map.minFilter = THREE.NearestFilter;
+                    }
+                });
+            } else {
+                // 페이지가 다시 표시될 때 렌더링 재개
+                renderer.setAnimationLoop(animate);
+            }
+        });
+    }
+}
+
+// 메모리 최적화 실행
+optimizeMemoryForMobile();
+
 // Resize event listener
 window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
+    // 모바일 최적화된 픽셀 비율 적용
+    if (isMobile) {
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
+    } else {
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    }
+    
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
