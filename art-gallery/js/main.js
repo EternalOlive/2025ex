@@ -226,13 +226,13 @@ threeLoadingManager.onLoad = () => {
                                 material.map.anisotropy = 1; // 저메모리: 최소
                                 break;
                             case 'medium':
-                                material.map.anisotropy = 1.5; // 중간: 적당
+                                material.map.anisotropy = 1; // 중간: 적당
                                 break;
                             case 'high':
-                                material.map.anisotropy = 1.5; // 고메모리: 고품질
+                                material.map.anisotropy = 1; // 고메모리: 고품질
                                 break;
                             default:
-                                material.map.anisotropy = 2;
+                                material.map.anisotropy = 1;
                         }
                         
                     } else {
@@ -878,6 +878,7 @@ function startRendering() {
     render(); // 렌더링 시작
 
 }
+
 
 
 
