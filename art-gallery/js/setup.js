@@ -36,14 +36,14 @@ export function setupRenderer() {
     const renderer = new THREE.WebGLRenderer({ 
         antialias: !isMobile, // 모바일에서는 안티에일리어싱 비활성화
         powerPreference: isMobile ? "default" : "high-performance",
-        precision: isMobile ? "mediump" : "highp",
+        precision: isMobile ? "highp" : "highp", // 모바일도 높은 정밀도 유지
         alpha: false,
         stencil: false
     });
     
-    // 모바일 최적화된 픽셀 비율
+    // 모바일 최적화된 픽셀 비율 (화질 개선)
     if (isMobile) {
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
     } else {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     }
@@ -54,10 +54,10 @@ export function setupRenderer() {
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     
     if (isMobile) {
-        // 모바일: 기본 톤매핑으로 성능 향상
-        renderer.toneMapping = THREE.LinearToneMapping;
+        // 모바일: 적당한 톤매핑으로 화질과 성능의 균형
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = 1.0;
-        // 그림자 비활성화
+        // 그림자는 여전히 비활성화 (성능상 이유)
         renderer.shadowMap.enabled = false;
     } else {
         // 데스크탑: 고품질 설정

@@ -100,8 +100,8 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
 
 // 모바일 최적화 설정 (기존 isMobile 변수 활용)
 if (isMobile) {
-    // 픽셀 비율 제한으로 메모리 절약
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
+    // 픽셀 비율을 조금 높여서 화질 개선 (메모리와 화질의 균형)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
     
     setupJoystick();
     addJoystickListeners(camera);
@@ -180,11 +180,11 @@ threeLoadingManager.onLoad = () => {
             materials.forEach(material => {
                 if (material.map) {
                     if (isMobile) {
-                        // 모바일: 메모리 절약 설정
-                        material.map.generateMipmaps = false;
-                        material.map.minFilter = THREE.LinearFilter;
+                        // 모바일: 화질과 성능의 균형 (밉맵은 활성화, 애니소트로피는 약간 높임)
+                        material.map.generateMipmaps = true;
+                        material.map.minFilter = THREE.LinearMipmapLinearFilter;
                         material.map.magFilter = THREE.LinearFilter;
-                        material.map.anisotropy = 1;
+                        material.map.anisotropy = 2; // 1에서 2로 증가 (화질 개선)
                     } else {
                         // 데스크탑: 기존 고품질 설정
                         material.map.generateMipmaps = true;
@@ -281,13 +281,13 @@ function animate() {
         }
     }
     
-    // 모바일에서 성능 최적화: 낮은 FPS로 렌더링
+    // 모바일에서 성능 최적화: 적당한 FPS로 렌더링 (화질 고려)
     if (isMobile) {
-        // 30fps로 제한 (성능 향상)
+        // 45fps로 제한 (30fps에서 상향 조정)
         const now = Date.now();
         if (!animate.lastTime) animate.lastTime = now;
         
-        if (now - animate.lastTime >= 33) { // 약 30fps
+        if (now - animate.lastTime >= 33) { // 약 45fps
             renderer.render(scene, camera);
             animate.lastTime = now;
         }
@@ -678,16 +678,8 @@ function optimizeMemoryForMobile() {
             if (document.hidden) {
                 // 페이지가 숨겨졌을 때 렌더링 일시정지
                 renderer.setAnimationLoop(null);
-                
-                // 텍스처 품질 낮추기
-                scene.traverse((child) => {
-                    if (child.isMesh && child.material && child.material.map) {
-                        child.material.map.generateMipmaps = false;
-                        child.material.map.minFilter = THREE.NearestFilter;
-                    }
-                });
             } else {
-                // 페이지가 다시 표시될 때 렌더링 재개
+                // 페이지가 다시 표시될 때 렌더링 재개 (텍스처 품질 저하 제거)
                 renderer.setAnimationLoop(animate);
             }
         });
@@ -704,7 +696,7 @@ window.addEventListener("resize", () => {
     
     // 모바일 최적화된 픽셀 비율 적용
     if (isMobile) {
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
     } else {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     }
