@@ -903,11 +903,6 @@ loadJSONData('data/paintingInfo.json', function(data) {
 // Rendering loop
 function startRendering() {
     function render() {
-        // 거리 체크 및 그림 정보 표시
-        // 모달이 열려 있으면 카메라 관련 거리 체크도 차단
-        if (!document.getElementById('work-modal')) {
-            checkDistance(camera, collidableObjects, 3, jsonData);
-        }
 
         renderer.render(scene, camera);
         requestAnimationFrame(render);
@@ -916,6 +911,7 @@ function startRendering() {
     render(); // 렌더링 시작
 
 }
+
 
 
 
