@@ -169,7 +169,7 @@ window.checkCollision = checkCollision;
 
 // 모델 로딩 진행률 추적
 loader.load(
-    "models/20250908.gltf", 
+    "models/gallery.gltf", 
     
     // onLoad 콜백
     function (gltf) {
@@ -646,5 +646,6 @@ function startRendering() {
     render(); // 렌더링 시작
 
 }
+
 
 
