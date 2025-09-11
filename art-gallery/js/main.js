@@ -371,6 +371,40 @@ function animate() {
 // 애니메이션 시작 (즉시 시작)
 animate();
 
+
+// 방 이동 시 메모리 정리 함수
+function cleanupMemoryOnRoomChange() {
+    if (isMobile) {
+        // 1. 가비지 컬렉션 강제 실행
+        if (window.gc) window.gc();
+        
+        // 2. Three.js 캐시 정리
+        THREE.Cache.clear();
+        renderer.info.reset();
+        
+        // 3. 사용하지 않는 텍스처 메모리 정리
+        scene.traverse((child) => {
+            if (child.isMesh && child.material) {
+                const materials = Array.isArray(child.material) ? child.material : [child.material];
+                materials.forEach(material => {
+                    // 텍스처 메모리 정리 (메인 텍스처는 유지)
+                    ['normalMap', 'roughnessMap', 'metalnessMap', 'aoMap', 'emissiveMap'].forEach(mapType => {
+                        if (material[mapType]) {
+                            material[mapType].dispose();
+                            material[mapType] = null;
+                        }
+                    });
+                });
+            }
+        });
+        
+        // 4. 렌더러 컴파일 캐시 정리
+        renderer.compile(scene, camera);
+        
+        console.log('방 이동 시 메모리 정리 완료');
+    }
+}
+
 // 좌상단에 각 방으로 이동하는 버튼 그룹 추가
 const rooms = [
     { name: '그림일기', x: -84.612, z: -6 },
@@ -466,6 +500,10 @@ rooms.forEach((room, index) => {
             // console.log('모델 로딩 중... 잠시 기다려주세요.');
             return;
         }
+
+        
+        // 방 이동 시 메모리 정리 (크래시 방지)
+        cleanupMemoryOnRoomChange();
 
         // 이전 활성 버튼 스타일 초기화
         if (activeButton) {
@@ -878,6 +916,7 @@ function startRendering() {
     render(); // 렌더링 시작
 
 }
+
 
 
 
