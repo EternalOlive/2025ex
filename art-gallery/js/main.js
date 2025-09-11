@@ -8,23 +8,38 @@ import { showControlGuide } from './controlGuide.js';
 // 초기 성능 체크 및 최적화 설정
 function checkDevicePerformance() {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const isLowMemory = navigator.deviceMemory ? navigator.deviceMemory <= 4 : false;
-    const isLowCpu = navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : false;
+    const deviceMemory = navigator.deviceMemory || 4; // 기본값 4GB
+    const cpuCores = navigator.hardwareConcurrency || 4; // 기본값 4코어
     
-    if (isMobile || isLowMemory || isLowCpu) {
-        console.log('저사양 디바이스 감지 - 최적화 모드 활성화');
-        
-        // 브라우저별 최적화
-        if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-            // Safari 특별 최적화
-            document.body.style.webkitTransform = 'translateZ(0)';
-            document.body.style.webkitBackfaceVisibility = 'hidden';
+    // 메모리 기반 품질 등급 설정
+    let qualityLevel = 'high';
+    if (isMobile) {
+        if (deviceMemory <= 2) {
+            qualityLevel = 'low';
+            console.log('저메모리 모바일 디바이스 감지 (2GB 이하) - 저품질 모드');
+        } else if (deviceMemory <= 4) {
+            qualityLevel = 'medium';
+            console.log('중간 메모리 모바일 디바이스 감지 (4GB 이하) - 중품질 모드');
+        } else {
+            qualityLevel = 'high';
+            console.log('고메모리 모바일 디바이스 감지 (4GB 초과) - 고품질 모드');
         }
-        
-        // 메모리 경고 설정
-        if ('memory' in performance && performance.memory.jsHeapSizeLimit < 1073741824) { // 1GB 미만
-            console.warn('메모리 제한 감지:', Math.round(performance.memory.jsHeapSizeLimit / 1024 / 1024) + 'MB');
-        }
+    }
+    
+    // 전역 품질 설정
+    window.deviceQuality = qualityLevel;
+    
+    // 브라우저별 최적화
+    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+        // Safari 특별 최적화
+        document.body.style.webkitTransform = 'translateZ(0)';
+        document.body.style.webkitBackfaceVisibility = 'hidden';
+    }
+    
+    // 메모리 경고 설정
+    if ('memory' in performance && performance.memory.jsHeapSizeLimit < 1073741824) { // 1GB 미만
+        console.warn('메모리 제한 감지:', Math.round(performance.memory.jsHeapSizeLimit / 1024 / 1024) + 'MB');
+        window.deviceQuality = 'low'; // 강제로 저품질 모드
     }
 }
 
@@ -100,8 +115,26 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
 
 // 모바일 최적화 설정 (기존 isMobile 변수 활용)
 if (isMobile) {
-    // 픽셀 비율을 조금 높여서 화질 개선 (메모리와 화질의 균형)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
+    // 디바이스 메모리에 따른 적응적 픽셀 비율 설정
+    const quality = window.deviceQuality || 'medium';
+    let pixelRatio;
+    
+    switch(quality) {
+        case 'low':
+            pixelRatio = Math.min(window.devicePixelRatio, 1.0); // 저메모리: 1배
+            break;
+        case 'medium':
+            pixelRatio = Math.min(window.devicePixelRatio, 1.25); // 중간: 1.25배
+            break;
+        case 'high':
+            pixelRatio = Math.min(window.devicePixelRatio, 1.5); // 고메모리: 1.5배
+            break;
+        default:
+            pixelRatio = Math.min(window.devicePixelRatio, 1.25);
+    }
+    
+    renderer.setPixelRatio(pixelRatio);
+    console.log(`모바일 품질 설정: ${quality}, 픽셀 비율: ${pixelRatio}`);
     
     setupJoystick();
     addJoystickListeners(camera);
@@ -180,19 +213,57 @@ threeLoadingManager.onLoad = () => {
             materials.forEach(material => {
                 if (material.map) {
                     if (isMobile) {
-                        // 모바일: 화질과 성능의 균형 (밉맵은 활성화, 애니소트로피는 약간 높임)
+                        // 모바일: 디바이스 메모리에 따른 적응적 설정
+                        const quality = window.deviceQuality || 'medium';
+                        
                         material.map.generateMipmaps = true;
                         material.map.minFilter = THREE.LinearMipmapLinearFilter;
                         material.map.magFilter = THREE.LinearFilter;
-                        material.map.anisotropy = 2; // 1에서 2로 증가 (화질 개선)
+                        
+                        // 메모리 용량에 따른 애니소트로피 조정
+                        switch(quality) {
+                            case 'low':
+                                material.map.anisotropy = 1; // 저메모리: 최소
+                                break;
+                            case 'medium':
+                                material.map.anisotropy = 2; // 중간: 적당
+                                break;
+                            case 'high':
+                                material.map.anisotropy = 4; // 고메모리: 고품질
+                                break;
+                            default:
+                                material.map.anisotropy = 2;
+                        }
+                        
                     } else {
                         // 데스크탑: 기존 고품질 설정
                         material.map.generateMipmaps = true;
                         material.map.minFilter = THREE.LinearMipmapLinearFilter;
                         material.map.magFilter = THREE.LinearFilter;
-                        material.map.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+                        material.map.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
                     }
                     material.map.needsUpdate = true;
+                }
+                
+                // 모바일에서 추가 텍스처 타입도 메모리에 따라 최적화
+                if (isMobile) {
+                    const quality = window.deviceQuality || 'medium';
+                    
+                    ['normalMap', 'roughnessMap', 'metalnessMap', 'aoMap'].forEach(mapType => {
+                        if (material[mapType]) {
+                            if (quality === 'low') {
+                                // 저메모리: 추가 맵들 비활성화
+                                material[mapType].dispose();
+                                material[mapType] = null;
+                            } else {
+                                // 중간/고메모리: 최적화해서 유지
+                                material[mapType].generateMipmaps = true;
+                                material[mapType].minFilter = THREE.LinearMipmapLinearFilter;
+                                material[mapType].anisotropy = quality === 'high' ? 2 : 1;
+                                material[mapType].needsUpdate = true;
+                            }
+                        }
+                    });
                 }
             });
         }
@@ -275,7 +346,7 @@ function animate() {
     
     // 모달이 열려 있으면 카메라 이동/회전 차단
     if (!document.getElementById('work-modal')) {
-        // 모바일에서만 조이스틱 업데이트
+        // 모바일에서만 조이스틱 업데이트 (FPS 제한과 별개로 항상 실행)
         if (isMobile) {
             updateJoystickMovement(camera, collidableObjects);
         }
@@ -287,7 +358,7 @@ function animate() {
         const now = Date.now();
         if (!animate.lastTime) animate.lastTime = now;
         
-        if (now - animate.lastTime >= 33) { // 약 45fps
+        if (now - animate.lastTime >= 22) { // 약 45fps
             renderer.render(scene, camera);
             animate.lastTime = now;
         }
@@ -696,7 +767,24 @@ window.addEventListener("resize", () => {
     
     // 모바일 최적화된 픽셀 비율 적용
     if (isMobile) {
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
+        const quality = window.deviceQuality || 'medium';
+        let pixelRatio;
+        
+        switch(quality) {
+            case 'low':
+                pixelRatio = Math.min(window.devicePixelRatio, 1.0);
+                break;
+            case 'medium':
+                pixelRatio = Math.min(window.devicePixelRatio, 1.25);
+                break;
+            case 'high':
+                pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+                break;
+            default:
+                pixelRatio = Math.min(window.devicePixelRatio, 1.25);
+        }
+        
+        renderer.setPixelRatio(pixelRatio);
     } else {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     }

@@ -34,16 +34,33 @@ export function setupRenderer() {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
     const renderer = new THREE.WebGLRenderer({ 
-        antialias: !isMobile, // 모바일에서는 안티에일리어싱 비활성화
+        antialias: isMobile ? (window.deviceQuality !== 'low') : true, // 저메모리는 안티에일리어싱 OFF
         powerPreference: isMobile ? "default" : "high-performance",
-        precision: isMobile ? "highp" : "highp", // 모바일도 높은 정밀도 유지
+        precision: isMobile ? (window.deviceQuality === 'low' ? "mediump" : "highp") : "highp",
         alpha: false,
         stencil: false
     });
     
-    // 모바일 최적화된 픽셀 비율 (화질 개선)
+    // 메모리에 따른 적응적 픽셀 비율
     if (isMobile) {
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
+        const quality = window.deviceQuality || 'medium';
+        let pixelRatio;
+        
+        switch(quality) {
+            case 'low':
+                pixelRatio = Math.min(window.devicePixelRatio, 1.0);
+                break;
+            case 'medium':
+                pixelRatio = Math.min(window.devicePixelRatio, 1.25);
+                break;
+            case 'high':
+                pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+                break;
+            default:
+                pixelRatio = Math.min(window.devicePixelRatio, 1.25);
+        }
+        
+        renderer.setPixelRatio(pixelRatio);
     } else {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     }
