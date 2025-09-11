@@ -102,7 +102,7 @@ export function updateJoystickMovement(camera, collidableObjects) {
     const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
     if (isMobile) {
         if (!joystickVector) return;
-        const speed = 0.15; // 0.09 → 0.15로 증가
+        const speed = 0.08; // 모바일에서 더 느리게 조정
         let forward = new THREE.Vector3();
         camera.getWorldDirection(forward);
         forward.y = 0;
@@ -125,7 +125,7 @@ export function updateJoystickMovement(camera, collidableObjects) {
         // PC 환경: 드래그 중일 때만 이동
         if (!window.joystickActive) return;
         if (!joystickVector) return;
-        const speed = 0.15; // 0.09 → 0.15로 증가
+        const speed = 0.12; // PC는 조금 더 빠르게
         let forward = new THREE.Vector3();
         camera.getWorldDirection(forward);
         forward.y = 0;
