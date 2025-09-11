@@ -58,13 +58,16 @@ let awardsData = null;
 // 기존 checkAllLoaded 함수 수정
 function checkAllLoaded() {
     if (isModelLoaded && isDataLoaded && window.hideLoadingScreen) {
+        // 모바일일 경우 5초, 아니면 300ms
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const delay = isMobile ? 7000 : 300;
         setTimeout(() => {
             window.hideLoadingScreen();
             // 로딩 완료 후 조작 가이드 표시
             showControlGuide();
             // 도움말 버튼 생성
             createHelpButton();
-        }, 300);
+        }, delay);
     }
 }
 
