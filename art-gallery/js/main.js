@@ -60,7 +60,7 @@ function checkAllLoaded() {
     if (isModelLoaded && isDataLoaded && window.hideLoadingScreen) {
         // 모바일일 경우 5초, 아니면 300ms
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        const delay = isMobile ? 7000 : 300;
+        const delay = isMobile ? 2000 : 300;
         setTimeout(() => {
             window.hideLoadingScreen();
             
@@ -1005,6 +1005,7 @@ function startRendering() {
     render(); // 렌더링 시작
 
 }
+
 
 
 
