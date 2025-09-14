@@ -130,13 +130,13 @@ if (isMobile) {
     
     switch(quality) {
         case 'low':
-            pixelRatio = Math.min(window.devicePixelRatio, 1.0); // 저메모리: 1배
+            pixelRatio = Math.min(window.devicePixelRatio, 1.45); // 저메모리: 1배
             break;
         case 'medium':
-            pixelRatio = Math.min(window.devicePixelRatio, 1.2); // 중간: 1.25배
+            pixelRatio = Math.min(window.devicePixelRatio, 1.5); // 중간: 1.25배
             break;
         case 'high':
-            pixelRatio = Math.min(window.devicePixelRatio, 1.2); // 고메모리: 1.5배
+            pixelRatio = Math.min(window.devicePixelRatio, 1.5); // 고메모리: 1.5배
             break;
         default:
             pixelRatio = Math.min(window.devicePixelRatio, 1.2);
@@ -1005,6 +1005,7 @@ function startRendering() {
     render(); // 렌더링 시작
 
 }
+
 
 
 
