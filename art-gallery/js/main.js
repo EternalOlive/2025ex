@@ -63,8 +63,14 @@ function checkAllLoaded() {
         const delay = isMobile ? 7000 : 300;
         setTimeout(() => {
             window.hideLoadingScreen();
-            // 로딩 완료 후 조작 가이드 표시
-            showControlGuide();
+            
+            // 처음 방문 시에만 조작 가이드 표시
+            const hasVisited = localStorage.getItem('artGalleryVisited');
+            if (!hasVisited) {
+                showControlGuide();
+                localStorage.setItem('artGalleryVisited', 'true');
+            }
+            
             // 도움말 버튼 생성
             createHelpButton();
         }, delay);
@@ -286,63 +292,126 @@ threeLoadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
 // GLTF 로더에 LoadingManager 적용
 let loader = new GLTFLoader(threeLoadingManager);
 let collidableObjects = [];
+let currentModel = null; // 현재 로드된 모델 추적
+let currentModelPath = null; // 현재 로드된 모델 경로 추적
 window.checkCollision = checkCollision;
 
-// 모델 로딩 진행률 추적
-loader.load(
-    "models/gallery.gltf", 
-    
-    // onLoad 콜백
-    function (gltf) {
-        let model = gltf.scene;
-        scene.add(model);
+// 모델을 로드하는 함수
+function loadRoomModel(modelPath, onComplete = null) {
+    // 현재 모델과 같은 모델이면 로드하지 않고 바로 완료 콜백 실행
+    if (currentModelPath === modelPath) {
+        console.log('같은 모델이므로 로드하지 않고 좌표만 이동:', modelPath);
+        if (onComplete) onComplete();
+        return;
+    }
 
-        model.traverse(function (child) {
+    // 로딩 상태 초기화
+    loadingManager.gltfProgress = 0;
+    loadingManager.texturesLoaded = 0;
+    loadingManager.totalTextures = 0;
+    loadingManager.isGltfComplete = false;
+
+    // 로딩 진행률 초기화
+    if (window.updateLoadingProgress) {
+        window.updateLoadingProgress(0);
+    }
+
+    // 이전 모델이 있으면 scene에서 제거하고 메모리 정리
+    if (currentModel) {
+        scene.remove(currentModel);
+        
+        // 메모리 정리: 재귀적으로 모든 geometry와 material dispose
+        currentModel.traverse((child) => {
             if (child.isMesh) {
-                collidableObjects.push(child);
-                
-                // 모바일에서 추가 최적화
-                if (isMobile && child.material) {
+                if (child.geometry) {
+                    child.geometry.dispose();
+                }
+                if (child.material) {
                     const materials = Array.isArray(child.material) ? child.material : [child.material];
                     materials.forEach(material => {
-                        // 그림자 관련 설정 비활성화 (메모리 절약)
-                        material.castShadow = false;
-                        material.receiveShadow = false;
-                        
-                        // 복잡한 재질 효과 단순화
-                        if (material.normalMap) {
-                            material.normalScale?.set(0.5, 0.5); // 노멀맵 강도 줄이기
-                        }
+                        // 텍스처들도 정리
+                        Object.keys(material).forEach(key => {
+                            const value = material[key];
+                            if (value && value.isTexture) {
+                                value.dispose();
+                            }
+                        });
+                        material.dispose();
                     });
                 }
             }
         });
-
-        loadingManager.isGltfComplete = true;
-        // console.log('GLTF 모델 로딩 완료');
         
-        // 텍스처가 모두 로드될 때까지 기다림
-        // THREE.LoadingManager의 onLoad에서 최종 완료 처리
-    }, 
-    
-    // onProgress 콜백 - GLTF 파일만 추적
-    function (progress) {
-        if (progress.lengthComputable && progress.total > 0) {
-            const percentComplete = Math.min(progress.loaded / progress.total, 1.0);
-            loadingManager.gltfProgress = percentComplete;
-            loadingManager.updateProgress();
-        } else {
-            // console.log('GLTF 로딩 중...');
-        }
-    }, 
-    
-    // onError 콜백
-    function (error) {
-        console.error('모델 로딩 실패:', error);
-        isModelLoaded = true;
-        checkAllLoaded();
+        // collidableObjects 배열에서 이전 모델의 오브젝트들 제거
+        collidableObjects = [];
+        
+        // 메모리 정리
+        if (window.gc) window.gc();
+        THREE.Cache.clear();
+        renderer.info.reset();
     }
-);
+
+    console.log('새 모델 로딩 시작:', modelPath);
+
+    // 새 모델 로드
+    loader.load(
+        modelPath,
+        
+        // onLoad 콜백
+        function (gltf) {
+            currentModel = gltf.scene;
+            currentModelPath = modelPath; // 모델 로딩 성공 후 경로 업데이트
+            scene.add(currentModel);
+
+            currentModel.traverse(function (child) {
+                if (child.isMesh) {
+                    collidableObjects.push(child);
+                    
+                    // 모바일에서 추가 최적화
+                    if (isMobile && child.material) {
+                        const materials = Array.isArray(child.material) ? child.material : [child.material];
+                        materials.forEach(material => {
+                            // 그림자 관련 설정 비활성화 (메모리 절약)
+                            material.castShadow = false;
+                            material.receiveShadow = false;
+                            
+                            // 복잡한 재질 효과 단순화
+                            if (material.normalMap) {
+                                material.normalScale?.set(0.5, 0.5); // 노멀맵 강도 줄이기
+                            }
+                        });
+                    }
+                }
+            });
+
+            loadingManager.isGltfComplete = true;
+            console.log('모델 로딩 완료:', modelPath);
+            
+            // 로딩 완료 콜백 실행
+            if (onComplete) onComplete();
+        }, 
+        
+        // onProgress 콜백
+        function (progress) {
+            if (progress.lengthComputable && progress.total > 0) {
+                const percentComplete = Math.min(progress.loaded / progress.total, 1.0);
+                loadingManager.gltfProgress = percentComplete;
+                loadingManager.updateProgress();
+            }
+        }, 
+        
+        // onError 콜백
+        function (error) {
+            console.error('모델 로딩 실패:', modelPath, error);
+            console.error('에러 세부 정보:', error.message);
+            console.error('파일 경로 확인:', window.location.origin + '/' + modelPath);
+            
+            // 로딩 실패 시에도 완료 처리하여 무한 로딩 방지
+            isModelLoaded = true;
+            if (onComplete) onComplete();
+        }
+    );
+}
 // 애니메이션 루프에서 조이스틱 이동 적용
 function animate() {
     requestAnimationFrame(animate);
@@ -410,13 +479,19 @@ function cleanupMemoryOnRoomChange() {
 
 // 좌상단에 각 방으로 이동하는 버튼 그룹 추가
 const rooms = [
-    { name: '그림일기', x: -84.612, z: -6 },
-    { name: '동시', x: 13 },
-    { name: '네컷사진', x: 39 },
-    { name: '글·시', x: 0 },
-    { name: '네컷만화', x: 74.4 },
-    { name: '사례', x: 91 }
+    { name: '그림일기', x: -84.612, z: -6, model: 'models/splits/result_diary.gltf' },
+    { name: '동시', x: 13, model: 'models/splits/writting_pome_pic.gltf' },
+    { name: '네컷사진', x: 39, model: 'models/splits/writting_pome_pic.gltf' },
+    { name: '글·시', x: 0, model: 'models/splits/writting_pome_pic.gltf' },
+    { name: '네컷만화', x: 74.4, model: 'models/splits/ex_manga.gltf' },
+    { name: '사례', x: 91, model: 'models/splits/ex_manga.gltf' }
 ];
+
+// 첫 번째 방의 모델을 초기 로드
+loadRoomModel(rooms[0].model, () => {
+    isModelLoaded = true;
+    checkAllLoaded();
+});
 
 // 네비게이션 컨테이너 생성
 const navContainer = document.createElement('div');
@@ -504,10 +579,6 @@ rooms.forEach((room, index) => {
             return;
         }
 
-        
-        // 방 이동 시 메모리 정리 (크래시 방지)
-        cleanupMemoryOnRoomChange();
-
         // 이전 활성 버튼 스타일 초기화
         if (activeButton) {
             activeButton.style.background = 'transparent';
@@ -521,12 +592,32 @@ rooms.forEach((room, index) => {
         btn.style.fontWeight = '600';
         activeButton = btn;
 
-        // 모달이 열려 있으면 카메라 이동/회전 차단
-        if (!document.getElementById('work-modal')) {
-            camera.position.set(room.x, 1.5, room.z || 0);
-            // 항상 -z축 방향(정면) 바라보게
-            camera.lookAt(room.x, 1.5, (room.z || 0) - 10);
+        // 방 이동 시 메모리 정리 (크래시 방지)
+        cleanupMemoryOnRoomChange();
+
+        // 다른 모델로 변경하는 경우 로딩 화면 표시
+        const isDifferentModel = currentModelPath !== room.model;
+        if (isDifferentModel && window.showLoadingScreen) {
+            window.showLoadingScreen();
         }
+
+        // 해당 방의 모델 로드
+        loadRoomModel(room.model, () => {
+            // 모델 로딩 완료 후 로딩 화면 숨기기
+            if (isDifferentModel && window.hideLoadingScreen) {
+                // 약간의 지연을 두어 부드러운 전환
+                setTimeout(() => {
+                    window.hideLoadingScreen();
+                }, 300);
+            }
+            
+            // 모달이 열려 있으면 카메라 이동/회전 차단
+            if (!document.getElementById('work-modal')) {
+                camera.position.set(room.x, 1.5, room.z || 0);
+                // 항상 -z축 방향(정면) 바라보게
+                camera.lookAt(room.x, 1.5, (room.z || 0) - 10);
+            }
+        });
 
         // 선택된 버튼이 보이도록 스크롤
         btn.scrollIntoView({
@@ -535,7 +626,7 @@ rooms.forEach((room, index) => {
             inline: 'center'
         });
 
-        // console.log(`카메라 이동: ${room.name} (${room.x}, 1.5, ${room.z || 0})`);
+        console.log(`방 이동: ${room.name} (${room.x}, 1.5, ${room.z || 0}) - 모델: ${room.model}`);
     });
 
     // 모바일 터치 이벤트 추가
