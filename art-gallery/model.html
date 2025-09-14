@@ -688,6 +688,33 @@
     <script src="./js/main.js" type="module" defer></script>
     <script src="./js/controlGuide.js" type="module"></script>
     <script>
+    // 로딩 화면 제어 함수들
+    window.showLoadingScreen = function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'flex';
+            loadingScreen.classList.remove('fade-out');
+        }
+    };
+
+    window.hideLoadingScreen = function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('fade-out');
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500); // fade-out 애니메이션 시간과 맞춤
+        }
+    };
+
+    window.updateLoadingProgress = function(progress) {
+        const progressText = document.getElementById('progress-text');
+        if (progressText) {
+            const percentage = Math.round(progress * 100);
+            progressText.textContent = `Loading... ${percentage}%`;
+        }
+    };
+
     // 모바일 터치 이벤트도 ?(도움말) 버튼에 추가
     document.addEventListener('DOMContentLoaded', function() {
         const helpBtn = document.getElementById('help-button');
