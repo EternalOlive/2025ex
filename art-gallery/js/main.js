@@ -418,10 +418,8 @@ function animate() {
     
     // 모달이 열려 있으면 카메라 이동/회전 차단
     if (!document.getElementById('work-modal')) {
-        // 모바일에서만 조이스틱 업데이트 (FPS 제한과 별개로 항상 실행)
-        if (isMobile) {
-            updateJoystickMovement(camera, collidableObjects);
-        }
+        // 조이스틱 업데이트 (모바일/데스크탑 공통)
+        updateJoystickMovement(camera, collidableObjects);
     }
     
     // 모바일에서 성능 최적화: 적당한 FPS로 렌더링 (화질 고려)
@@ -430,7 +428,7 @@ function animate() {
         const now = Date.now();
         if (!animate.lastTime) animate.lastTime = now;
         
-        if (now - animate.lastTime >= 33) { // 약 30fps
+        if (now - animate.lastTime >= 22) { // 약 45fps (22ms)
             renderer.render(scene, camera);
             animate.lastTime = now;
         }

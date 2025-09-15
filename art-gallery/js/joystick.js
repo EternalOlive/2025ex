@@ -44,7 +44,10 @@ export function addJoystickListeners(camera) {
             dy = dy * maxDist / dist;
         }
         knob.style.transform = `translate(${dx}px,${dy}px)`;
-        joystickVector = { x: dx / maxDist, y: dy / maxDist };
+        // 조이스틱 벡터 값을 안전하게 제한 (-1 ~ 1 범위)
+        const vectorX = Math.max(-1, Math.min(1, dx / maxDist));
+        const vectorY = Math.max(-1, Math.min(1, dy / maxDist));
+        joystickVector = { x: vectorX, y: vectorY };
     }, { passive: true });
     container.addEventListener('touchend', function(e) {
         joystickActive = false;
@@ -86,7 +89,10 @@ export function addJoystickListeners(camera) {
             dy = dy * maxDist / dist;
         }
         knob.style.transform = `translate(${dx}px,${dy}px)`;
-        joystickVector = { x: dx / maxDist, y: dy / maxDist };
+        // 마우스 이벤트에서도 조이스틱 벡터 값을 안전하게 제한
+        const vectorX = Math.max(-1, Math.min(1, dx / maxDist));
+        const vectorY = Math.max(-1, Math.min(1, dy / maxDist));
+        joystickVector = { x: vectorX, y: vectorY };
     }
 
     function mouseUpHandler(e) {
@@ -98,11 +104,30 @@ export function addJoystickListeners(camera) {
     }
 }
 
+// 이동 속도 제어를 위한 시간 기반 변수
+let lastMoveTime = 0;
+
 export function updateJoystickMovement(camera, collidableObjects) {
     const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
     if (isMobile) {
         if (!joystickVector) return;
-        const speed = 0.08; // 모바일에서 더 느리게 조정
+        
+        // 시간 기반 이동으로 프레임률에 독립적으로 만들기
+        const now = Date.now();
+        if (!lastMoveTime) lastMoveTime = now;
+        const deltaTime = (now - lastMoveTime) / 1000; // 초 단위
+        lastMoveTime = now;
+        
+        // 너무 짧은 시간 간격이면 스킵 (과도한 이동 방지)
+        if (deltaTime < 0.016) return; // 약 60fps 제한
+        
+        // 조이스틱 벡터 값 제한 (비정상적으로 큰 값 방지)
+        const clampedVector = {
+            x: Math.max(-1, Math.min(1, joystickVector.x)),
+            y: Math.max(-1, Math.min(1, joystickVector.y))
+        };
+        
+        const speed = 2.5; // 시간 기반이므로 더 큰 값 사용 (단위: units/second)
         let forward = new THREE.Vector3();
         camera.getWorldDirection(forward);
         forward.y = 0;
@@ -110,8 +135,8 @@ export function updateJoystickMovement(camera, collidableObjects) {
         let right = new THREE.Vector3();
         right.crossVectors(forward, camera.up).normalize();
         let move = new THREE.Vector3();
-        move.addScaledVector(forward, -joystickVector.y * speed);
-        move.addScaledVector(right, joystickVector.x * speed);
+        move.addScaledVector(forward, -clampedVector.y * speed * deltaTime);
+        move.addScaledVector(right, clampedVector.x * speed * deltaTime);
         
         let nextPosition = camera.position.clone().add(move);
         if (typeof window.checkCollision === 'function') {
@@ -125,7 +150,21 @@ export function updateJoystickMovement(camera, collidableObjects) {
         // PC 환경: 드래그 중일 때만 이동
         if (!window.joystickActive) return;
         if (!joystickVector) return;
-        const speed = 0.12; // PC는 조금 더 빠르게
+        
+        // PC도 시간 기반 이동으로 변경
+        const now = Date.now();
+        if (!lastMoveTime) lastMoveTime = now;
+        const deltaTime = (now - lastMoveTime) / 1000;
+        lastMoveTime = now;
+        
+        if (deltaTime < 0.016) return; // 60fps 제한
+        
+        const clampedVector = {
+            x: Math.max(-1, Math.min(1, joystickVector.x)),
+            y: Math.max(-1, Math.min(1, joystickVector.y))
+        };
+        
+        const speed = 3.5; // PC는 조금 더 빠르게 (units/second)
         let forward = new THREE.Vector3();
         camera.getWorldDirection(forward);
         forward.y = 0;
@@ -133,8 +172,8 @@ export function updateJoystickMovement(camera, collidableObjects) {
         let right = new THREE.Vector3();
         right.crossVectors(forward, camera.up).normalize();
         let move = new THREE.Vector3();
-        move.addScaledVector(forward, -joystickVector.y * speed);
-        move.addScaledVector(right, joystickVector.x * speed);
+        move.addScaledVector(forward, -clampedVector.y * speed * deltaTime);
+        move.addScaledVector(right, clampedVector.x * speed * deltaTime);
         
         let nextPosition = camera.position.clone().add(move);
         if (typeof window.checkCollision === 'function') {
