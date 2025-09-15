@@ -2,7 +2,13 @@ import * as THREE from 'three';
 // joystick.js
 // PC/모바일 모두 지원하는 조이스틱 UI 및 입력 처리
 
-// joystickActive를 window에 등록하여 updateJoystickMovement에서 접근 가능하게 함
+// joystickActive를 wind// 페이지 visibility 변경 시 타이머 리셋 (화면 껐다 켤 때 문제 해결)
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        // 페이지가 다시 보일 때 새로고침
+        window.location.reload();
+    }
+});
 window.joystickActive = false;
 let joystickCenter = { x: 80, y: 80 };
 let joystickVector = { x: 0, y: 0 };
@@ -107,11 +113,11 @@ export function addJoystickListeners(camera) {
 // 이동 속도 제어를 위한 시간 기반 변수
 let lastMoveTime = 0;
 
-// 페이지 visibility 변경 시 타이머 리셋 (화면 껐다 켤 때 문제 해결)
+// 페이지 visibility 변경 시 새로고침 (화면 껐다 켤 때 문제 해결)
 document.addEventListener('visibilitychange', function() {
     if (!document.hidden) {
-        // 페이지가 다시 보일 때 타이머를 현재 시간으로 리셋
-        lastMoveTime = Date.now();
+        // 페이지가 다시 보일 때 새로고침
+        window.location.reload();
     }
 });
 
@@ -135,7 +141,7 @@ export function updateJoystickMovement(camera, collidableObjects) {
             y: Math.max(-1, Math.min(1, joystickVector.y))
         };
         
-        const speed = 3.5; // 모바일 속도 20% 증가 (2.5 → 3.0)
+        const speed = 3.0; // 모바일 속도 20% 증가 (2.5 → 3.0)
         let forward = new THREE.Vector3();
         camera.getWorldDirection(forward);
         forward.y = 0;
@@ -193,4 +199,3 @@ export function updateJoystickMovement(camera, collidableObjects) {
         }
     }
 }
-
