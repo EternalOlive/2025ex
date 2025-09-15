@@ -110,8 +110,8 @@ let lastMoveTime = 0;
 // 페이지 visibility 변경 시 타이머 리셋 (화면 껐다 켤 때 문제 해결)
 document.addEventListener('visibilitychange', function() {
     if (!document.hidden) {
-        // 페이지가 다시 보일 때 타이머 리셋
-        lastMoveTime = 0;
+        // 페이지가 다시 보일 때 타이머를 현재 시간으로 리셋
+        lastMoveTime = Date.now();
     }
 });
 
