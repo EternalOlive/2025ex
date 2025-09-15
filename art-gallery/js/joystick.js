@@ -107,6 +107,14 @@ export function addJoystickListeners(camera) {
 // 이동 속도 제어를 위한 시간 기반 변수
 let lastMoveTime = 0;
 
+// 페이지 visibility 변경 시 타이머 리셋 (화면 껐다 켤 때 문제 해결)
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        // 페이지가 다시 보일 때 타이머 리셋
+        lastMoveTime = 0;
+    }
+});
+
 export function updateJoystickMovement(camera, collidableObjects) {
     const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
     if (isMobile) {
@@ -115,7 +123,7 @@ export function updateJoystickMovement(camera, collidableObjects) {
         // 시간 기반 이동으로 프레임률에 독립적으로 만들기
         const now = Date.now();
         if (!lastMoveTime) lastMoveTime = now;
-        const deltaTime = (now - lastMoveTime) / 1000; // 초 단위
+        const deltaTime = Math.min((now - lastMoveTime) / 1000, 0.1); // 초 단위, 최대 0.1초로 제한
         lastMoveTime = now;
         
         // 너무 짧은 시간 간격이면 스킵 (과도한 이동 방지)
@@ -127,7 +135,7 @@ export function updateJoystickMovement(camera, collidableObjects) {
             y: Math.max(-1, Math.min(1, joystickVector.y))
         };
         
-        const speed = 2.5; // 시간 기반이므로 더 큰 값 사용 (단위: units/second)
+        const speed = 3.0; // 모바일 속도 20% 증가 (2.5 → 3.0)
         let forward = new THREE.Vector3();
         camera.getWorldDirection(forward);
         forward.y = 0;
@@ -154,7 +162,7 @@ export function updateJoystickMovement(camera, collidableObjects) {
         // PC도 시간 기반 이동으로 변경
         const now = Date.now();
         if (!lastMoveTime) lastMoveTime = now;
-        const deltaTime = (now - lastMoveTime) / 1000;
+        const deltaTime = Math.min((now - lastMoveTime) / 1000, 0.1); // 초 단위, 최대 0.1초로 제한
         lastMoveTime = now;
         
         if (deltaTime < 0.016) return; // 60fps 제한
