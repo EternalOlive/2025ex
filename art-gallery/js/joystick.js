@@ -135,7 +135,7 @@ export function updateJoystickMovement(camera, collidableObjects) {
             y: Math.max(-1, Math.min(1, joystickVector.y))
         };
         
-        const speed = 3.0; // 모바일 속도 20% 증가 (2.5 → 3.0)
+        const speed = 3.5; // 모바일 속도 20% 증가 (2.5 → 3.0)
         let forward = new THREE.Vector3();
         camera.getWorldDirection(forward);
         forward.y = 0;
@@ -193,3 +193,4 @@ export function updateJoystickMovement(camera, collidableObjects) {
         }
     }
 }
+
